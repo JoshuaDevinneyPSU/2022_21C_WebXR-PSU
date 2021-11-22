@@ -2,6 +2,7 @@ import './style.css'
 
 import * as THREE from 'three';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { InteractionManager } from "three.interactive";
 
 const scene = new THREE.Scene();
 
@@ -10,6 +11,12 @@ const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerH
 const renderer = new THREE.WebGLRenderer({
     canvas: document.querySelector('#bg')
 });
+
+const interactionManager = new InteractionManager(
+    renderer,
+    camera,
+    renderer.domElement
+);
 
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -21,8 +28,19 @@ const earthGeo = new THREE.SphereGeometry(3, 32, 32);
 const earthMaterial = new THREE.MeshStandardMaterial( {color: 0x30D5C8});
 const earth = new THREE.Mesh(earthGeo, earthMaterial);
 scene.add(earth);
+interactionManager.add(earth);
+
+earth.addEventListener("click", (event) => {
+    if(earth.position.x == 0){
+        earth.position.setX(30);
+    }
+    else{
+        earth.position.setX(0);
+    }
+});
 
 const ambientLight = new THREE.AmbientLight(0xFFFFFF);
+camera.add(ambientLight);
 scene.add(ambientLight);
 
 const gridHelper = new THREE.GridHelper(200, 50);
@@ -30,12 +48,14 @@ scene.add(gridHelper)
 
 const controls = new OrbitControls(camera, renderer.domElement);
 
+
 function animate() {
     requestAnimationFrame( animate );
 
     controls.update();
 
+    interactionManager.update();
+
     renderer.render(scene, camera);
 }
-
 animate();

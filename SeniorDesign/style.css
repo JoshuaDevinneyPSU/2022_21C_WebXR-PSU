@@ -3,3 +3,9 @@ canvas {
   top: 0;
   left: 0;
 }
+
+div {
+  color: aqua;
+  position: center;
+  font-size: xx-large;
+}
