@@ -4,8 +4,10 @@ canvas {
   left: 0;
 }
 
-div {
-  color: aqua;
-  position: center;
-  font-size: xx-large;
-}
+/*div {*/
+/*  color: black;*/
+/*  position: absolute;*/
+/*  font-size: xx-large;*/
+/*  text-align: center;*/
+/*  background: white;*/
+/*}*/

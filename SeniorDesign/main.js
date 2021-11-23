@@ -3,6 +3,7 @@ import './style.css'
 import * as THREE from 'three';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { InteractionManager } from "three.interactive";
+import {dom} from "three/examples/jsm/libs/dat.gui.module";
 
 const scene = new THREE.Scene();
 
@@ -30,12 +31,21 @@ const earth = new THREE.Mesh(earthGeo, earthMaterial);
 scene.add(earth);
 interactionManager.add(earth);
 
+let clickCheck = false;
+
 earth.addEventListener("click", (event) => {
-    if(earth.position.x == 0){
-        earth.position.setX(30);
+    if(clickCheck){
+        document.getElementById('test').innerText = ''
+        clickCheck = false;
     }
-    else{
-        earth.position.setX(0);
+    else {
+        document.getElementById('test').innerHTML = "<div class=\"card\" style=\"width: 18rem;\">\n" +
+            "  <img src='https://images.pexels.com/photos/87651/earth-blue-planet-globe-planet-87651.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500' class=\"card-img-top\">\n" +
+            "  <div class=\"card-body\">\n" +
+            "    <p class=\"card-text\">The Psyche mission will begin from launching from our home planet Earth!</p>\n" +
+            "  </div>\n" +
+            "</div>"
+        clickCheck = true;
     }
 });
 
