@@ -17,10 +17,21 @@ camera.position.setZ(30);
 
 renderer.render(scene, camera);
 
+const earthTexture = new THREE.TextureLoader().load('earthTexture.jpg');
+const normalTexture = new THREE.TextureLoader().load('earthNormalMap.tif');
+
 const earthGeo = new THREE.SphereGeometry(3, 32, 32);
-const earthMaterial = new THREE.MeshStandardMaterial( {color: 0x30D5C8});
+const earthMaterial = new THREE.MeshStandardMaterial( {map: earthTexture,
+    normalMap: normalTexture});
 const earth = new THREE.Mesh(earthGeo, earthMaterial);
+earth.position.set(15, 0, 10)
 scene.add(earth);
+
+const sunTexture = new THREE.TextureLoader().load('sun.jpg');
+const sunGeo = new THREE.SphereGeometry(10, 32, 32);
+const sunMaterial = new THREE.MeshStandardMaterial({map: sunTexture});
+const sun = new THREE.Mesh(sunGeo, sunMaterial);
+scene.add(sun);
 
 const ambientLight = new THREE.AmbientLight(0xFFFFFF);
 scene.add(ambientLight);
@@ -30,8 +41,14 @@ scene.add(gridHelper)
 
 const controls = new OrbitControls(camera, renderer.domElement);
 
+var orbit = new THREE.Group();
+orbit.add(earth);
+scene.add(orbit);
+
 function animate() {
     requestAnimationFrame( animate );
+    earth.rotation.y += 0.01;
+    orbit.rotation.y += 0.01;
 
     controls.update();
 
