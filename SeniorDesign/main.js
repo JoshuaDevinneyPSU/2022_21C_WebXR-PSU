@@ -24,6 +24,12 @@ camera.position.setZ(30);
 
 renderer.render(scene, camera);
 
+const sunGeo = new THREE.SphereGeometry(30, 32, 32);
+const sunMaterial = new THREE.MeshStandardMaterial({color: 0xFFFFFF})
+const sun = new THREE.Mesh(sunGeo, sunMaterial);
+sun.position.setX(40);
+scene.add(sun);
+
 const earthGeo = new THREE.SphereGeometry(3, 32, 32);
 const earthMaterial = new THREE.MeshStandardMaterial( {color: 0x30D5C8});
 const earth = new THREE.Mesh(earthGeo, earthMaterial);
