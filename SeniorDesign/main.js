@@ -24,7 +24,7 @@ camera.position.setZ(30);
 
 renderer.render(scene, camera);
 
-const au = 15;
+const au = 20;
 
 const earthTexture = new THREE.TextureLoader().load('earthTexture.jpg');
 const normalTexture = new THREE.TextureLoader().load('earthNormalMap.tif');
@@ -42,13 +42,13 @@ const sunMaterial = new THREE.MeshStandardMaterial({map: sunTexture});
 const sun = new THREE.Mesh(sunGeo, sunMaterial);
 scene.add(sun);
 
-const marsGeo = new THREE.SphereGeometry(5/2, 32, 32);
+const marsGeo = new THREE.SphereGeometry(3/2, 32, 32);
 const marsMaterial = new THREE.MeshStandardMaterial({color: 0x934838});
 const mars = new THREE.Mesh(marsGeo, marsMaterial);
 mars.position.setX(au*1.5);
 scene.add(mars);
 
-const moonGeo = new THREE.SphereGeometry(5*.25, 32, 32);
+const moonGeo = new THREE.SphereGeometry(3*.25, 32, 32);
 const moonMaterial = new THREE.MeshStandardMaterial({color: 0xFFFFFF});
 const moon = new THREE.Mesh(moonGeo, moonMaterial);
 moon.position.setX(au+8);
