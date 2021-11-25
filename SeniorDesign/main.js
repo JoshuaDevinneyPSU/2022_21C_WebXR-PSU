@@ -54,17 +54,32 @@ const earthMaterial = new THREE.MeshStandardMaterial( {color: 0x30D5C8});
 const earth = new THREE.Mesh(earthGeo, earthMaterial);
 earth.position.setX(au)
 scene.add(earth);
+
 interactionManager.add(earth);
+interactionManager.add(sun);
 
 const spaceTexture = new THREE.TextureLoader().load('../Resources/spaceBackground.jpg');
 scene.background = spaceTexture;
 
-let clickCheck = false;
+let clickCheckEarth = false;
+let clickCheckSun = true;
+
+sun.addEventListener('click', (event) => {
+    if(clickCheckSun){
+        scene.remove(gridHelper);
+        clickCheckSun = false;
+    }
+    else{
+        scene.add(gridHelper);
+        clickCheckSun = true;
+    }
+
+})
 
 earth.addEventListener("click", (event) => {
-    if(clickCheck){
+    if(clickCheckEarth){
         document.getElementById('test').innerText = ''
-        clickCheck = false;
+        clickCheckEarth = false;
     }
     else {
         document.getElementById('test').innerHTML = "<div class=\"card\" style=\"width: 18rem;\">\n" +
@@ -73,7 +88,7 @@ earth.addEventListener("click", (event) => {
             "    <p class=\"card-text\">The Psyche mission will begin by launching from our home planet Earth!</p>\n" +
             "  </div>\n" +
             "</div>"
-        clickCheck = true;
+        clickCheckEarth = true;
     }
 });
 
