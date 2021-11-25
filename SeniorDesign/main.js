@@ -27,7 +27,7 @@ renderer.render(scene, camera);
 const au = 35;
 
 const sunGeo = new THREE.SphereGeometry(15, 32, 32);
-const sunMaterial = new THREE.MeshStandardMaterial({color: 0xFFFFFF})
+const sunMaterial = new THREE.MeshStandardMaterial({color: 0xF9D71C})
 const sun = new THREE.Mesh(sunGeo, sunMaterial);
 scene.add(sun);
 
@@ -55,6 +55,9 @@ const earth = new THREE.Mesh(earthGeo, earthMaterial);
 earth.position.setX(au)
 scene.add(earth);
 interactionManager.add(earth);
+
+const spaceTexture = new THREE.TextureLoader().load('../Resources/spaceBackground.jpg');
+scene.background = spaceTexture;
 
 let clickCheck = false;
 
