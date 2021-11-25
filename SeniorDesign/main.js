@@ -26,8 +26,8 @@ renderer.render(scene, camera);
 
 const au = 20;
 
-const earthTexture = new THREE.TextureLoader().load('earthTexture.jpg');
-const normalTexture = new THREE.TextureLoader().load('earthNormalMap.tif');
+const earthTexture = new THREE.TextureLoader().load('../Resources/Textures/earthTexture.jpg');
+const normalTexture = new THREE.TextureLoader().load('../Resources/Maps/earthNormalMap.tif');
 
 const earthGeo = new THREE.SphereGeometry(3, 32, 32);
 const earthMaterial = new THREE.MeshStandardMaterial( {map: earthTexture,
@@ -36,7 +36,7 @@ const earth = new THREE.Mesh(earthGeo, earthMaterial);
 earth.position.set(au, 0, 10)
 scene.add(earth);
 
-const sunTexture = new THREE.TextureLoader().load('sun.jpg');
+const sunTexture = new THREE.TextureLoader().load('../Resources/Textures/sun.jpg');
 const sunGeo = new THREE.SphereGeometry(10, 32, 32);
 const sunMaterial = new THREE.MeshStandardMaterial({map: sunTexture});
 const sun = new THREE.Mesh(sunGeo, sunMaterial);
@@ -65,7 +65,7 @@ earth.position.setX(au)
 interactionManager.add(earth);
 interactionManager.add(sun);
 
-const spaceTexture = new THREE.TextureLoader().load('../Resources/spaceBackground.jpg');
+const spaceTexture = new THREE.TextureLoader().load('../Resources/Textures/spaceBackground.jpg');
 scene.background = spaceTexture;
 
 let clickCheckEarth = false;
