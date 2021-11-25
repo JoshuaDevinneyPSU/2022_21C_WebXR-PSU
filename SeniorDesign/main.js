@@ -24,10 +24,21 @@ camera.position.setZ(30);
 
 renderer.render(scene, camera);
 
-const au = 35;
+const au = 15;
 
-const sunGeo = new THREE.SphereGeometry(15, 32, 32);
-const sunMaterial = new THREE.MeshStandardMaterial({color: 0xF9D71C})
+const earthTexture = new THREE.TextureLoader().load('earthTexture.jpg');
+const normalTexture = new THREE.TextureLoader().load('earthNormalMap.tif');
+
+const earthGeo = new THREE.SphereGeometry(3, 32, 32);
+const earthMaterial = new THREE.MeshStandardMaterial( {map: earthTexture,
+    normalMap: normalTexture});
+const earth = new THREE.Mesh(earthGeo, earthMaterial);
+earth.position.set(au, 0, 10)
+scene.add(earth);
+
+const sunTexture = new THREE.TextureLoader().load('sun.jpg');
+const sunGeo = new THREE.SphereGeometry(10, 32, 32);
+const sunMaterial = new THREE.MeshStandardMaterial({map: sunTexture});
 const sun = new THREE.Mesh(sunGeo, sunMaterial);
 scene.add(sun);
 
@@ -49,11 +60,7 @@ const psyche = new THREE.Mesh(psycheGeo, psycheMaterial);
 psyche.position.setX(au*2.5);
 scene.add(psyche);
 
-const earthGeo = new THREE.SphereGeometry(5, 32, 32);
-const earthMaterial = new THREE.MeshStandardMaterial( {color: 0x30D5C8});
-const earth = new THREE.Mesh(earthGeo, earthMaterial);
 earth.position.setX(au)
-scene.add(earth);
 
 interactionManager.add(earth);
 interactionManager.add(sun);
@@ -101,9 +108,14 @@ scene.add(gridHelper)
 
 const controls = new OrbitControls(camera, renderer.domElement);
 
+var orbit = new THREE.Group();
+orbit.add(earth);
+scene.add(orbit);
 
 function animate() {
     requestAnimationFrame( animate );
+    earth.rotation.y += 0.01;
+    orbit.rotation.y += 0.01;
 
     controls.update();
 
