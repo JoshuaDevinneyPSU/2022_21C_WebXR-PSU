@@ -24,15 +24,35 @@ camera.position.setZ(30);
 
 renderer.render(scene, camera);
 
-const sunGeo = new THREE.SphereGeometry(30, 32, 32);
+const au = 35;
+
+const sunGeo = new THREE.SphereGeometry(15, 32, 32);
 const sunMaterial = new THREE.MeshStandardMaterial({color: 0xFFFFFF})
 const sun = new THREE.Mesh(sunGeo, sunMaterial);
-sun.position.setX(40);
 scene.add(sun);
 
-const earthGeo = new THREE.SphereGeometry(3, 32, 32);
+const marsGeo = new THREE.SphereGeometry(5/2, 32, 32);
+const marsMaterial = new THREE.MeshStandardMaterial({color: 0x934838});
+const mars = new THREE.Mesh(marsGeo, marsMaterial);
+mars.position.setX(au*1.5);
+scene.add(mars);
+
+const moonGeo = new THREE.SphereGeometry(5*.25, 32, 32);
+const moonMaterial = new THREE.MeshStandardMaterial({color: 0xFFFFFF});
+const moon = new THREE.Mesh(moonGeo, moonMaterial);
+moon.position.setX(au+8);
+scene.add(moon);
+
+const psycheGeo = new THREE.DodecahedronGeometry(1);
+const psycheMaterial = new THREE.MeshStandardMaterial({color: 0x61616C});
+const psyche = new THREE.Mesh(psycheGeo, psycheMaterial);
+psyche.position.setX(au*2.5);
+scene.add(psyche);
+
+const earthGeo = new THREE.SphereGeometry(5, 32, 32);
 const earthMaterial = new THREE.MeshStandardMaterial( {color: 0x30D5C8});
 const earth = new THREE.Mesh(earthGeo, earthMaterial);
+earth.position.setX(au)
 scene.add(earth);
 interactionManager.add(earth);
 
@@ -58,7 +78,7 @@ const ambientLight = new THREE.AmbientLight(0xFFFFFF);
 camera.add(ambientLight);
 scene.add(ambientLight);
 
-const gridHelper = new THREE.GridHelper(200, 50);
+const gridHelper = new THREE.GridHelper(400, 100);
 scene.add(gridHelper)
 
 const controls = new OrbitControls(camera, renderer.domElement);
