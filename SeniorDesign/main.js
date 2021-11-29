@@ -68,36 +68,67 @@ interactionManager.add(sun);
 const spaceTexture = new THREE.TextureLoader().load('../Resources/Textures/spaceBackground.jpg');
 scene.background = spaceTexture;
 
-let clickCheckEarth = false;
-let clickCheckSun = true;
+let earthIsChecked = false;
+let sunIsChecked = true;
 
 sun.addEventListener('click', (event) => {
-    if(clickCheckSun){
+    if(sunIsChecked){
         scene.remove(gridHelper);
-        clickCheckSun = false;
+        sunIsChecked = false;
     }
     else{
         scene.add(gridHelper);
-        clickCheckSun = true;
+        sunIsChecked = true;
     }
+});
 
-})
-
+//handle the user clicking on the Earth Model
 earth.addEventListener("click", (event) => {
-    if(clickCheckEarth){
-        document.getElementById('test').innerText = ''
-        clickCheckEarth = false;
+    if(earthIsChecked){
+        //executes the hideFactCard function
+        hideFactCard();
     }
     else {
-        document.getElementById('test').innerHTML = "<div class=\"card\" style=\"width: 18rem;\">\n" +
-            "  <img src='https://images.pexels.com/photos/87651/earth-blue-planet-globe-planet-87651.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500' class=\"card-img-top\">\n" +
+        //executes the showFactCard function
+
+        //adds the following HTML to the div located on the upper-left corner of the UI
+        document.getElementById('fact-card').innerHTML = "<div class=\"card\">\n" +
+            "  <img src=\"https://images.pexels.com/photos/87651/earth-blue-planet-globe-planet-87651.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500\" class=\"card-img-top\">\n" +
             "  <div class=\"card-body\">\n" +
             "    <p class=\"card-text\">The Psyche mission will begin by launching from our home planet Earth!</p>\n" +
             "  </div>\n" +
-            "</div>"
-        clickCheckEarth = true;
+            "  <div class=\"card-button-container\">\n" +
+            "    <button class=\"control-button\" id=\"close-button\" type=\"button\" onclick=\"hideFactCard\">Close</button>\n" +
+            "    <button class=\"control-button\" id=\"read-more-button\" type=\"button\">Read More</button>\n" +
+            "  </div>\n" +
+            "</div>\n"
+
+        earthIsChecked = true;
+
+        //showFactCard();
+
+        //adds the event listeners to the correct buttons
+        //document.getElementById('read-more-button').addEventListener("click", showNextFact());
     }
 });
+
+//hides the fact card showing the Earth facts
+function hideFactCard()
+{
+    document.getElementById('fact-card').innerText = '';
+    earthIsChecked = false;
+}
+
+//NOT WORKING YET
+//occurs when the Earth model is clicked, shows the card containing the facts pertaining to Earth
+function showFactCard()
+{
+    //document.getElementById('close-button').addEventListener("click", hideFactCard());
+}
+
+function showNextFact(){
+    //document.getElementById('');
+}
 
 const ambientLight = new THREE.AmbientLight(0xFFFFFF);
 camera.add(ambientLight);
@@ -115,7 +146,7 @@ scene.add(orbit);
 function animate() {
     requestAnimationFrame( animate );
     earth.rotation.y += 0.01;
-    orbit.rotation.y += 0.01;
+    orbit.rotation.y += 0.001;
 
     controls.update();
 
