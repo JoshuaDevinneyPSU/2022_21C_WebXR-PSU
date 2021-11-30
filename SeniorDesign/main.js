@@ -4,6 +4,7 @@ import { InteractionManager } from "three.interactive";
 
 import './style.css'
 
+
 const scene = new THREE.Scene();
 
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -33,7 +34,7 @@ const earthGeo = new THREE.SphereGeometry(3, 32, 32);
 const earthMaterial = new THREE.MeshStandardMaterial( {map: earthTexture,
     normalMap: normalTexture});
 const earth = new THREE.Mesh(earthGeo, earthMaterial);
-earth.position.set(au, 0, 10)
+earth.position.set(au, 0, 10);
 scene.add(earth);
 
 const sunTexture = new THREE.TextureLoader().load('../Resources/Textures/sun.jpg');
@@ -129,17 +130,6 @@ function showFactCard()
 function showNextFact(){
     //document.getElementById('');
 }
-
-function addPlanet( radius, widthSegments, heightSegments, xPosition, yPosition, zPosition ){
-    let planetGeo = new THREE.SphereGeometry(0, 0, 0);
-    let planetMaterial = new THREE.MeshStandardMaterial(color("blue"));
-    let planet = new THREE.Mesh(planetGeo, planetMaterial);
-    return planet;
-}
-
-module.exports = {
-    addPlanet
-};
 
 const ambientLight = new THREE.AmbientLight(0xFFFFFF);
 camera.add(ambientLight);
