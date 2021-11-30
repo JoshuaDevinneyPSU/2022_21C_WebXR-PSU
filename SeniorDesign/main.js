@@ -33,7 +33,7 @@ const earthGeo = new THREE.SphereGeometry(3, 32, 32);
 const earthMaterial = new THREE.MeshStandardMaterial( {map: earthTexture,
     normalMap: normalTexture});
 const earth = new THREE.Mesh(earthGeo, earthMaterial);
-earth.position.set(au, 0, 10)
+earth.position.setX(au+6)
 scene.add(earth);
 
 const sunTexture = new THREE.TextureLoader().load('../Resources/Textures/sun.jpg');
@@ -42,14 +42,16 @@ const sunMaterial = new THREE.MeshStandardMaterial({map: sunTexture});
 const sun = new THREE.Mesh(sunGeo, sunMaterial);
 scene.add(sun);
 
+const marsTexture = new THREE.TextureLoader().load('../Resources/Textures/marsTexture.jpg');
 const marsGeo = new THREE.SphereGeometry(3/2, 32, 32);
-const marsMaterial = new THREE.MeshStandardMaterial({color: 0x934838});
+const marsMaterial = new THREE.MeshStandardMaterial({map: marsTexture});
 const mars = new THREE.Mesh(marsGeo, marsMaterial);
 mars.position.setX(au*1.5);
 scene.add(mars);
 
+const moonTexture = new THREE.TextureLoader().load('../Resources/Textures/moonTexture.jpg');
 const moonGeo = new THREE.SphereGeometry(3*.25, 32, 32);
-const moonMaterial = new THREE.MeshStandardMaterial({color: 0xFFFFFF});
+const moonMaterial = new THREE.MeshStandardMaterial({map: moonTexture});
 const moon = new THREE.Mesh(moonGeo, moonMaterial);
 moon.position.setX(au+8);
 scene.add(moon);
@@ -139,15 +141,33 @@ scene.add(gridHelper)
 
 const controls = new OrbitControls(camera, renderer.domElement);
 
-var orbit = new THREE.Group();
-orbit.add(earth);
-scene.add(orbit);
+var earthOrbit = new THREE.Group();
+earthOrbit.add(earth);
+earthOrbit.add(moon);
+scene.add(earthOrbit);
+
+var marsOrbit = new THREE.Group();
+marsOrbit.add(mars);
+scene.add(marsOrbit)
+
+var moonOrbit = new THREE.Group();
+moonOrbit.add(moon);
+scene.add(moonOrbit);
+
+var psycheOrbit = new THREE.Group();
+psycheOrbit.add(psyche);
+scene.add(psycheOrbit);
 
 function animate() {
     requestAnimationFrame( animate );
     earth.rotation.y += 0.01;
-    orbit.rotation.y += 0.001;
-
+    mars.rotation.y += 0.01;
+    earthOrbit.rotation.y += 0.001;
+    marsOrbit.rotation.y += 0.003;
+    moonOrbit.rotation.y += 0.001;
+    psycheOrbit.rotation.y += 0.002;
+    moon.rotation.y += 0.01;
+    psyche.rotation.y += 0.01;
     controls.update();
 
     interactionManager.update();
