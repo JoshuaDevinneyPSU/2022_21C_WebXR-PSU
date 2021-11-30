@@ -69,7 +69,6 @@ interactionManager.add(sun);
 const spaceTexture = new THREE.TextureLoader().load('../Resources/Textures/spaceBackground.jpg');
 scene.background = spaceTexture;
 
-let earthIsChecked = false;
 let sunIsChecked = true;
 
 sun.addEventListener('click', (event) => {
@@ -83,53 +82,136 @@ sun.addEventListener('click', (event) => {
     }
 });
 
+//--------------------------Planetary Event Listening-------------------------------
+
+//Earth's facts, images, and variables
+let earthIsClicked = false;
+const earthFacts = ["The Psyche mission will begin by launching from our home planet Earth!",
+                    "This is the Psyche spacecraft. It is an unmanned orbiting spacecraft",
+                    "The current launch date is set for August 01, 2022"];
+const earthImages = ["Resources/Images/earthFact1.jpeg",
+                     "Resources/Images/earthFact2.jpeg",
+                     "Resources/Images/earthFact3.jpeg"];
+
 //handle the user clicking on the Earth Model
 earth.addEventListener("click", (event) => {
-    if(earthIsChecked){
-        //executes the hideFactCard function
+    if(earthIsClicked){
+        //executes the hideFactCard function and sets earth clicked to false
         hideFactCard();
     }
     else {
-        //executes the showFactCard function
-
-        //adds the following HTML to the div located on the upper-left corner of the UI
-        document.getElementById('fact-card').innerHTML = "<div class=\"card\">\n" +
-            "  <img src=\"https://images.pexels.com/photos/87651/earth-blue-planet-globe-planet-87651.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500\" class=\"card-img-top\">\n" +
-            "  <div class=\"card-body\">\n" +
-            "    <p class=\"card-text\">The Psyche mission will begin by launching from our home planet Earth!</p>\n" +
-            "  </div>\n" +
-            "  <div class=\"card-button-container\">\n" +
-            "    <button class=\"control-button\" id=\"close-button\" type=\"button\" onclick=\"hideFactCard\">Close</button>\n" +
-            "    <button class=\"control-button\" id=\"read-more-button\" type=\"button\">Read More</button>\n" +
-            "  </div>\n" +
-            "</div>\n"
-
-        earthIsChecked = true;
-
-        //showFactCard();
-
-        //adds the event listeners to the correct buttons
-        //document.getElementById('read-more-button').addEventListener("click", showNextFact());
+        //executes the showFactCard function, sets earth clicked to true, shows next fact
+        earthIsClicked = true;
+        showFactCard("Earth");
+        showNextFact("Earth");
     }
 });
 
 //hides the fact card showing the Earth facts
 function hideFactCard()
 {
+    factIndex = 2;
     document.getElementById('fact-card').innerText = '';
-    earthIsChecked = false;
+    earthIsClicked = false;
 }
 
-//NOT WORKING YET
 //occurs when the Earth model is clicked, shows the card containing the facts pertaining to Earth
-function showFactCard()
+//pass the name of the planet in the planetIdentifier parameter
+function showFactCard(planetIdentifier)
 {
-    //document.getElementById('close-button').addEventListener("click", hideFactCard());
+    //create elements to add to upper-left div
+    //create outer div and set attributes
+    const outerCardDiv = document.createElement("div");
+    outerCardDiv.setAttribute("class", "card");
+
+    //create image and set attributes
+    const factCardImage = document.createElement("img");
+    //factCardImage.setAttribute("src",
+    //    "https://images.pexels.com/photos/87651/earth-blue-planet-globe-planet-87651.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500");
+    factCardImage.setAttribute("class", "card-img-top");
+    factCardImage.setAttribute("id", "card-img");
+
+    //create card body where fact will display and set attributes
+    const cardBodyDiv = document.createElement("div");
+    cardBodyDiv.setAttribute("class", "card-body");
+
+    //create card body text and add to card body div
+    const cardBodyDivPar = document.createElement("p");
+    cardBodyDivPar.setAttribute("class", "card-text");
+    cardBodyDivPar.setAttribute("id", "fact-text");
+    //const cardBodyText = document.createTextNode("The Psyche mission will begin by launching from our home planet Earth!");
+    //cardBodyDivPar.appendChild(cardBodyText);
+    cardBodyDiv.appendChild(cardBodyDivPar);
+
+    //create fact card button div
+    const cardButtonDiv = document.createElement("div");
+    cardButtonDiv.setAttribute("class", "card-button-container");
+
+    //create buttons and button text
+    const cardCloseButton = document.createElement("button");
+    const cardReadMoreButton = document.createElement("button");
+    const cardCloseButtonText = document.createTextNode("Close");
+    const cardReadMoreButtonText = document.createTextNode("Read More");
+    cardCloseButton.setAttribute("class", "control-button");
+    cardReadMoreButton.setAttribute("class", "control-button");
+
+    //add text to buttons
+    cardCloseButton.appendChild(cardCloseButtonText);
+    cardReadMoreButton.appendChild(cardReadMoreButtonText);
+    cardButtonDiv.appendChild(cardCloseButton);
+    cardButtonDiv.appendChild(cardReadMoreButton);
+
+    //append everything to outer div
+    outerCardDiv.appendChild(factCardImage);
+    outerCardDiv.appendChild(cardBodyDiv);
+    outerCardDiv.appendChild(cardButtonDiv);
+
+    //append to element in HTML
+    const factCard = document.getElementById('fact-card');
+    factCard.appendChild(outerCardDiv);
+
+    //add EventListeners to buttons
+    cardCloseButton.addEventListener("click", hideFactCard);
+    cardReadMoreButton.addEventListener("click", function(){showNextFact(planetIdentifier)});
 }
 
-function showNextFact(){
-    //document.getElementById('');
+//used by showNextFact() to display next fact
+let factIndex = 0;
+let lastIdentifier = "";
+
+//takes in a string to determine which planet's fact to display
+function showNextFact(planetIdentifier){
+
+    //increment factIndex and update lastIdentifier
+    if (factIndex == 2){
+        factIndex = 0;
+    }
+    else if (planetIdentifier != lastIdentifier)
+    {
+        factIndex = 0;
+        lastIdentifier = planetIdentifier;
+    }
+    else
+    {
+        factIndex++;
+    }
+
+    //change behavior depending on identifier passed
+    switch (planetIdentifier)
+    {
+        //display appropriate fact and image
+        case "Earth":
+            const factToDisplay = document.createTextNode(earthFacts[factIndex]);
+            document.getElementById("fact-text").innerHTML = "";
+            document.getElementById("fact-text").appendChild(factToDisplay);
+            document.getElementById("card-img").setAttribute("src", earthImages[factIndex]);
+            break;
+        default:
+            console.log("Error in showNextFact switch");
+    }
 }
+
+//----------------------------------------------------------------------------
 
 const ambientLight = new THREE.AmbientLight(0xFFFFFF);
 camera.add(ambientLight);
