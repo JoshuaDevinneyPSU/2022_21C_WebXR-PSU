@@ -63,7 +63,9 @@ scene.add(psyche);
 
 earth.position.setX(au)
 
+//enable EventListeners for meshes
 interactionManager.add(earth);
+interactionManager.add(mars);
 interactionManager.add(sun);
 
 const spaceTexture = new THREE.TextureLoader().load('../Resources/Textures/spaceBackground.jpg');
@@ -93,6 +95,15 @@ const earthImages = ["Resources/Images/earthFact1.jpeg",
                      "Resources/Images/earthFact2.jpeg",
                      "Resources/Images/earthFact3.jpeg"];
 
+//Mars' facts, images, and variables
+let marsIsClicked = false;
+const marsFacts = ["The Psyche spacecraft will fly by Mars on its way to Psyche",
+                   "The fly by will give the spacecraft the extra speed it needs for its journey",
+                   "The fly by is expected to happen sometime in 2023"];
+const marsImages = ["Resources/Images/marsFact1.jpeg",
+                    "Resources/Images/marsFact2.jpeg",
+                    "Resources/Images/marsFact3.jpeg"];
+
 //handle the user clicking on the Earth Model
 earth.addEventListener("click", (event) => {
     if(earthIsClicked){
@@ -107,18 +118,35 @@ earth.addEventListener("click", (event) => {
     }
 });
 
-//hides the fact card showing the Earth facts
+//handle the user clicking on the Mars Model
+mars.addEventListener("click", (event) => {
+    if(marsIsClicked){
+        //executes the hideFactCard function and sets earth clicked to false
+        hideFactCard();
+    }
+    else {
+        //executes the showFactCard function, sets earth clicked to true, shows next fact
+        marsIsClicked = true;
+        showFactCard("Mars");
+        showNextFact("Mars");
+    }
+});
+
+//hides the fact card showing the facts and resets all variables
 function hideFactCard()
 {
     factIndex = 2;
     document.getElementById('fact-card').innerText = '';
     earthIsClicked = false;
+    marsIsClicked = false;
 }
 
 //occurs when the Earth model is clicked, shows the card containing the facts pertaining to Earth
 //pass the name of the planet in the planetIdentifier parameter
 function showFactCard(planetIdentifier)
 {
+    //clear fact card first if in use by another planet
+    document.getElementById('fact-card').innerText = '';
     //create elements to add to upper-left div
     //create outer div and set attributes
     const outerCardDiv = document.createElement("div");
@@ -188,6 +216,7 @@ function showNextFact(planetIdentifier){
     }
     else if (planetIdentifier != lastIdentifier)
     {
+        console.log("different identifier, setting factIndex to 0");
         factIndex = 0;
         lastIdentifier = planetIdentifier;
     }
@@ -196,15 +225,23 @@ function showNextFact(planetIdentifier){
         factIndex++;
     }
 
+    console.log("Updating " + planetIdentifier + " with factIndex: " + factIndex);
     //change behavior depending on identifier passed
+    let factToDisplay;
     switch (planetIdentifier)
     {
         //display appropriate fact and image
         case "Earth":
-            const factToDisplay = document.createTextNode(earthFacts[factIndex]);
+            factToDisplay = document.createTextNode(earthFacts[factIndex]);
             document.getElementById("fact-text").innerHTML = "";
             document.getElementById("fact-text").appendChild(factToDisplay);
             document.getElementById("card-img").setAttribute("src", earthImages[factIndex]);
+            break;
+        case "Mars":
+            factToDisplay = document.createTextNode(marsFacts[factIndex]);
+            document.getElementById("fact-text").innerHTML = "";
+            document.getElementById("fact-text").appendChild(factToDisplay);
+            document.getElementById("card-img").setAttribute("src", marsImages[factIndex]);
             break;
         default:
             console.log("Error in showNextFact switch");
