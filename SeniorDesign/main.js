@@ -1,8 +1,8 @@
-import './style.css'
-
 import * as THREE from 'three';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { InteractionManager } from "three.interactive";
+
+import './style.css'
 
 const scene = new THREE.Scene();
 
@@ -130,6 +130,17 @@ function showNextFact(){
     //document.getElementById('');
 }
 
+function addPlanet( radius, widthSegments, heightSegments, xPosition, yPosition, zPosition ){
+    let planetGeo = new THREE.SphereGeometry(0, 0, 0);
+    let planetMaterial = new THREE.MeshStandardMaterial(color("blue"));
+    let planet = new THREE.Mesh(planetGeo, planetMaterial);
+    return planet;
+}
+
+module.exports = {
+    addPlanet
+};
+
 const ambientLight = new THREE.AmbientLight(0xFFFFFF);
 camera.add(ambientLight);
 scene.add(ambientLight);
@@ -155,3 +166,4 @@ function animate() {
     renderer.render(scene, camera);
 }
 animate();
+
