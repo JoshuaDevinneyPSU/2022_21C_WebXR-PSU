@@ -5,7 +5,7 @@
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview",
-    "test": "mocha --reporter list"
+    "test": "mocha './test/test-main.js'"
   },
   "devDependencies": {
     "mocha": "^9.1.3",
