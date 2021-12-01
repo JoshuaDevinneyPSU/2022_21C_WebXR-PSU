@@ -316,10 +316,14 @@ const controls = new OrbitControls(camera, renderer.domElement);
 var earthOrbit = new THREE.Group();
 earthOrbit.add(earth);
 earthOrbit.add(moon);
+earthOrbit.add(earthLabel);
+earthOrbit.add(earthLabelReverse);
 scene.add(earthOrbit);
 
 var marsOrbit = new THREE.Group();
 marsOrbit.add(mars);
+marsOrbit.add(marsLabel);
+marsOrbit.add(marsLabelReverse);
 scene.add(marsOrbit)
 
 var moonOrbit = new THREE.Group();
@@ -328,18 +332,20 @@ scene.add(moonOrbit);
 
 var psycheOrbit = new THREE.Group();
 psycheOrbit.add(psyche);
+psycheOrbit.add(psycheLabel);
+psycheOrbit.add(psycheLabelReverse);
 scene.add(psycheOrbit);
 
 function animate() {
     requestAnimationFrame( animate );
-    earth.rotation.y += 0.01;
-    mars.rotation.y += 0.01;
-    earthOrbit.rotation.y += 0.001;
-    marsOrbit.rotation.y += 0.003;
-    moonOrbit.rotation.y += 0.001;
-    psycheOrbit.rotation.y += 0.002;
-    moon.rotation.y += 0.01;
-    psyche.rotation.y += 0.01;
+    earth.rotation.y += 0.003;
+    mars.rotation.y += 0.003;
+    earthOrbit.rotation.y += 0.0005;
+    marsOrbit.rotation.y += 0.0004;
+    moonOrbit.rotation.y += 0.0005;
+    psycheOrbit.rotation.y += 0.0002;
+    moon.rotation.y += 0.003;
+    psyche.rotation.y += 0.003;
     controls.update();
 
     interactionManager.update();
