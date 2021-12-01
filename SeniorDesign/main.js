@@ -68,6 +68,55 @@ interactionManager.add(earth);
 interactionManager.add(mars);
 interactionManager.add(sun);
 
+//create labels for planetary bodies
+//Earth
+const earthLabelGeometry = new THREE.PlaneGeometry(5, 3);
+const earthLabelTexture = new THREE.TextureLoader().load('../Resources/Textures/earthLabelTexture.jpg');
+const earthLabelMaterial = new THREE.MeshStandardMaterial({map: earthLabelTexture, side: THREE.DoubleSide});
+const earthLabel = new THREE.Mesh(earthLabelGeometry, earthLabelMaterial);
+earthLabel.position.set(earth.position.x, earth.position.y + 5, earth.position.z);
+
+//create the backside of the label
+const earthLabelReverse = earthLabel.clone();
+earthLabelReverse.rotation.y += 3.141;
+earthLabelReverse.position.set(earth.position.x, earth.position.y + 5, earth.position.z - 0.01);
+
+//add labels to scene
+scene.add(earthLabel);
+scene.add(earthLabelReverse);
+
+//Mars
+const marsLabelGeometry = new THREE.PlaneGeometry(5, 3);
+const marsLabelTexture = new THREE.TextureLoader().load('../Resources/Textures/marsLabelTexture.jpg');
+const marsLabelMaterial = new THREE.MeshStandardMaterial({map: marsLabelTexture});
+const marsLabel = new THREE.Mesh(marsLabelGeometry, marsLabelMaterial);
+marsLabel.position.set(mars.position.x, mars.position.y + 5, mars.position.z);
+
+//create the backside of the label
+const marsLabelReverse = marsLabel.clone();
+marsLabelReverse.rotation.y += 3.141;
+marsLabelReverse.position.set(mars.position.x, mars.position.y + 5, mars.position.z - 0.01);
+
+//add labels to scene
+scene.add(marsLabel);
+scene.add(marsLabelReverse);
+
+//Psyche
+const psycheLabelGeometry = new THREE.PlaneGeometry(5, 3);
+const psycheLabelTexture = new THREE.TextureLoader().load('../Resources/Textures/psycheLabelTexture.jpg');
+const psycheLabelMaterial = new THREE.MeshStandardMaterial({map: psycheLabelTexture});
+const psycheLabel = new THREE.Mesh(psycheLabelGeometry, psycheLabelMaterial);
+psycheLabel.position.set(psyche.position.x, psyche.position.y + 5, psyche.position.z);
+
+//create the backside of the label
+const psycheLabelReverse = psycheLabel.clone();
+psycheLabelReverse.rotation.y += 3.141;
+psycheLabelReverse.position.set(psyche.position.x, psyche.position.y + 5, psyche.position.z - 0.01);
+
+//add labels to scene
+scene.add(psycheLabel);
+scene.add(psycheLabelReverse);
+
 const spaceTexture = new THREE.TextureLoader().load('../Resources/Textures/spaceBackground.jpg');
 scene.background = spaceTexture;
 
@@ -261,6 +310,8 @@ const controls = new OrbitControls(camera, renderer.domElement);
 
 var orbit = new THREE.Group();
 orbit.add(earth);
+orbit.add(earthLabel);
+orbit.add(earthLabelReverse);
 scene.add(orbit);
 
 function animate() {
