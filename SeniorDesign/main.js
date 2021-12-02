@@ -124,18 +124,18 @@ scene.add(psycheLabelReverse);
 const spaceTexture = new THREE.TextureLoader().load('../Resources/Textures/spaceBackground.jpg');
 scene.background = spaceTexture;
 
-let sunIsChecked = true;
+//let sunIsChecked = true;
 
-sun.addEventListener('click', (event) => {
-    if(sunIsChecked){
-        scene.remove(gridHelper);
-        sunIsChecked = false;
-    }
-    else{
-        scene.add(gridHelper);
-        sunIsChecked = true;
-    }
-});
+// sun.addEventListener('click', (event) => {
+//     if(sunIsChecked){
+//         scene.remove(gridHelper);
+//         sunIsChecked = false;
+//     }
+//     else{
+//         scene.add(gridHelper);
+//         sunIsChecked = true;
+//     }
+// });
 
 //--------------------------Planetary Event Listening-------------------------------
 
@@ -307,8 +307,8 @@ const ambientLight = new THREE.AmbientLight(0xFFFFFF);
 camera.add(ambientLight);
 scene.add(ambientLight);
 
-const gridHelper = new THREE.GridHelper(400, 100);
-scene.add(gridHelper)
+//const gridHelper = new THREE.GridHelper(400, 100);
+//scene.add(gridHelper)
 
 const controls = new OrbitControls(camera, renderer.domElement);
 
