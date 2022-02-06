@@ -1,8 +1,11 @@
 import * as THREE from 'three';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { InteractionManager } from "three.interactive";
+import {STLLoader} from "three/examples/jsm/loaders/STLLoader";
 
 import './style.css'
+import Stats from "three/examples/jsm/libs/stats.module";
+
 
 
 const scene = new THREE.Scene();
@@ -41,7 +44,7 @@ scene.add(earth);
 
 const sunTexture = new THREE.TextureLoader().load('../Resources/Textures/sun.jpg');
 const sunGeo = new THREE.SphereGeometry(10, 32, 32);
-const sunMaterial = new THREE.MeshStandardMaterial({map: sunTexture});
+const sunMaterial = new THREE.MeshBasicMaterial({map: sunTexture});
 const sun = new THREE.Mesh(sunGeo, sunMaterial);
 scene.add(sun);
 
@@ -59,13 +62,36 @@ const moon = new THREE.Mesh(moonGeo, moonMaterial);
 moon.position.setX(au+8);
 scene.add(moon);
 
+const psycheTexture = new THREE.TextureLoader().load('../Resources/Textures/psycheTexture.jpg')
 const psycheGeo = new THREE.DodecahedronGeometry(1);
-const psycheMaterial = new THREE.MeshStandardMaterial({color: 0x61616C});
+const psycheMaterial = new THREE.MeshLambertMaterial({map: psycheTexture});
 const psyche = new THREE.Mesh(psycheGeo, psycheMaterial);
 psyche.position.setX(au*2.5);
 scene.add(psyche);
 
 earth.position.setX(au)
+
+const loader = new STLLoader()
+loader.load(
+    '../Resources/Models/PsycheModel.stl',
+    function (geometry) {
+        const mesh = new THREE.Mesh(geometry, psycheMaterial)
+        mesh.position.setX(au*2.5)
+        scene.add(mesh)
+    },
+    (xhr) => {
+        console.log((xhr.loaded / xhr.total) * 100 + '% loaded')
+    },
+    (error) => {
+        console.log(error)
+    }
+)
+
+const stats = Stats()
+document.body.appendChild(stats.dom)
+
+const light = new THREE.PointLight( 0xF4E99B, 5, 150 );
+scene.add( light );
 
 //enable EventListeners for meshes
 interactionManager.add(earth);
@@ -76,7 +102,7 @@ interactionManager.add(sun);
 //Earth
 const earthLabelGeometry = new THREE.PlaneGeometry(5, 3);
 const earthLabelTexture = new THREE.TextureLoader().load('../Resources/Textures/earthLabelTexture.jpg');
-const earthLabelMaterial = new THREE.MeshStandardMaterial({map: earthLabelTexture, side: THREE.DoubleSide});
+const earthLabelMaterial = new THREE.MeshBasicMaterial({map: earthLabelTexture, side: THREE.DoubleSide});
 const earthLabel = new THREE.Mesh(earthLabelGeometry, earthLabelMaterial);
 earthLabel.position.set(earth.position.x, earth.position.y + 5, earth.position.z);
 
@@ -92,7 +118,7 @@ scene.add(earthLabelReverse);
 //Mars
 const marsLabelGeometry = new THREE.PlaneGeometry(5, 3);
 const marsLabelTexture = new THREE.TextureLoader().load('../Resources/Textures/marsLabelTexture.jpg');
-const marsLabelMaterial = new THREE.MeshStandardMaterial({map: marsLabelTexture});
+const marsLabelMaterial = new THREE.MeshBasicMaterial({map: marsLabelTexture});
 const marsLabel = new THREE.Mesh(marsLabelGeometry, marsLabelMaterial);
 marsLabel.position.set(mars.position.x, mars.position.y + 5, mars.position.z);
 
@@ -108,7 +134,7 @@ scene.add(marsLabelReverse);
 //Psyche
 const psycheLabelGeometry = new THREE.PlaneGeometry(5, 3);
 const psycheLabelTexture = new THREE.TextureLoader().load('../Resources/Textures/psycheLabelTexture.jpg');
-const psycheLabelMaterial = new THREE.MeshStandardMaterial({map: psycheLabelTexture});
+const psycheLabelMaterial = new THREE.MeshBasicMaterial({map: psycheLabelTexture});
 const psycheLabel = new THREE.Mesh(psycheLabelGeometry, psycheLabelMaterial);
 psycheLabel.position.set(psyche.position.x, psyche.position.y + 5, psyche.position.z);
 
@@ -303,9 +329,9 @@ function showNextFact(planetIdentifier){
 
 //----------------------------------------------------------------------------
 
-const ambientLight = new THREE.AmbientLight(0xFFFFFF);
-camera.add(ambientLight);
-scene.add(ambientLight);
+// const ambientLight = new THREE.AmbientLight(0xFFFFFF);
+// camera.add(ambientLight);
+// scene.add(ambientLight);
 
 const gridHelper = new THREE.GridHelper(400, 100);
 scene.add(gridHelper)
@@ -316,10 +342,14 @@ const controls = new OrbitControls(camera, renderer.domElement);
 var earthOrbit = new THREE.Group();
 earthOrbit.add(earth);
 earthOrbit.add(moon);
+earthOrbit.add(earthLabel);
+earthOrbit.add(earthLabelReverse);
 scene.add(earthOrbit);
 
 var marsOrbit = new THREE.Group();
 marsOrbit.add(mars);
+marsOrbit.add(marsLabel);
+marsOrbit.add(marsLabelReverse);
 scene.add(marsOrbit)
 
 var moonOrbit = new THREE.Group();
@@ -328,6 +358,8 @@ scene.add(moonOrbit);
 
 var psycheOrbit = new THREE.Group();
 psycheOrbit.add(psyche);
+psycheOrbit.add(psycheLabel);
+psycheOrbit.add(psycheLabelReverse);
 scene.add(psycheOrbit);
 
 function animate() {
@@ -343,6 +375,8 @@ function animate() {
     controls.update();
 
     interactionManager.update();
+
+    stats.update();
 
     renderer.render(scene, camera);
 }
