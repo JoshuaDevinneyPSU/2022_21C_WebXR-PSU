@@ -3,11 +3,12 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { InteractionManager } from "three.interactive";
 
 import './style.css'
+import { VRButton } from 'three/examples/jsm/webxr/VRButton.js';
 
 
 const scene = new THREE.Scene();
-
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
 
 const renderer = new THREE.WebGLRenderer({
     canvas: document.querySelector('#bg')
@@ -22,6 +23,10 @@ const interactionManager = new InteractionManager(
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
 camera.position.setZ(30);
+
+//Enable WebXR support
+document.body.appendChild( VRButton.createButton( renderer ) );
+renderer.xr.enabled = true;
 
 renderer.render(scene, camera);
 
@@ -353,4 +358,21 @@ function animate() {
     renderer.render(scene, camera);
 }
 animate();
+
+//For WebXR implementation
+renderer.setAnimationLoop( function () {
+
+    renderer.render(scene, camera);
+    earth.rotation.y += 0.003;
+    mars.rotation.y += 0.003;
+    earthOrbit.rotation.y += 0.0005;
+    marsOrbit.rotation.y += 0.0004;
+    moonOrbit.rotation.y += 0.0005;
+    psycheOrbit.rotation.y += 0.0002;
+    moon.rotation.y += 0.003;
+    psyche.rotation.y += 0.003;
+    controls.update();
+    interactionManager.update();
+
+});
 
