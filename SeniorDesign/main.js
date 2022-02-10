@@ -34,8 +34,7 @@ const earthTexture = new THREE.TextureLoader().load('../Resources/Textures/earth
 const normalTexture = new THREE.TextureLoader().load('../Resources/Maps/earthNormalMap.tif');
 
 const earthGeo = new THREE.SphereGeometry(3, 32, 32);
-const earthMaterial = new THREE.MeshStandardMaterial( {map: earthTexture,
-    normalMap: normalTexture});
+const earthMaterial = new THREE.MeshStandardMaterial( {map: earthTexture});
 const earth = new THREE.Mesh(earthGeo, earthMaterial);
 
 earth.position.set(au, 0, 10);
@@ -64,7 +63,7 @@ scene.add(moon);
 
 const psycheTexture = new THREE.TextureLoader().load('../Resources/Textures/psycheTexture.jpg')
 const psycheGeo = new THREE.DodecahedronGeometry(1);
-const psycheMaterial = new THREE.MeshLambertMaterial({map: psycheTexture});
+const psycheMaterial = new THREE.MeshStandardMaterial({map: psycheTexture});
 const psyche = new THREE.Mesh(psycheGeo, psycheMaterial);
 psyche.position.setX(au*2.5);
 scene.add(psyche);
