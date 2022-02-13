@@ -3,6 +3,8 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { InteractionManager } from "three.interactive";
 
 import './style.css'
+
+
 import { VRButton } from 'three/examples/jsm/webxr/VRButton.js';
 
 
@@ -25,7 +27,7 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 camera.position.setZ(30);
 
 //Enable WebXR support
-document.body.appendChild( VRButton.createButton( renderer ) );
+document.body.appendChild( VRButton.createButton( renderer, null ) );
 renderer.xr.enabled = true;
 
 renderer.render(scene, camera);
@@ -359,6 +361,7 @@ function animate() {
 }
 animate();
 
+/*
 //For WebXR implementation
 renderer.setAnimationLoop( function () {
 
@@ -375,4 +378,4 @@ renderer.setAnimationLoop( function () {
     interactionManager.update();
 
 });
-
+*/
