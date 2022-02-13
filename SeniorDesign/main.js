@@ -362,7 +362,7 @@ function animate() {
 animate();
 
 /*
-//For WebXR implementation
+//WebXR animation implementation
 renderer.setAnimationLoop( function () {
 
     renderer.render(scene, camera);
