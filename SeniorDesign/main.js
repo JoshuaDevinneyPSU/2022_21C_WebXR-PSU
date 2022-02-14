@@ -34,41 +34,6 @@ camera.position.setZ(30);
 renderer.xr.enabled = true;
 document.body.appendChild( ARButton.createButton( renderer ) );
 
-
-function onSelectStart() {
-
-    this.userData.isSelecting = true;
-    this.userData.skipFrames = 2;
-
-    camera = renderer.xr.getCamera()
-
-    let dolly = new THREE.Object3D();
-    dolly.position.z = 5;
-    dolly.add(camera);
-    scene.add(dolly)
-}
-
-function onSelectEnd() {
-
-    this.userData.isSelecting = false;
-
-}
-
-let controller = renderer.xr.getController( 0 );
-controller.addEventListener( 'selectstart', onSelectStart );
-controller.addEventListener( 'selectend', onSelectEnd );
-controller.userData.skipFrames = 0;
-scene.add( controller );
-
-const cursor = new THREE.Vector3();
-
-function handleController( controller ) {
-
-    const userData = controller.userData;
-
-    cursor.set(0, 0, -0.2).applyMatrix4(controller.matrixWorld);
-}
-
 renderer.render(scene, camera);
 
 const au = 20;
@@ -422,8 +387,6 @@ function render() {
     controls.update();
 
     interactionManager.update();
-
-    handleController( controller );
 
     stats.update();
 
