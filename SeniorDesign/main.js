@@ -41,6 +41,11 @@ function onSelectStart() {
     this.userData.skipFrames = 2;
 
     camera = renderer.xr.getCamera()
+
+    let dolly = new THREE.Object3D();
+    dolly.position.z = 5;
+    dolly.add(camera);
+    scene.add(dolly)
 }
 
 function onSelectEnd() {
