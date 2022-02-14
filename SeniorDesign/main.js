@@ -54,6 +54,15 @@ controller.addEventListener( 'selectend', onSelectEnd );
 controller.userData.skipFrames = 0;
 scene.add( controller );
 
+const cursor = new THREE.Vector3();
+
+function handleController( controller ) {
+
+    const userData = controller.userData;
+
+    cursor.set(0, 0, -0.2).applyMatrix4(controller.matrixWorld);
+}
+
 renderer.render(scene, camera);
 
 const au = 20;
@@ -402,6 +411,8 @@ function animate() {
     controls.update();
 
     interactionManager.update();
+
+    handleController( controller )
 
     stats.update();
 
