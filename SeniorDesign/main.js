@@ -9,6 +9,7 @@ import Stats from "three/examples/jsm/libs/stats.module";
 
 
 import { VRButton } from 'three/examples/jsm/webxr/VRButton.js';
+import {ARButton} from "three/examples/jsm/webxr/ARButton";
 
 
 const scene = new THREE.Scene();
@@ -30,7 +31,7 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 camera.position.setZ(30);
 
 //Enable WebXR support
-document.body.appendChild( VRButton.createButton( renderer, null ) );
+document.body.appendChild( ARButton.createButton( renderer, null ) );
 renderer.xr.enabled = true;
 
 renderer.render(scene, camera);
