@@ -175,7 +175,7 @@ scene.add(psycheLabel);
 scene.add(psycheLabelReverse);
 
 const spaceTexture = new THREE.TextureLoader().load('../Resources/Textures/spaceBackground.jpg');
-scene.background = spaceTexture;
+//scene.background = spaceTexture;
 
 //let sunIsChecked = true;
 
