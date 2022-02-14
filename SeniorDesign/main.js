@@ -398,10 +398,12 @@ psycheOrbit.add(psycheLabel);
 psycheOrbit.add(psycheLabelReverse);
 scene.add(psycheOrbit);
 
-function animate() {
-    requestAnimationFrame( animate );
+function animate(){
+    renderer.setAnimationLoop(render)
+}
 
-    renderer.setAnimationLoop(animate)
+function render() {
+    requestAnimationFrame( animate );
 
     earth.rotation.y += 0.003;
     mars.rotation.y += 0.003;
