@@ -412,7 +412,7 @@ function animate() {
 
     interactionManager.update();
 
-    handleController( controller )
+    handleController( controller );
 
     stats.update();
 
