@@ -34,6 +34,17 @@ camera.position.setZ(30);
 renderer.xr.enabled = true;
 document.body.appendChild( ARButton.createButton( renderer ) );
 
+window.addEventListener('resize', onWindowResize);
+
+function onWindowResize() {
+
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+
+    renderer.setSize( window.innerWidth, window.innerHeight );
+
+}
+
 renderer.render(scene, camera);
 
 const au = 20;
