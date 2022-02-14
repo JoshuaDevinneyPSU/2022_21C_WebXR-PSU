@@ -31,8 +31,9 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 camera.position.setZ(30);
 
 //Enable WebXR support
-document.body.appendChild( ARButton.createButton( renderer, null ) );
 renderer.xr.enabled = true;
+document.body.appendChild( ARButton.createButton( renderer ) );
+
 
 renderer.render(scene, camera);
 
