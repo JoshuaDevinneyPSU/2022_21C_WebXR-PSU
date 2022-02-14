@@ -13,7 +13,7 @@ import {ARButton} from "three/examples/jsm/webxr/ARButton";
 
 
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
 
 const renderer = new THREE.WebGLRenderer({
@@ -40,6 +40,7 @@ function onSelectStart() {
     this.userData.isSelecting = true;
     this.userData.skipFrames = 2;
 
+    camera = renderer.xr.getCamera()
 }
 
 function onSelectEnd() {
