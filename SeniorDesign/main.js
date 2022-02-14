@@ -8,9 +8,12 @@ import Stats from "three/examples/jsm/libs/stats.module";
 
 
 
-const scene = new THREE.Scene();
+import { VRButton } from 'three/examples/jsm/webxr/VRButton.js';
 
+
+const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
 
 const renderer = new THREE.WebGLRenderer({
     canvas: document.querySelector('#bg')
@@ -25,6 +28,10 @@ const interactionManager = new InteractionManager(
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
 camera.position.setZ(30);
+
+//Enable WebXR support
+document.body.appendChild( VRButton.createButton( renderer, null ) );
+renderer.xr.enabled = true;
 
 renderer.render(scene, camera);
 
@@ -149,18 +156,18 @@ scene.add(psycheLabelReverse);
 const spaceTexture = new THREE.TextureLoader().load('../Resources/Textures/spaceBackground.jpg');
 scene.background = spaceTexture;
 
-let sunIsChecked = true;
+//let sunIsChecked = true;
 
-sun.addEventListener('click', (event) => {
-    if(sunIsChecked){
-        scene.remove(gridHelper);
-        sunIsChecked = false;
-    }
-    else{
-        scene.add(gridHelper);
-        sunIsChecked = true;
-    }
-});
+// sun.addEventListener('click', (event) => {
+//     if(sunIsChecked){
+//         scene.remove(gridHelper);
+//         sunIsChecked = false;
+//     }
+//     else{
+//         scene.add(gridHelper);
+//         sunIsChecked = true;
+//     }
+// });
 
 //--------------------------Planetary Event Listening-------------------------------
 
@@ -332,8 +339,8 @@ function showNextFact(planetIdentifier){
 // camera.add(ambientLight);
 // scene.add(ambientLight);
 
-const gridHelper = new THREE.GridHelper(400, 100);
-scene.add(gridHelper)
+//const gridHelper = new THREE.GridHelper(400, 100);
+//scene.add(gridHelper)
 
 const controls = new OrbitControls(camera, renderer.domElement);
 
@@ -363,14 +370,14 @@ scene.add(psycheOrbit);
 
 function animate() {
     requestAnimationFrame( animate );
-    earth.rotation.y += 0.01;
-    mars.rotation.y += 0.01;
-    earthOrbit.rotation.y += 0.001;
-    marsOrbit.rotation.y += 0.003;
-    moonOrbit.rotation.y += 0.001;
-    psycheOrbit.rotation.y += 0.002;
-    moon.rotation.y += 0.01;
-    psyche.rotation.y += 0.01;
+    earth.rotation.y += 0.003;
+    mars.rotation.y += 0.003;
+    earthOrbit.rotation.y += 0.0005;
+    marsOrbit.rotation.y += 0.0004;
+    moonOrbit.rotation.y += 0.0005;
+    psycheOrbit.rotation.y += 0.0002;
+    moon.rotation.y += 0.003;
+    psyche.rotation.y += 0.003;
     controls.update();
 
     interactionManager.update();
@@ -381,3 +388,21 @@ function animate() {
 }
 animate();
 
+/*
+//WebXR animation implementation
+renderer.setAnimationLoop( function () {
+
+    renderer.render(scene, camera);
+    earth.rotation.y += 0.003;
+    mars.rotation.y += 0.003;
+    earthOrbit.rotation.y += 0.0005;
+    marsOrbit.rotation.y += 0.0004;
+    moonOrbit.rotation.y += 0.0005;
+    psycheOrbit.rotation.y += 0.0002;
+    moon.rotation.y += 0.003;
+    psyche.rotation.y += 0.003;
+    controls.update();
+    interactionManager.update();
+
+});
+*/
