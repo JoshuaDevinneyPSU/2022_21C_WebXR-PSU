@@ -400,6 +400,9 @@ scene.add(psycheOrbit);
 
 function animate() {
     requestAnimationFrame( animate );
+
+    renderer.setAnimationLoop(animate)
+
     earth.rotation.y += 0.003;
     mars.rotation.y += 0.003;
     earthOrbit.rotation.y += 0.0005;
