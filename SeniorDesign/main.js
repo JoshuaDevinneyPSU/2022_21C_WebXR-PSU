@@ -35,6 +35,25 @@ renderer.xr.enabled = true;
 document.body.appendChild( ARButton.createButton( renderer ) );
 
 
+function onSelectStart() {
+
+    this.userData.isSelecting = true;
+    this.userData.skipFrames = 2;
+
+}
+
+function onSelectEnd() {
+
+    this.userData.isSelecting = false;
+
+}
+
+let controller = renderer.xr.getController( 0 );
+controller.addEventListener( 'selectstart', onSelectStart );
+controller.addEventListener( 'selectend', onSelectEnd );
+controller.userData.skipFrames = 0;
+scene.add( controller );
+
 renderer.render(scene, camera);
 
 const au = 20;
