@@ -85,9 +85,11 @@ const psycheGeo = new THREE.DodecahedronGeometry(1);
 const psycheMaterial = new THREE.MeshStandardMaterial({map: psycheTexture});
 const psyche = new THREE.Mesh(psycheGeo, psycheMaterial);
 psyche.position.setX(au*2.5);
-scene.add(psyche);
+// scene.add(psyche);
 
 earth.position.setX(au)
+
+var psycheOrbit = new THREE.Group();
 
 const loader = new STLLoader()
 loader.load(
@@ -96,6 +98,9 @@ loader.load(
         const mesh = new THREE.Mesh(geometry, psycheMaterial)
         mesh.position.setX(au*2.5)
         scene.add(mesh)
+
+        psycheOrbit.add(mesh);
+        scene.add(psycheOrbit);
     },
     (xhr) => {
         console.log((xhr.loaded / xhr.total) * 100 + '% loaded')
@@ -166,7 +171,7 @@ scene.add(psycheLabel);
 scene.add(psycheLabelReverse);
 
 const spaceTexture = new THREE.TextureLoader().load('../Resources/Textures/spaceBackground.jpg');
-//scene.background = spaceTexture;
+scene.background = spaceTexture;
 
 //let sunIsChecked = true;
 
@@ -374,11 +379,8 @@ var moonOrbit = new THREE.Group();
 moonOrbit.add(moon);
 scene.add(moonOrbit);
 
-var psycheOrbit = new THREE.Group();
-psycheOrbit.add(psyche);
 psycheOrbit.add(psycheLabel);
 psycheOrbit.add(psycheLabelReverse);
-scene.add(psycheOrbit);
 
 function animate(){
     renderer.setAnimationLoop(render)
@@ -394,7 +396,7 @@ function render() {
     moonOrbit.rotation.y += 0.0005;
     psycheOrbit.rotation.y += 0.0002;
     moon.rotation.y += 0.003;
-    psyche.rotation.y += 0.003;
+    // psyche.rotation.y += 0.003;
     controls.update();
 
     interactionManager.update();
