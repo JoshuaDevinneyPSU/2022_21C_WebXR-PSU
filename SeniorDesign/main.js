@@ -15,6 +15,7 @@ import {TubePainter} from "three/examples/jsm/misc/TubePainter";
 
 
 const scene = new THREE.Scene();
+const scene2 = new THREE.Scene();
 let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
 camera.position.setZ(-10);
@@ -479,6 +480,8 @@ function render() {
     stats.update();
 
     renderer.render(scene, camera);
+    renderer.autoClear = false;
+    renderer.render(scene2, camera);
 }
 animate();
 
