@@ -10,6 +10,7 @@ import Stats from "three/examples/jsm/libs/stats.module";
 
 import { VRButton } from 'three/examples/jsm/webxr/VRButton.js';
 import {ARButton} from "three/examples/jsm/webxr/ARButton";
+import {MeshStandardMaterial} from "three";
 
 
 const scene = new THREE.Scene();
@@ -101,6 +102,26 @@ loader.load(
 
         psycheOrbit.add(mesh);
         scene.add(psycheOrbit);
+    },
+    (xhr) => {
+        console.log((xhr.loaded / xhr.total) * 100 + '% loaded')
+    },
+    (error) => {
+        console.log(error)
+    }
+)
+
+const spaceCraftMaterial = new MeshStandardMaterial();
+
+loader.load(
+    '../Resources/Models/SpaceCraft.stl',
+    function (geometry) {
+        const mesh = new THREE.Mesh(geometry, psycheMaterial)
+        mesh.position.setX(au*2.5)
+        mesh.scale.set( .005, .005, .005 );
+        scene.add(mesh)
+
+        psycheOrbit.add(mesh);
     },
     (xhr) => {
         console.log((xhr.loaded / xhr.total) * 100 + '% loaded')
