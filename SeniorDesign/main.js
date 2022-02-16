@@ -134,7 +134,32 @@ loader.load(
 )
 
 const cursor = new THREE.Vector3();
-scene.add(cursor);
+
+function onSelectStart() {
+
+    this.userData.isSelecting = true;
+    this.userData.skipFrames = 2;
+
+}
+
+function onSelectEnd() {
+
+    this.userData.isSelecting = false;
+
+}
+
+let controller = renderer.xr.getController( 0 );
+controller.addEventListener( 'selectstart', onSelectStart );
+controller.addEventListener( 'selectend', onSelectEnd );
+controller.userData.skipFrames = 0;
+scene.add( controller );
+
+function handleController( controller ) {
+
+    const userData = controller.userData;
+
+    cursor.set( 0, 0, - 0.2 ).applyMatrix4( controller.matrixWorld );
+}
 
 const stats = Stats()
 document.body.appendChild(stats.dom)
@@ -424,6 +449,7 @@ function render() {
     moon.rotation.y += 0.003;
     // psyche.rotation.y += 0.003;
     controls.update();
+    handleController( controller );
 
     interactionManager.update();
 
