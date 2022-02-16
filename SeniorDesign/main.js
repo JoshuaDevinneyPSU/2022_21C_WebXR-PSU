@@ -133,6 +133,9 @@ loader.load(
     }
 )
 
+const cursor = new THREE.Vector3();
+scene.add(cursor);
+
 const stats = Stats()
 document.body.appendChild(stats.dom)
 
