@@ -11,6 +11,7 @@ import Stats from "three/examples/jsm/libs/stats.module";
 import { VRButton } from 'three/examples/jsm/webxr/VRButton.js';
 import {ARButton} from "three/examples/jsm/webxr/ARButton";
 import {MeshStandardMaterial} from "three";
+import {TubePainter} from "three/examples/jsm/misc/TubePainter";
 
 
 const scene = new THREE.Scene();
@@ -135,6 +136,11 @@ loader.load(
 
 const cursor = new THREE.Vector3();
 
+let painter = new TubePainter();
+painter.setSize( 0.4 );
+painter.mesh.material.side = THREE.DoubleSide;
+scene.add( painter.mesh );
+
 function onSelectStart() {
 
     this.userData.isSelecting = true;
@@ -159,6 +165,23 @@ function handleController( controller ) {
     const userData = controller.userData;
 
     cursor.set( 0, 0, - 0.2 ).applyMatrix4( controller.matrixWorld );
+
+    if ( userData.isSelecting === true ) {
+
+        if ( userData.skipFrames >= 0 ) {
+
+            userData.skipFrames --;
+
+            painter.moveTo( cursor );
+
+        } else {
+
+            painter.lineTo( cursor );
+            painter.update();
+
+        }
+
+    }
 }
 
 const stats = Stats()
