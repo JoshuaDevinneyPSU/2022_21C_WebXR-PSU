@@ -8,13 +8,13 @@ import Stats from "three/examples/jsm/libs/stats.module";
 
 
 
-import { VRButton } from 'three/examples/jsm/webxr/VRButton.js';
 import {ARButton} from "three/examples/jsm/webxr/ARButton";
 import {MeshStandardMaterial} from "three";
 import {TubePainter} from "three/examples/jsm/misc/TubePainter";
 
 
 const scene = new THREE.Scene();
+const scene2 = new THREE.Scene();
 let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
 camera.position.setZ(-10);
@@ -36,7 +36,7 @@ camera.position.setZ(30);
 
 //Enable WebXR support
 renderer.xr.enabled = true;
-document.body.appendChild( ARButton.createButton( renderer, {requiredFeatures: 'hit-test'} ) );
+document.body.appendChild( ARButton.createButton( renderer ) );
 
 window.addEventListener('resize', onWindowResize);
 
@@ -479,6 +479,8 @@ function render() {
     stats.update();
 
     renderer.render(scene, camera);
+    renderer.autoClear = false;
+    renderer.render(scene2, renderer.xr.getCamera())
 }
 animate();
 
