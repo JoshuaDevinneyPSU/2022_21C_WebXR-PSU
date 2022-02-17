@@ -136,6 +136,8 @@ loader.load(
 
 const cursor = new THREE.Vector3();
 
+renderer.xr.setReferenceSpaceType('unbounded')
+
 function onSelectStart() {
 
     this.userData.isSelecting = true;
