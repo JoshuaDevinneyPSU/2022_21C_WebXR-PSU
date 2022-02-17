@@ -20,9 +20,11 @@ let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHei
 camera.position.setZ(-10);
 camera.position.setY(25);
 
-const renderer = new THREE.WebGLRenderer({ alpha:true, antialias:true,
-    canvas: document.querySelector('#bg')
+const renderer = new THREE.WebGLRenderer({ alpha:true, antialias:true, canvas: document.querySelector('#bg'), preserveDrawingBuffer: true, context: global
 });
+renderer.autoClear = false;
+
+camera.matrixAutoUpdate = false;
 
 const interactionManager = new InteractionManager(
     renderer,
