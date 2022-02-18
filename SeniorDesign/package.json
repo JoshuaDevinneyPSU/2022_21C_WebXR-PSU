@@ -16,5 +16,12 @@
     "three.interaction": "^0.2.3",
     "three.interactive": "^1.1.0"
   },
-  "type": "module"
+  "main": "main.js",
+  "directories": {
+    "test": "test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
 }

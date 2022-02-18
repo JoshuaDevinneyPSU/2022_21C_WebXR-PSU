@@ -10,7 +10,7 @@ import Stats from "three/examples/jsm/libs/stats.module";
 import {ARButton} from "three/examples/jsm/webxr/ARButton";
 import {MeshStandardMaterial} from "three";
 import {TubePainter} from "three/examples/jsm/misc/TubePainter";
-import {createMaterial, createPlanet, createSTL} from "./helper-functions";
+import {createMaterial, createPlanet, createSTL} from "./helper-functions.js";
 // const createMaterial = require("./helper-functions");
 // const createPlanet = require("./helper-functions");
 
