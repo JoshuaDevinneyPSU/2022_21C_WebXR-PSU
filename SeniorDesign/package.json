@@ -15,5 +15,6 @@
   "dependencies": {
     "three.interaction": "^0.2.3",
     "three.interactive": "^1.1.0"
-  }
+  },
+  "type": "module"
 }

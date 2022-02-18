@@ -1,5 +1,5 @@
 const THREE = require('three');
-const addPlanet = require('../helper-functions.js').addPlanet;
+const addPlanet = require('../helper-functions.js').createPlanet;
 const assert = require('assert');
 
 describe('addPlanet', function() {

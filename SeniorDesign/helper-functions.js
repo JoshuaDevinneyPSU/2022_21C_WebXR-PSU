@@ -1,8 +1,8 @@
-const THREE = require('three');
-const {STLLoader} = require("three/examples/jsm/loaders/STLLoader");
+import * as THREE from "three";
+import {STLLoader} from "three/examples/jsm/loaders/STLLoader";
 
 //get physical specifications from user and create a planet with them
-function createPlanet( radius, widthSegments, heightSegments, xPosition, yPosition, zPosition, material){
+export function createPlanet( radius, widthSegments = 32, heightSegments = 32, xPosition, yPosition, zPosition, material){
 
     //check that radius is greater than zero
     if(radius <= 0)
@@ -21,7 +21,7 @@ function createPlanet( radius, widthSegments, heightSegments, xPosition, yPositi
     return planet;
 }
 
-function createMesh(type, material){
+export function createMaterial(type, material){
     let planetMaterial = null;
 
     if(type == 'texture'){
@@ -30,6 +30,9 @@ function createMesh(type, material){
     else if(type == 'color'){
         planetMaterial = new THREE.MeshStandardMaterial({color: material});
     }
+    else if(type == 'texture-basic'){
+        planetMaterial = new THREE.MeshBasicMaterial({map: material});
+    }
     else{
         planetMaterial = new THREE.MeshBasicMaterial({color: material});
     }
@@ -37,7 +40,7 @@ function createMesh(type, material){
     return planetMaterial;
 }
 
-function createSTL(path, xPos, yPos, zPos, material){
+export function createSTL(path, xPos, yPos, zPos, material, scene, xScale = 1, yScale = 1, zScale = 1){
     const loader = new STLLoader();
     let stlMesh = null;
     loader.load(
@@ -45,6 +48,8 @@ function createSTL(path, xPos, yPos, zPos, material){
         function (geometry) {
             stlMesh = new THREE.Mesh(geometry, material);
             stlMesh.position.set(xPos, yPos, zPos);
+            stlMesh.scale.set( xScale, yScale, zScale );
+            scene.add(stlMesh);
         },
         (xhr) => {
             console.log((xhr.loaded / xhr.total) * 100 + '% loaded');
@@ -53,8 +58,11 @@ function createSTL(path, xPos, yPos, zPos, material){
             console.log(error);
         }
     )
+}
 
-    return stlMesh;
+export function createTexture(path){
+    let texture = new THREE.TextureLoader().load(path);
+    return texture;
 }
 
 function attachCard(){
@@ -67,8 +75,9 @@ function createCard(){
 
 
 
-module.exports = {
-    createSTL,
-    createPlanet,
-    createMesh
-}
+// module.exports = {
+//     createSTL,
+//     createPlanet,
+//     createMaterial,
+//     createTexture
+// }
