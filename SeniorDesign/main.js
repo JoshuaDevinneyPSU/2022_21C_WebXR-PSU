@@ -81,46 +81,46 @@ var psycheOrbit = new THREE.Group();
 
 const psycheTexture = new THREE.TextureLoader().load('../Resources/Textures/psycheTexture.jpg');
 const psycheMaterial = createMaterial('texture', psycheTexture);
-const psyche = createSTL('../Resources/Models/PsycheModel.stl', au*2.5, 0, 0, psycheMaterial, scene);
+//const psyche = createSTL('../Resources/Models/PsycheModel.stl', au*2.5, 0, 0, psycheMaterial, scene, psycheOrbit);
 
-const spaceCraft = createSTL('../Resources/Models/SpaceCraft.stl', au*2.5, 0, 0, psycheMaterial, scene, 0.005, 0.005, 0.005);
+//const spaceCraft = createSTL('../Resources/Models/SpaceCraft.stl', au*2.5, 0, 0, psycheMaterial, scene, 0.005, 0.005, 0.005);
 
-// const loader = new STLLoader()
-// loader.load(
-//     '../Resources/Models/PsycheModel.stl',
-//     function (geometry) {
-//         const mesh = new THREE.Mesh(geometry, psycheMaterial)
-//         mesh.position.setX(au*2.5)
-//         scene.add(mesh)
-//
-//         psycheOrbit.add(mesh);
-//         scene.add(psycheOrbit);
-//     },
-//     (xhr) => {
-//         console.log((xhr.loaded / xhr.total) * 100 + '% loaded')
-//     },
-//     (error) => {
-//         console.log(error)
-//     }
-// )
+const loader = new STLLoader()
+loader.load(
+    '../Resources/Models/PsycheModel.stl',
+    function (geometry) {
+        const psyche = new THREE.Mesh(geometry, psycheMaterial)
+        psyche.position.setX(au*2.5)
+        scene.add(psyche)
 
-// loader.load(
-//     '../Resources/Models/SpaceCraft.stl',
-//     function (geometry) {
-//         const mesh = new THREE.Mesh(geometry, psycheMaterial)
-//         mesh.position.setX(au*2.5)
-//         mesh.scale.set( .005, .005, .005 );
-//         scene.add(mesh)
-//
-//         psycheOrbit.add(mesh);
-//     },
-//     (xhr) => {
-//         console.log((xhr.loaded / xhr.total) * 100 + '% loaded')
-//     },
-//     (error) => {
-//         console.log(error)
-//     }
-// )
+        psycheOrbit.add(psyche);
+        scene.add(psycheOrbit);
+    },
+    (xhr) => {
+        console.log((xhr.loaded / xhr.total) * 100 + '% loaded')
+    },
+    (error) => {
+        console.log(error)
+    }
+)
+
+loader.load(
+    '../Resources/Models/SpaceCraft.stl',
+    function (geometry) {
+        const mesh = new THREE.Mesh(geometry, psycheMaterial)
+        mesh.position.setX(au*2.5)
+        mesh.scale.set( .005, .005, .005 );
+        scene.add(mesh)
+
+        psycheOrbit.add(mesh);
+    },
+    (xhr) => {
+        console.log((xhr.loaded / xhr.total) * 100 + '% loaded')
+    },
+    (error) => {
+        console.log(error)
+    }
+)
 
 const cursor = new THREE.Vector3();
 
@@ -201,12 +201,12 @@ const psycheLabelGeometry = new THREE.PlaneGeometry(5, 3);
 const psycheLabelTexture = new THREE.TextureLoader().load('../Resources/Textures/psycheLabelTexture.jpg');
 const psycheLabelMaterial = new THREE.MeshBasicMaterial({map: psycheLabelTexture});
 const psycheLabel = new THREE.Mesh(psycheLabelGeometry, psycheLabelMaterial);
-//psycheLabel.position.set(psyche.position.x, psyche.position.y + 5, psyche.position.z);
+psycheLabel.position.set(au*2.5, 5);
 
 //create the backside of the label
 const psycheLabelReverse = psycheLabel.clone();
 psycheLabelReverse.rotation.y += 3.141;
-//psycheLabelReverse.position.set(psyche.position.x, psyche.position.y + 5, psyche.position.z - 0.01);
+psycheLabelReverse.position.set(au*2.5, 5,-0.01);
 
 //add labels to scene
 scene.add(psycheLabel);
