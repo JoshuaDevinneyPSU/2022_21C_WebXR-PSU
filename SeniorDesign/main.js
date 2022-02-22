@@ -6,13 +6,8 @@ import {STLLoader} from "three/examples/jsm/loaders/STLLoader";
 import './style.css'
 import Stats from "three/examples/jsm/libs/stats.module";
 
-
 import {ARButton} from "three/examples/jsm/webxr/ARButton";
-import {MeshStandardMaterial} from "three";
-import {TubePainter} from "three/examples/jsm/misc/TubePainter";
 import {createMaterial, createPlanet, createSTL} from "./helper-functions.js";
-// const createMaterial = require("./helper-functions");
-// const createPlanet = require("./helper-functions");
 
 
 const scene = new THREE.Scene();
@@ -174,7 +169,7 @@ earthLabel.position.set(earth.position.x, earth.position.y + 5, earth.position.z
 //create the backside of the label
 const earthLabelReverse = earthLabel.clone();
 earthLabelReverse.rotation.y += 3.141;
-earthLabelReverse.position.set(earth.position.x, earth.position.y + 5, earth.position.z - 0.01);
+earthLabelReverse.position.set(earth.position.x, earth.position.y + 5, earth.position.z - 0.05);
 
 //add labels to scene
 scene.add(earthLabel);
@@ -190,7 +185,7 @@ marsLabel.position.set(mars.position.x, mars.position.y + 5, mars.position.z);
 //create the backside of the label
 const marsLabelReverse = marsLabel.clone();
 marsLabelReverse.rotation.y += 3.141;
-marsLabelReverse.position.set(mars.position.x, mars.position.y + 5, mars.position.z - 0.01);
+marsLabelReverse.position.set(mars.position.x, mars.position.y + 5, mars.position.z - 0.05);
 
 //add labels to scene
 scene.add(marsLabel);
