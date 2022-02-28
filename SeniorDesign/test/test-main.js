@@ -93,3 +93,57 @@ describe('createTexture', function(){
     })
 })
 */
+
+//Test Suite 5: createMaterial function
+describe('createMaterial', function(){
+
+    //Test Case 1: Check that function does not return null
+    it('Function should not return null', function (){
+        let testMaterial = new THREE.Material();
+        testMaterial = createMaterial("texture", testMaterial);
+        assert.notStrictEqual(testMaterial, null);
+        testMaterial = createMaterial("color", testMaterial);
+        assert.notStrictEqual(testMaterial, null);
+        testMaterial = createMaterial("texture-basic", testMaterial);
+        assert.notStrictEqual(testMaterial, null);
+        testMaterial = createMaterial("default", testMaterial);
+        assert.notStrictEqual(testMaterial, null);
+    })
+
+    //Test Case 2: Check if else default handling
+    it('Function should create basic material if unhandled string is passed', function(){
+        let testMaterial = new THREE.Material();
+        testMaterial = createMaterial("Tuggits", testMaterial);
+        console.log();
+        assert.strictEqual(testMaterial instanceof THREE.MeshBasicMaterial, true);
+    })
+
+    //Test Case 3: Ensure correct Materials are created
+    it('Function should return correct material type', function (){
+        let testMaterial = new THREE.Material();
+        testMaterial = createMaterial("texture", testMaterial);
+        assert.strictEqual(testMaterial instanceof THREE.MeshStandardMaterial, true);
+        testMaterial = createMaterial("color", testMaterial);
+        assert.strictEqual(testMaterial instanceof THREE.MeshStandardMaterial, true);
+        testMaterial = createMaterial("texture-basic", testMaterial);
+        assert.strictEqual(testMaterial instanceof THREE.MeshBasicMaterial, true);
+    })
+})
+
+/*
+//Test Suite: createTexture function
+describe('createTexture', function(){
+
+    //Test Case 1: Check that function does not return null with valid file path
+    it('Function should not return null', function (){
+        let testTexture = createTexture("Resources/Textures/marsTexture.jpg");
+        assert.notStrictEqual(testTexture, null);
+    })
+
+    //Test Case 2: Check that function handles invalid file path
+    it('Function handles invalid file path', function (){
+        let testTexture = createTexture("Resources/Textures/SkippySkipperson.jpg");
+        assert.notStrictEqual(testTexture, null);
+    })
+})
+*/
