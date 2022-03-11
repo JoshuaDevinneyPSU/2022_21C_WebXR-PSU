@@ -64,7 +64,7 @@ scene.add(sun);
 
 const marsTexture = new THREE.TextureLoader().load('../Resources/Textures/marsTexture.jpg');
 const marsMaterial = createMaterial('texture', marsTexture);
-const mars = createPlanet(3/2, 32, 32, au*1.5, 0, 0, marsMaterial);
+const mars = createPlanet(3/2, 32, 32, -(au*1.5), 0, 0, marsMaterial);
 scene.add(mars);
 
 const moonTexture = new THREE.TextureLoader().load('../Resources/Textures/moonTexture.jpg');
@@ -72,10 +72,11 @@ const moonMaterial = createMaterial('texture', moonTexture);
 const moon = createPlanet(3*.25, 32, 32, au+8, 0, 0, moonMaterial);
 scene.add(moon);
 
-var psycheOrbit = new THREE.Group();
+const psycheOrbit = new THREE.Group();
 
 const psycheTexture = new THREE.TextureLoader().load('../Resources/Textures/psycheTexture.jpg');
 const psycheMaterial = createMaterial('texture', psycheTexture);
+
 //const psyche = createSTL('../Resources/Models/PsycheModel.stl', au*2.5, 0, 0, psycheMaterial, scene, psycheOrbit);
 
 //const spaceCraft = createSTL('../Resources/Models/SpaceCraft.stl', au*2.5, 0, 0, psycheMaterial, scene, 0.005, 0.005, 0.005);
@@ -147,8 +148,8 @@ function handleController( controller ) {
     cursor.set( 0, 0, - 0.2 ).applyMatrix4( controller.matrixWorld );
 }
 
-const stats = Stats()
-document.body.appendChild(stats.dom)
+const stats = Stats();
+document.body.appendChild(stats.dom);
 
 const light = new THREE.PointLight( 0xF4E99B, 5, 150 );
 scene.add( light );
@@ -158,13 +159,15 @@ interactionManager.add(earth);
 interactionManager.add(mars);
 interactionManager.add(sun);
 
-//create labels for planetary bodies
+//--------------------------------------------LABELS-------------------------------------------------------
+
 //Earth
 const earthLabelGeometry = new THREE.PlaneGeometry(5, 3);
 const earthLabelTexture = new THREE.TextureLoader().load('../Resources/Textures/earthLabelTexture.jpg');
 const earthLabelMaterial = new THREE.MeshBasicMaterial({map: earthLabelTexture, side: THREE.DoubleSide});
 const earthLabel = new THREE.Mesh(earthLabelGeometry, earthLabelMaterial);
 earthLabel.position.set(earth.position.x, earth.position.y + 5, earth.position.z);
+
 
 //create the backside of the label
 const earthLabelReverse = earthLabel.clone();
@@ -173,7 +176,6 @@ earthLabelReverse.position.set(earth.position.x, earth.position.y + 5, earth.pos
 
 //add labels to scene
 scene.add(earthLabel);
-scene.add(earthLabelReverse);
 
 //Mars
 const marsLabelGeometry = new THREE.PlaneGeometry(5, 3);
@@ -182,6 +184,7 @@ const marsLabelMaterial = new THREE.MeshBasicMaterial({map: marsLabelTexture});
 const marsLabel = new THREE.Mesh(marsLabelGeometry, marsLabelMaterial);
 marsLabel.position.set(mars.position.x, mars.position.y + 5, mars.position.z);
 
+
 //create the backside of the label
 const marsLabelReverse = marsLabel.clone();
 marsLabelReverse.rotation.y += 3.141;
@@ -189,7 +192,6 @@ marsLabelReverse.position.set(mars.position.x, mars.position.y + 5, mars.positio
 
 //add labels to scene
 scene.add(marsLabel);
-scene.add(marsLabelReverse);
 
 //Psyche
 const psycheLabelGeometry = new THREE.PlaneGeometry(5, 3);
@@ -205,7 +207,8 @@ psycheLabelReverse.position.set(au*2.5, 5,-0.01);
 
 //add labels to scene
 scene.add(psycheLabel);
-scene.add(psycheLabelReverse);
+
+//-----------------------------------------------------------------------------------------------------------
 
 const spaceTexture = new THREE.TextureLoader().load('../Resources/Textures/spaceBackground.jpg');
 scene.background = spaceTexture;
@@ -398,26 +401,22 @@ function showNextFact(planetIdentifier){
 
 const controls = new OrbitControls(camera, renderer.domElement);
 
-
-var earthOrbit = new THREE.Group();
+const earthOrbit = new THREE.Group();
 earthOrbit.add(earth);
 earthOrbit.add(moon);
-earthOrbit.add(earthLabel);
-earthOrbit.add(earthLabelReverse);
+earthOrbit.add(earthLabel)
 scene.add(earthOrbit);
 
-var marsOrbit = new THREE.Group();
+const marsOrbit = new THREE.Group();
 marsOrbit.add(mars);
 marsOrbit.add(marsLabel);
-marsOrbit.add(marsLabelReverse);
 scene.add(marsOrbit)
 
-var moonOrbit = new THREE.Group();
+const moonOrbit = new THREE.Group();
 moonOrbit.add(moon);
 scene.add(moonOrbit);
 
 psycheOrbit.add(psycheLabel);
-psycheOrbit.add(psycheLabelReverse);
 
 function animate(){
     renderer.setAnimationLoop(render)
@@ -433,6 +432,8 @@ function render() {
     moonOrbit.rotation.y += 0.0005;
     psycheOrbit.rotation.y += 0.0002;
     moon.rotation.y += 0.003;
+    earthLabel.lookAt(new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z));
+    marsLabel.lookAt(new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z));
     // psyche.rotation.y += 0.003;
     controls.update();
     handleController( controller );
