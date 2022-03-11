@@ -5,8 +5,8 @@ canvas {
 }
 
 .card {
-  width: 500px;
-  height: 500px;
+  width: 250px;
+  height: 250px;
   display: inline-block;
   text-align: center;
 
@@ -17,18 +17,18 @@ canvas {
 }
 
 .card-img-top {
-  width: 250px;
-  height: 250px;
+  width: 125px;
+  height: 125px;
   padding: 10px;
   display: inline-block;
 }
 
 .card-text {
   color: #f9a000;
-  font-size: 20px;
+  font-size: 10px;
   display: inline-block;
-  width: 450px;
-  height: 50px;
+  width: 225px;
+  height: 25px;
 }
 
 .card-button-container {
@@ -36,11 +36,11 @@ canvas {
 }
 
 .control-button {
-  width: 200px;
-  height: 150px;
+  width: 100px;
+  height: 75px;
   text-align: center;
 
-  font-size: 30px;
+  font-size: 15px;
   font-weight: bold;
   color: #302144;
 

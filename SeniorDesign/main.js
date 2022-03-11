@@ -7,11 +7,7 @@ import './style.css'
 import Stats from "three/examples/jsm/libs/stats.module";
 
 import {ARButton} from "three/examples/jsm/webxr/ARButton";
-import {MeshStandardMaterial, TextGeometry} from "three";
-import {TubePainter} from "three/examples/jsm/misc/TubePainter";
 import {createMaterial, createPlanet, createSTL} from "./helper-functions.js";
-// const createMaterial = require("./helper-functions");
-// const createPlanet = require("./helper-functions");
 
 
 const scene = new THREE.Scene();
@@ -80,45 +76,46 @@ const psycheOrbit = new THREE.Group();
 
 const psycheTexture = new THREE.TextureLoader().load('../Resources/Textures/psycheTexture.jpg');
 const psycheMaterial = createMaterial('texture', psycheTexture);
-const psyche = createSTL('../Resources/Models/PsycheModel.stl', 0, 0, 0, psycheMaterial, scene);
 
-const spaceCraft = createSTL('../Resources/Models/SpaceCraft.stl', 0, 0, 0, psycheMaterial, scene, 0.005, 0.005, 0.005);
+//const psyche = createSTL('../Resources/Models/PsycheModel.stl', au*2.5, 0, 0, psycheMaterial, scene, psycheOrbit);
 
-const loader = new STLLoader();
+//const spaceCraft = createSTL('../Resources/Models/SpaceCraft.stl', au*2.5, 0, 0, psycheMaterial, scene, 0.005, 0.005, 0.005);
+
+const loader = new STLLoader()
 loader.load(
     '../Resources/Models/PsycheModel.stl',
     function (geometry) {
-        const mesh = new THREE.Mesh(geometry, psycheMaterial);
-        mesh.position.setZ(-(au*2.5));
-        scene.add(mesh);
+        const psyche = new THREE.Mesh(geometry, psycheMaterial)
+        psyche.position.setX(au*2.5)
+        scene.add(psyche)
 
-        psycheOrbit.add(mesh);
+        psycheOrbit.add(psyche);
         scene.add(psycheOrbit);
     },
     (xhr) => {
-        console.log((xhr.loaded / xhr.total) * 100 + '% loaded');
+        console.log((xhr.loaded / xhr.total) * 100 + '% loaded')
     },
     (error) => {
-        console.log(error);
-   }
+        console.log(error)
+    }
 )
 
- loader.load(
-     '../Resources/Models/SpaceCraft.stl',
-     function (geometry) {
-         const mesh = new THREE.Mesh(geometry, psycheMaterial);
-         mesh.position.setZ(-(au*2.5));
-         mesh.scale.set( .005, .005, .005 );
-         scene.add(mesh);
+loader.load(
+    '../Resources/Models/SpaceCraft.stl',
+    function (geometry) {
+        const mesh = new THREE.Mesh(geometry, psycheMaterial)
+        mesh.position.setX(au*2.5)
+        mesh.scale.set( .005, .005, .005 );
+        scene.add(mesh)
 
-         psycheOrbit.add(mesh);
-     },
-     (xhr) => {
-         console.log((xhr.loaded / xhr.total) * 100 + '% loaded');
-     },
-     (error) => {
-         console.log(error);
-     }
+        psycheOrbit.add(mesh);
+    },
+    (xhr) => {
+        console.log((xhr.loaded / xhr.total) * 100 + '% loaded')
+    },
+    (error) => {
+        console.log(error)
+    }
 )
 
 const cursor = new THREE.Vector3();
@@ -171,7 +168,13 @@ const earthLabelMaterial = new THREE.MeshBasicMaterial({map: earthLabelTexture, 
 const earthLabel = new THREE.Mesh(earthLabelGeometry, earthLabelMaterial);
 earthLabel.position.set(earth.position.x, earth.position.y + 5, earth.position.z);
 
-//add label to scene
+
+//create the backside of the label
+const earthLabelReverse = earthLabel.clone();
+earthLabelReverse.rotation.y += 3.141;
+earthLabelReverse.position.set(earth.position.x, earth.position.y + 5, earth.position.z - 0.05);
+
+//add labels to scene
 scene.add(earthLabel);
 
 //Mars
@@ -181,7 +184,13 @@ const marsLabelMaterial = new THREE.MeshBasicMaterial({map: marsLabelTexture});
 const marsLabel = new THREE.Mesh(marsLabelGeometry, marsLabelMaterial);
 marsLabel.position.set(mars.position.x, mars.position.y + 5, mars.position.z);
 
-//add label to scene
+
+//create the backside of the label
+const marsLabelReverse = marsLabel.clone();
+marsLabelReverse.rotation.y += 3.141;
+marsLabelReverse.position.set(mars.position.x, mars.position.y + 5, mars.position.z - 0.05);
+
+//add labels to scene
 scene.add(marsLabel);
 
 //Psyche
@@ -189,9 +198,14 @@ const psycheLabelGeometry = new THREE.PlaneGeometry(5, 3);
 const psycheLabelTexture = new THREE.TextureLoader().load('../Resources/Textures/psycheLabelTexture.jpg');
 const psycheLabelMaterial = new THREE.MeshBasicMaterial({map: psycheLabelTexture});
 const psycheLabel = new THREE.Mesh(psycheLabelGeometry, psycheLabelMaterial);
-//psycheLabel.position.set(psyche.position.x, psyche.position.y + 5, psyche.position.z);
+psycheLabel.position.set(au*2.5, 5);
 
-//add label to scene
+//create the backside of the label
+const psycheLabelReverse = psycheLabel.clone();
+psycheLabelReverse.rotation.y += 3.141;
+psycheLabelReverse.position.set(au*2.5, 5,-0.01);
+
+//add labels to scene
 scene.add(psycheLabel);
 
 //-----------------------------------------------------------------------------------------------------------

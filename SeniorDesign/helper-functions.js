@@ -40,7 +40,7 @@ export function createMaterial(type, material){
     return planetMaterial;
 }
 
-export function createSTL(path, xPos, yPos, zPos, material, scene, xScale = 1, yScale = 1, zScale = 1){
+export function createSTL(path, xPos, yPos, zPos, material, scene, xScale = 1, yScale = 1, zScale = 1, orbit){
     const loader = new STLLoader();
     let stlMesh = null;
     loader.load(
@@ -49,6 +49,7 @@ export function createSTL(path, xPos, yPos, zPos, material, scene, xScale = 1, y
             stlMesh = new THREE.Mesh(geometry, material);
             stlMesh.position.set(xPos, yPos, zPos);
             stlMesh.scale.set( xScale, yScale, zScale );
+            orbit.add(stlMesh);
             scene.add(stlMesh);
         },
         (xhr) => {
@@ -58,6 +59,7 @@ export function createSTL(path, xPos, yPos, zPos, material, scene, xScale = 1, y
             console.log(error);
         }
     )
+    return orbit;
 }
 
 export function createTexture(path){
