@@ -1,17 +1,25 @@
 import * as THREE from 'three';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { InteractionManager } from "three.interactive";
+import {STLLoader} from "three/examples/jsm/loaders/STLLoader";
 
 import './style.css'
+import Stats from "three/examples/jsm/libs/stats.module";
+
+import {ARButton} from "three/examples/jsm/webxr/ARButton";
+import {createMaterial, createPlanet, createSTL} from "./helper-functions.js";
 
 
 const scene = new THREE.Scene();
+const scene2 = new THREE.Scene();
+let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+camera.position.setZ(-10);
+camera.position.setY(25);
 
-const renderer = new THREE.WebGLRenderer({
-    canvas: document.querySelector('#bg')
-});
+const renderer = new THREE.WebGLRenderer({ alpha:true, antialias:true, canvas: document.querySelector('#bg')});
+
+renderer.autoClear = false;
 
 const interactionManager = new InteractionManager(
     renderer,
@@ -23,6 +31,21 @@ renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
 camera.position.setZ(30);
 
+//Enable WebXR support
+renderer.xr.enabled = true;
+document.body.appendChild( ARButton.createButton( renderer ) );
+
+window.addEventListener('resize', onWindowResize);
+
+function onWindowResize() {
+
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+
+    renderer.setSize( window.innerWidth, window.innerHeight );
+
+}
+
 renderer.render(scene, camera);
 
 const au = 20;
@@ -30,112 +53,178 @@ const au = 20;
 const earthTexture = new THREE.TextureLoader().load('../Resources/Textures/earthTexture.jpg');
 const normalTexture = new THREE.TextureLoader().load('../Resources/Maps/earthNormalMap.tif');
 
-const earthGeo = new THREE.SphereGeometry(3, 32, 32);
-const earthMaterial = new THREE.MeshStandardMaterial( {map: earthTexture,
-    normalMap: normalTexture});
-const earth = new THREE.Mesh(earthGeo, earthMaterial);
-
-earth.position.set(au, 0, 10);
-
+const earthMaterial = createMaterial('texture', earthTexture);
+const earth = createPlanet(3, 32, 32, au, 0, 10, earthMaterial);
 scene.add(earth);
 
 const sunTexture = new THREE.TextureLoader().load('../Resources/Textures/sun.jpg');
-const sunGeo = new THREE.SphereGeometry(10, 32, 32);
-const sunMaterial = new THREE.MeshStandardMaterial({map: sunTexture});
-const sun = new THREE.Mesh(sunGeo, sunMaterial);
+const sunMaterial = createMaterial('texture-basic', sunTexture);
+const sun = createPlanet(10, 32, 32, 0, 0, 0, sunMaterial);
 scene.add(sun);
 
 const marsTexture = new THREE.TextureLoader().load('../Resources/Textures/marsTexture.jpg');
-const marsGeo = new THREE.SphereGeometry(3/2, 32, 32);
-const marsMaterial = new THREE.MeshStandardMaterial({map: marsTexture});
-const mars = new THREE.Mesh(marsGeo, marsMaterial);
-mars.position.setX(au*1.5);
+const marsMaterial = createMaterial('texture', marsTexture);
+const mars = createPlanet(3/2, 32, 32, -(au*1.5), 0, 0, marsMaterial);
 scene.add(mars);
 
 const moonTexture = new THREE.TextureLoader().load('../Resources/Textures/moonTexture.jpg');
-const moonGeo = new THREE.SphereGeometry(3*.25, 32, 32);
-const moonMaterial = new THREE.MeshStandardMaterial({map: moonTexture});
-const moon = new THREE.Mesh(moonGeo, moonMaterial);
-moon.position.setX(au+8);
+const moonMaterial = createMaterial('texture', moonTexture);
+const moon = createPlanet(3*.25, 32, 32, au+8, 0, 0, moonMaterial);
 scene.add(moon);
 
-const psycheGeo = new THREE.DodecahedronGeometry(1);
-const psycheMaterial = new THREE.MeshStandardMaterial({color: 0x61616C});
-const psyche = new THREE.Mesh(psycheGeo, psycheMaterial);
-psyche.position.setX(au*2.5);
-scene.add(psyche);
+const psycheOrbit = new THREE.Group();
 
-earth.position.setX(au)
+const psycheTexture = new THREE.TextureLoader().load('../Resources/Textures/psycheTexture.jpg');
+const psycheMaterial = createMaterial('texture', psycheTexture);
+
+//const psyche = createSTL('../Resources/Models/PsycheModel.stl', au*2.5, 0, 0, psycheMaterial, scene, psycheOrbit);
+
+//const spaceCraft = createSTL('../Resources/Models/SpaceCraft.stl', au*2.5, 0, 0, psycheMaterial, scene, 0.005, 0.005, 0.005);
+
+const loader = new STLLoader()
+loader.load(
+    '../Resources/Models/PsycheModel.stl',
+    function (geometry) {
+        const psyche = new THREE.Mesh(geometry, psycheMaterial)
+        psyche.position.setX(au*2.5)
+        scene.add(psyche)
+
+        psycheOrbit.add(psyche);
+        scene.add(psycheOrbit);
+    },
+    (xhr) => {
+        console.log((xhr.loaded / xhr.total) * 100 + '% loaded')
+    },
+    (error) => {
+        console.log(error)
+    }
+)
+
+loader.load(
+    '../Resources/Models/SpaceCraft.stl',
+    function (geometry) {
+        const mesh = new THREE.Mesh(geometry, psycheMaterial)
+        mesh.position.setX(au*2.5)
+        mesh.scale.set( .005, .005, .005 );
+        scene.add(mesh)
+
+        psycheOrbit.add(mesh);
+    },
+    (xhr) => {
+        console.log((xhr.loaded / xhr.total) * 100 + '% loaded')
+    },
+    (error) => {
+        console.log(error)
+    }
+)
+
+const cursor = new THREE.Vector3();
+
+renderer.xr.setReferenceSpaceType('unbounded')
+
+function onSelectStart() {
+
+    this.userData.isSelecting = true;
+    this.userData.skipFrames = 2;
+
+}
+
+function onSelectEnd() {
+
+    this.userData.isSelecting = false;
+
+}
+
+let controller = renderer.xr.getController( 0 );
+controller.addEventListener( 'selectstart', onSelectStart );
+controller.addEventListener( 'selectend', onSelectEnd );
+controller.userData.skipFrames = 0;
+scene.add( controller );
+
+function handleController( controller ) {
+
+    const userData = controller.userData;
+
+    cursor.set( 0, 0, - 0.2 ).applyMatrix4( controller.matrixWorld );
+}
+
+const stats = Stats();
+document.body.appendChild(stats.dom);
+
+const light = new THREE.PointLight( 0xF4E99B, 5, 150 );
+scene.add( light );
 
 //enable EventListeners for meshes
 interactionManager.add(earth);
 interactionManager.add(mars);
 interactionManager.add(sun);
 
-//create labels for planetary bodies
+//--------------------------------------------LABELS-------------------------------------------------------
+
 //Earth
 const earthLabelGeometry = new THREE.PlaneGeometry(5, 3);
 const earthLabelTexture = new THREE.TextureLoader().load('../Resources/Textures/earthLabelTexture.jpg');
-const earthLabelMaterial = new THREE.MeshStandardMaterial({map: earthLabelTexture, side: THREE.DoubleSide});
+const earthLabelMaterial = new THREE.MeshBasicMaterial({map: earthLabelTexture, side: THREE.DoubleSide});
 const earthLabel = new THREE.Mesh(earthLabelGeometry, earthLabelMaterial);
 earthLabel.position.set(earth.position.x, earth.position.y + 5, earth.position.z);
+
 
 //create the backside of the label
 const earthLabelReverse = earthLabel.clone();
 earthLabelReverse.rotation.y += 3.141;
-earthLabelReverse.position.set(earth.position.x, earth.position.y + 5, earth.position.z - 0.01);
+earthLabelReverse.position.set(earth.position.x, earth.position.y + 5, earth.position.z - 0.05);
 
 //add labels to scene
 scene.add(earthLabel);
-scene.add(earthLabelReverse);
 
 //Mars
 const marsLabelGeometry = new THREE.PlaneGeometry(5, 3);
 const marsLabelTexture = new THREE.TextureLoader().load('../Resources/Textures/marsLabelTexture.jpg');
-const marsLabelMaterial = new THREE.MeshStandardMaterial({map: marsLabelTexture});
+const marsLabelMaterial = new THREE.MeshBasicMaterial({map: marsLabelTexture});
 const marsLabel = new THREE.Mesh(marsLabelGeometry, marsLabelMaterial);
 marsLabel.position.set(mars.position.x, mars.position.y + 5, mars.position.z);
+
 
 //create the backside of the label
 const marsLabelReverse = marsLabel.clone();
 marsLabelReverse.rotation.y += 3.141;
-marsLabelReverse.position.set(mars.position.x, mars.position.y + 5, mars.position.z - 0.01);
+marsLabelReverse.position.set(mars.position.x, mars.position.y + 5, mars.position.z - 0.05);
 
 //add labels to scene
 scene.add(marsLabel);
-scene.add(marsLabelReverse);
 
 //Psyche
 const psycheLabelGeometry = new THREE.PlaneGeometry(5, 3);
 const psycheLabelTexture = new THREE.TextureLoader().load('../Resources/Textures/psycheLabelTexture.jpg');
-const psycheLabelMaterial = new THREE.MeshStandardMaterial({map: psycheLabelTexture});
+const psycheLabelMaterial = new THREE.MeshBasicMaterial({map: psycheLabelTexture});
 const psycheLabel = new THREE.Mesh(psycheLabelGeometry, psycheLabelMaterial);
-psycheLabel.position.set(psyche.position.x, psyche.position.y + 5, psyche.position.z);
+psycheLabel.position.set(au*2.5, 5);
 
 //create the backside of the label
 const psycheLabelReverse = psycheLabel.clone();
 psycheLabelReverse.rotation.y += 3.141;
-psycheLabelReverse.position.set(psyche.position.x, psyche.position.y + 5, psyche.position.z - 0.01);
+psycheLabelReverse.position.set(au*2.5, 5,-0.01);
 
 //add labels to scene
 scene.add(psycheLabel);
-scene.add(psycheLabelReverse);
+
+//-----------------------------------------------------------------------------------------------------------
 
 const spaceTexture = new THREE.TextureLoader().load('../Resources/Textures/spaceBackground.jpg');
 scene.background = spaceTexture;
 
-let sunIsChecked = true;
+//let sunIsChecked = true;
 
-sun.addEventListener('click', (event) => {
-    if(sunIsChecked){
-        scene.remove(gridHelper);
-        sunIsChecked = false;
-    }
-    else{
-        scene.add(gridHelper);
-        sunIsChecked = true;
-    }
-});
+// sun.addEventListener('click', (event) => {
+//     if(sunIsChecked){
+//         scene.remove(gridHelper);
+//         sunIsChecked = false;
+//     }
+//     else{
+//         scene.add(gridHelper);
+//         sunIsChecked = true;
+//     }
+// });
 
 //--------------------------Planetary Event Listening-------------------------------
 
@@ -303,48 +392,77 @@ function showNextFact(planetIdentifier){
 
 //----------------------------------------------------------------------------
 
-const ambientLight = new THREE.AmbientLight(0xFFFFFF);
-camera.add(ambientLight);
-scene.add(ambientLight);
+// const ambientLight = new THREE.AmbientLight(0xFFFFFF);
+// camera.add(ambientLight);
+// scene.add(ambientLight);
 
-const gridHelper = new THREE.GridHelper(400, 100);
-scene.add(gridHelper)
+//const gridHelper = new THREE.GridHelper(400, 100);
+//scene.add(gridHelper)
 
 const controls = new OrbitControls(camera, renderer.domElement);
 
-
-var earthOrbit = new THREE.Group();
+const earthOrbit = new THREE.Group();
 earthOrbit.add(earth);
 earthOrbit.add(moon);
+earthOrbit.add(earthLabel)
 scene.add(earthOrbit);
 
-var marsOrbit = new THREE.Group();
+const marsOrbit = new THREE.Group();
 marsOrbit.add(mars);
+marsOrbit.add(marsLabel);
 scene.add(marsOrbit)
 
-var moonOrbit = new THREE.Group();
+const moonOrbit = new THREE.Group();
 moonOrbit.add(moon);
 scene.add(moonOrbit);
 
-var psycheOrbit = new THREE.Group();
-psycheOrbit.add(psyche);
-scene.add(psycheOrbit);
+psycheOrbit.add(psycheLabel);
 
-function animate() {
+function animate(){
+    renderer.setAnimationLoop(render)
+}
+
+function render() {
     requestAnimationFrame( animate );
-    earth.rotation.y += 0.01;
-    mars.rotation.y += 0.01;
-    earthOrbit.rotation.y += 0.001;
-    marsOrbit.rotation.y += 0.003;
-    moonOrbit.rotation.y += 0.001;
-    psycheOrbit.rotation.y += 0.002;
-    moon.rotation.y += 0.01;
-    psyche.rotation.y += 0.01;
+
+    earth.rotation.y += 0.003;
+    mars.rotation.y += 0.003;
+    earthOrbit.rotation.y += 0.0005;
+    marsOrbit.rotation.y += 0.0004;
+    moonOrbit.rotation.y += 0.0005;
+    psycheOrbit.rotation.y += 0.0002;
+    moon.rotation.y += 0.003;
+    earthLabel.lookAt(new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z));
+    marsLabel.lookAt(new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z));
+    // psyche.rotation.y += 0.003;
     controls.update();
+    handleController( controller );
 
     interactionManager.update();
 
+    stats.update();
+
     renderer.render(scene, camera);
+    renderer.autoClear = false;
+    renderer.render(scene2, renderer.xr.getCamera())
 }
 animate();
 
+/*
+//WebXR animation implementation
+renderer.setAnimationLoop( function () {
+
+    earth.rotation.y += 0.003;
+    mars.rotation.y += 0.003;
+    earthOrbit.rotation.y += 0.0005;
+    marsOrbit.rotation.y += 0.0004;
+    moonOrbit.rotation.y += 0.0005;
+    psycheOrbit.rotation.y += 0.0002;
+    moon.rotation.y += 0.003;
+    psyche.rotation.y += 0.003;
+    controls.update();
+    interactionManager.update();
+
+    renderer.render(scene, camera);
+});
+*/
