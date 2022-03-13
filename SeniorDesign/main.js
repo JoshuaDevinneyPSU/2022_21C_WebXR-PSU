@@ -9,6 +9,8 @@ import Stats from "three/examples/jsm/libs/stats.module";
 import {ARButton} from "three/examples/jsm/webxr/ARButton";
 import {createMaterial, createPlanet, createSTL} from "./helper-functions.js";
 
+//todo this is just a test bro dont sweat it lol
+
 
 const scene = new THREE.Scene();
 const scene2 = new THREE.Scene();
