@@ -9,9 +9,6 @@ import Stats from "three/examples/jsm/libs/stats.module";
 import {ARButton} from "three/examples/jsm/webxr/ARButton";
 import {createMaterial, createPlanet, createSTL} from "./helper-functions.js";
 
-//todo this is just a test bro dont sweat it lol
-
-
 const scene = new THREE.Scene();
 const scene2 = new THREE.Scene();
 let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -163,6 +160,8 @@ interactionManager.add(sun);
 
 //--------------------------------------------LABELS-------------------------------------------------------
 
+//todo add function to take care of creation of labels
+
 //Earth
 const earthLabelGeometry = new THREE.PlaneGeometry(5, 3);
 const earthLabelTexture = new THREE.TextureLoader().load('../Resources/Textures/earthLabelTexture.jpg');
@@ -229,6 +228,10 @@ scene.background = spaceTexture;
 // });
 
 //--------------------------Planetary Event Listening-------------------------------
+
+//todo generalize isClicked variables into list/dictionary/class to pair with facts and enum of when the fact takes place?
+//todo combine facts with images, facts and the images with the planets and give it a type from the enum it belongs to...
+// done with constructor taking string for fact, url/file link for image and the enum type it has?
 
 //Earth's facts, images, and variables
 let earthIsClicked = false;
@@ -351,8 +354,12 @@ function showFactCard(planetIdentifier)
 let factIndex = 0;
 let lastIdentifier = "";
 
+//todo this entire function can be redone, specifically the switch statement to be more general.  Also, what does that else if do?
+
 //takes in a string to determine which planet's fact to display
 function showNextFact(planetIdentifier){
+
+    //todo remove hardcoded factIndex value, can be generalized with a list of sorts
 
     //increment factIndex and update lastIdentifier
     if (factIndex == 2){
