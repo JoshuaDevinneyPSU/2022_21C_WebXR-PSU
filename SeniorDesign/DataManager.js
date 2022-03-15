@@ -9,7 +9,7 @@ import Stats from "three/examples/jsm/libs/stats.module";
 import {ARButton} from "three/examples/jsm/webxr/ARButton";
 import {createMaterial, createPlanet, createSTL} from "./helper-functions.js";
 
-//import Planet from "./Planet.js";
+import Planet from "./Planet.js";
 
 const scene = new THREE.Scene();
 const scene2 = new THREE.Scene();

@@ -1,4 +1,4 @@
-class FactCard{
+export default class FactCard{
 
     #fact;
     #timeWindow;
@@ -18,6 +18,6 @@ class FactCard{
 
 }
 
-module.exports = {
-    FactCard
-};
+// module.exports = {
+//     FactCard
+// };

@@ -1,7 +1,7 @@
-const {FactCard} = require("./FactCard");
+import FactCard from "./FactCard.js";
 import * as THREE from "three";
 
-class Planet{
+export default class Planet{
 
 
     //private instance variables
@@ -64,6 +64,6 @@ class Planet{
 
 }
 
-module.exports = {
-    Planet
-};
+// module.exports = {
+//     Planet
+// };
