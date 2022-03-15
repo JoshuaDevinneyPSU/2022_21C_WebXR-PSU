@@ -9,6 +9,8 @@ import Stats from "three/examples/jsm/libs/stats.module";
 import {ARButton} from "three/examples/jsm/webxr/ARButton";
 import {createMaterial, createPlanet, createSTL} from "./helper-functions.js";
 
+//import Planet from "./Planet.js";
+
 const scene = new THREE.Scene();
 const scene2 = new THREE.Scene();
 let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -49,26 +51,33 @@ renderer.render(scene, camera);
 
 const au = 20;
 
+//planet list
+let planets = [];
+
 const earthTexture = new THREE.TextureLoader().load('../Resources/Textures/earthTexture.jpg');
 const normalTexture = new THREE.TextureLoader().load('../Resources/Maps/earthNormalMap.tif');
 
 const earthMaterial = createMaterial('texture', earthTexture);
 const earth = createPlanet(3, 32, 32, au, 0, 10, earthMaterial);
+//planets.add(earth);
 scene.add(earth);
 
 const sunTexture = new THREE.TextureLoader().load('../Resources/Textures/sun.jpg');
 const sunMaterial = createMaterial('texture-basic', sunTexture);
 const sun = createPlanet(10, 32, 32, 0, 0, 0, sunMaterial);
+//planets.add(sun);
 scene.add(sun);
 
 const marsTexture = new THREE.TextureLoader().load('../Resources/Textures/marsTexture.jpg');
 const marsMaterial = createMaterial('texture', marsTexture);
 const mars = createPlanet(3/2, 32, 32, -(au*1.5), 0, 0, marsMaterial);
+//planets.add(mars);
 scene.add(mars);
 
 const moonTexture = new THREE.TextureLoader().load('../Resources/Textures/moonTexture.jpg');
 const moonMaterial = createMaterial('texture', moonTexture);
 const moon = createPlanet(3*.25, 32, 32, au+8, 0, 0, moonMaterial);
+//planets.add(moon);
 scene.add(moon);
 
 const psycheOrbit = new THREE.Group();
