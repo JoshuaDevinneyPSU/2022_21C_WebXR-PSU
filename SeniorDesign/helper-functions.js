@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import {STLLoader} from "three/examples/jsm/loaders/STLLoader";
 
+
 //get physical specifications from user and create a planet with them
 export function createPlanet( radius, widthSegments = 32, heightSegments = 32, xPosition, yPosition, zPosition, material){
 
