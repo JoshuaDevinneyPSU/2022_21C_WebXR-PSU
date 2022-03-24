@@ -17,7 +17,3 @@ export default class FactCard{
     }
 
 }
-
-// module.exports = {
-//     FactCard
-// };

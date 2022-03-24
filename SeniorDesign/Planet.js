@@ -63,7 +63,3 @@ export default class Planet{
     }
 
 }
-
-// module.exports = {
-//     Planet
-// };

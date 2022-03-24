@@ -58,26 +58,26 @@ const earthTexture = new THREE.TextureLoader().load('../Resources/Textures/earth
 const normalTexture = new THREE.TextureLoader().load('../Resources/Maps/earthNormalMap.tif');
 
 const earthMaterial = createMaterial('texture', earthTexture);
-const earth = createPlanet(3, 32, 32, au, 0, 10, earthMaterial);
-//planets.add(earth);
+const earth = new Planet(3, 32, 32, au, 0, 10, earthMaterial);
+planets[planets.length] = earth;
 scene.add(earth);
 
 const sunTexture = new THREE.TextureLoader().load('../Resources/Textures/sun.jpg');
 const sunMaterial = createMaterial('texture-basic', sunTexture);
-const sun = createPlanet(10, 32, 32, 0, 0, 0, sunMaterial);
-//planets.add(sun);
+const sun = new Planet(10, 32, 32, 0, 0, 0, sunMaterial);
+planets[planets.length] = sun;
 scene.add(sun);
 
 const marsTexture = new THREE.TextureLoader().load('../Resources/Textures/marsTexture.jpg');
 const marsMaterial = createMaterial('texture', marsTexture);
-const mars = createPlanet(3/2, 32, 32, -(au*1.5), 0, 0, marsMaterial);
-//planets.add(mars);
+const mars = new Planet(3/2, 32, 32, -(au*1.5), 0, 0, marsMaterial);
+planets[planets.length] = mars;
 scene.add(mars);
 
 const moonTexture = new THREE.TextureLoader().load('../Resources/Textures/moonTexture.jpg');
 const moonMaterial = createMaterial('texture', moonTexture);
-const moon = createPlanet(3*.25, 32, 32, au+8, 0, 0, moonMaterial);
-//planets.add(moon);
+const moon = new Planet(3*.25, 32, 32, au+8, 0, 0, moonMaterial);
+planets[planets.length] = moon;
 scene.add(moon);
 
 const psycheOrbit = new THREE.Group();
