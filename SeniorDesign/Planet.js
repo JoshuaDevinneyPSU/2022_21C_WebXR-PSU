@@ -1,7 +1,7 @@
 import FactCard from "./FactCard.js";
 import * as THREE from "three";
 
-export default class Planet{
+export default class Planet extends THREE.Mesh{
 
 
     //private instance variables
@@ -14,12 +14,14 @@ export default class Planet{
     #material;
     #isClicked;
     #factCards;
+    #planetMesh;
 
     //todo add implementation for the current fact being displayed/iterate through next ones
 
     #currentFactPosition;
 
     constructor(radius, widthSegments = 32, heightSegments = 32, xPosition, yPosition, zPosition, material) {
+        super();
         this.#radius = radius;
         this.#widthSegments = widthSegments;
         this.#heightSegments = heightSegments;
@@ -30,6 +32,19 @@ export default class Planet{
         this.#isClicked = false;
         this.#factCards = [];
         this.#currentFactPosition = 0;
+
+        //create initial geometry and material
+        let planetGeo = new THREE.SphereGeometry(this.#radius, this.#widthSegments, this.#heightSegments);
+
+        //create mesh out of geometry and material
+        this.#planetMesh = new THREE.Mesh(planetGeo, this.#material);
+
+        //set specified position
+        this.#planetMesh.position.set(this.#xPosition, this.#yPosition, this.#zPosition);
+    }
+
+    getMesh(){
+        return this.#planetMesh;
     }
 
     initializeFactCards(filePath){
@@ -48,18 +63,20 @@ export default class Planet{
         }
     }
 
+
+/*
     createPlanet(){
         //create initial geometry and material
         let planetGeo = new THREE.SphereGeometry(this.#radius, this.#widthSegments, this.#heightSegments);
 
         //create mesh out of geometry and material
-        let planet = new THREE.Mesh(planetGeo, this.#material);
+        this.#planetMesh = new THREE.Mesh(planetGeo, this.#material);
 
         //set specified position
-        planet.position.set(this.#xPosition, this.#yPosition, this.#zPosition);
+        this.#planetMesh.position.set(this.#xPosition, this.#yPosition, this.#zPosition);
 
         //return created planet
         return planet;
     }
-
+*/
 }
