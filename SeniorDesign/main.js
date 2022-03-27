@@ -18,6 +18,17 @@ const scene = new THREE.Scene();
 const scene2 = new THREE.Scene();
 let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
+//---------------------------- RAYCASTING SETUP--------------------------------------
+
+//Initialize raycaster and cursor
+const raycaster = new THREE.Raycaster();
+const rayPointer = new THREE.Vector2();
+
+//Add listener to check for mouse click, checkPlanetClick is the function that is executed, found in Planetary Event Listening ection
+document.addEventListener('click', checkPlanetClick);
+
+//-----------------------------------------------------------------------------------
+
 camera.position.setZ(-10);
 camera.position.setY(25);
 
@@ -58,7 +69,9 @@ const earthTexture = new THREE.TextureLoader().load('../Resources/Textures/earth
 const normalTexture = new THREE.TextureLoader().load('../Resources/Maps/earthNormalMap.tif');
 
 const earthMaterial = createMaterial('texture', earthTexture);
-const earth = createPlanet(3, 32, 32, au, 0, 10, earthMaterial);
+const earth = createPlanet(3, 32, 32, au, 1, 10, earthMaterial);
+earth.userData.clickable = true;
+earth.userData.name = 'Earth';
 scene.add(earth);
 
 const sunTexture = new THREE.TextureLoader().load('../Resources/Textures/sun.jpg');
@@ -68,7 +81,9 @@ scene.add(sun);
 
 const marsTexture = new THREE.TextureLoader().load('../Resources/Textures/marsTexture.jpg');
 const marsMaterial = createMaterial('texture', marsTexture);
-const mars = createPlanet(3/2, 32, 32, -(au*1.5), 0, 0, marsMaterial);
+const mars = createPlanet(3/2, 32, 32, -(au*1.5), -1, 0, marsMaterial);
+mars.userData.clickable = true;
+mars.userData.name = 'Mars';
 scene.add(mars);
 
 const moonTexture = new THREE.TextureLoader().load('../Resources/Textures/moonTexture.jpg');
@@ -80,9 +95,15 @@ const psycheOrbit = new THREE.Group();
 
 const psycheTexture = new THREE.TextureLoader().load('../Resources/Textures/psycheTexture.jpg');
 const psycheMaterial = createMaterial('texture', psycheTexture);
-const psyche = createSTL('../Resources/Models/PsycheModel.stl', 0, 0, 0, psycheMaterial, scene);
+const psyche = createSTL('../Resources/Models/PsycheModel.stl', 0, 0, -2, psycheMaterial, scene);
 
 const spaceCraft = createSTL('../Resources/Models/SpaceCraft.stl', 0, 0, 0, psycheMaterial, scene, 0.005, 0.005, 0.005);
+
+//Create Label
+const psycheLabelGeometry = new THREE.PlaneGeometry(5, 3);
+const psycheLabelTexture = new THREE.TextureLoader().load('../Resources/Textures/psycheLabelTexture.jpg');
+const psycheLabelMaterial = new THREE.MeshBasicMaterial({map: psycheLabelTexture});
+const psycheLabel = new THREE.Mesh(psycheLabelGeometry, psycheLabelMaterial);
 
 const loader = new STLLoader();
 loader.load(
@@ -90,9 +111,17 @@ loader.load(
     function (geometry) {
         const mesh = new THREE.Mesh(geometry, psycheMaterial);
         mesh.position.setZ(-(au*2.5));
+        mesh.userData.clickable = true;
+        mesh.userData.name = 'Psyche';
         scene.add(mesh);
 
         psycheOrbit.add(mesh);
+
+        psycheLabel.position.set(mesh.position.x, mesh.position.y + 5, mesh.position.z);
+        //add label to scene
+        scene.add(psycheLabel);
+        psycheOrbit.add(psycheLabel);
+
         scene.add(psycheOrbit);
     },
     (xhr) => {
@@ -149,6 +178,7 @@ function handleController( controller ) {
     const userData = controller.userData;
 
     cursor.set( 0, 0, - 0.2 ).applyMatrix4( controller.matrixWorld );
+
 }
 
 const stats = Stats();
@@ -184,92 +214,122 @@ marsLabel.position.set(mars.position.x, mars.position.y + 5, mars.position.z);
 //add label to scene
 scene.add(marsLabel);
 
-//Psyche
-const psycheLabelGeometry = new THREE.PlaneGeometry(5, 3);
-const psycheLabelTexture = new THREE.TextureLoader().load('../Resources/Textures/psycheLabelTexture.jpg');
-const psycheLabelMaterial = new THREE.MeshBasicMaterial({map: psycheLabelTexture});
-const psycheLabel = new THREE.Mesh(psycheLabelGeometry, psycheLabelMaterial);
-//psycheLabel.position.set(psyche.position.x, psyche.position.y + 5, psyche.position.z);
-
-//add label to scene
-scene.add(psycheLabel);
-
 //-----------------------------------------------------------------------------------------------------------
 
 const spaceTexture = new THREE.TextureLoader().load('../Resources/Textures/spaceBackground.jpg');
 scene.background = spaceTexture;
-
-//let sunIsChecked = true;
-
-// sun.addEventListener('click', (event) => {
-//     if(sunIsChecked){
-//         scene.remove(gridHelper);
-//         sunIsChecked = false;
-//     }
-//     else{
-//         scene.add(gridHelper);
-//         sunIsChecked = true;
-//     }
-// });
 
 //--------------------------Planetary Event Listening-------------------------------
 
 //Earth's facts, images, and variables
 let earthIsClicked = false;
 const earthFacts = ["The Psyche mission will begin by launching from our home planet Earth!",
-                    "This is the Psyche spacecraft. It is an unmanned orbiting spacecraft",
-                    "The current launch date is set for August 01, 2022"];
+                    "This is the Psyche spacecraft. It is an unmanned orbiting spacecraft.",
+                    "The current launch date is set for August 01, 2022.",
+                    "The Psyche spacecraft features two massive solar panels that total 800 square feet.",
+                    "The Psyche spacecraft will relay information back to Earth using cutting-edge laser technology."];
 const earthImages = ["Resources/Images/earthFact1.jpeg",
                      "Resources/Images/earthFact2.jpeg",
-                     "Resources/Images/earthFact3.jpeg"];
+                     "Resources/Images/earthFact3.jpeg",
+                     "Resources/Images/earthFact4.jpg",
+                     "Resources/Images/earthFact5.jpg"];
 
 //Mars' facts, images, and variables
 let marsIsClicked = false;
-const marsFacts = ["The Psyche spacecraft will fly by Mars on its way to Psyche",
-                   "The fly by will give the spacecraft the extra speed it needs for its journey",
-                   "The fly by is expected to happen sometime in 2023"];
+const marsFacts = ["The Psyche spacecraft will fly by Mars on its way to Psyche.",
+                   "The fly by will give the spacecraft the extra speed it needs for its journey.",
+                   "The spacecraft will gain speed from Mars using its gravitational pull. This is called a 'gravity assist.'",
+                   "The gravity assist will also save fuel, money, and time.",
+                   "The fly by is expected to happen sometime in 2023."];
 const marsImages = ["Resources/Images/marsFact1.jpeg",
                     "Resources/Images/marsFact2.jpeg",
-                    "Resources/Images/marsFact3.jpeg"];
+                    "Resources/Images/marsFact3.jpeg",
+                    "Resources/Images/marsFact4.jpg",
+                    "Resources/Images/marsFact5.JPG"];
 
-//handle the user clicking on the Earth Model
-earth.addEventListener("click", (event) => {
-    if(earthIsClicked){
-        //executes the hideFactCard function and sets earth clicked to false
-        hideFactCard();
-    }
-    else {
-        //executes the showFactCard function, sets earth clicked to true, shows next fact
-        earthIsClicked = true;
-        showFactCard("Earth");
-        showNextFact("Earth");
-    }
-});
+//Psyche's facts, images, and variables
+let psycheIsClicked = false;
+const psycheFacts = ["Psyche lies in the asteroid belt between Mars and Jupiter.",
+                     "Psyche is a unique asteroid, rich in metal. Scientists believe that studying it will reveal secrets about the formation of planets.",
+                     "The spacecraft is set to arrive at Psyche in 2026, where it will orbit for 21 months.",
+                     "As the spacecraft orbits Psyche, it will map the surface and study its properties. Information will be relayed back to Earth for study.",
+                     "The name 'Psyche' comes from the Greek goddess of the soul."];
+const psycheImages = ["Resources/Images/psycheFact1.jpg",
+                      "Resources/Images/psycheFact2.jpg",
+                      "Resources/Images/psycheFact3.JPG",
+                      "Resources/Images/psycheFact4.jpg",
+                      "Resources/Images/psycheFact5.jpg"];
 
-//handle the user clicking on the Mars Model
-mars.addEventListener("click", (event) => {
-    if(marsIsClicked){
-        //executes the hideFactCard function and sets earth clicked to false
-        hideFactCard();
+//-----Handle click function using raycasts
+function checkPlanetClick(event){
+
+    //get location of mouse and use it to set the raycast
+    //extra math is to normalize coordinates to user's screen
+    rayPointer.set((event.clientX / window.innerWidth) * 2 - 1, -(event.clientY / window.innerHeight) * 2 + 1);
+    raycaster.setFromCamera(rayPointer, camera);
+
+    //get array of all objects that raycast intersects
+    const intersectedObjects = raycaster.intersectObjects( scene.children );
+
+    //if valid planet was clicked, execute
+    if(intersectedObjects.length > 0 && intersectedObjects[0].object.userData.clickable)
+    {
+        const clickedPlanet = intersectedObjects[0];
+        console.log(clickedPlanet);
+
+        //Earth Case
+        if (clickedPlanet.object.userData.name == 'Earth'){
+            if(earthIsClicked){
+                //executes the hideFactCard function and sets earth clicked to false
+                hideFactCard();
+            }
+            else {
+                //executes the showFactCard function, sets earth clicked to true, shows next fact
+                earthIsClicked = true;
+                showFactCard("Earth");
+                showNextFact("Earth");
+            }
+        }
+        //Mars Case
+        else if(clickedPlanet.object.userData.name == 'Mars'){
+            if(marsIsClicked){
+                //executes the hideFactCard function and sets earth clicked to false
+                hideFactCard();
+            }
+            else {
+                //executes the showFactCard function, sets earth clicked to true, shows next fact
+                marsIsClicked = true;
+                showFactCard("Mars");
+                showNextFact("Mars");
+            }
+        }
+        //Psyche Case
+        else if (clickedPlanet.object.userData.name == 'Psyche') {
+            if(psycheIsClicked){
+                //executes the hideFactCard function and sets earth clicked to false
+                hideFactCard();
+            }
+            else {
+                //executes the showFactCard function, sets earth clicked to true, shows next fact
+                psycheIsClicked = true;
+                showFactCard("Psyche");
+                showNextFact("Psyche");
+            }
+        }
     }
-    else {
-        //executes the showFactCard function, sets earth clicked to true, shows next fact
-        marsIsClicked = true;
-        showFactCard("Mars");
-        showNextFact("Mars");
-    }
-});
+
+}
 
 //hides the fact card showing the facts and resets all variables
 function hideFactCard()
 {
-    factIndex = 2;
+    factIndex = 4;
     document.getElementById('fact-card').innerText = '';
     earthIsClicked = false;
     marsIsClicked = false;
+    psycheIsClicked = false;
 }
 
-//occurs when the Earth model is clicked, shows the card containing the facts pertaining to Earth
 //pass the name of the planet in the planetIdentifier parameter
 function showFactCard(planetIdentifier)
 {
@@ -339,7 +399,7 @@ let lastIdentifier = "";
 function showNextFact(planetIdentifier){
 
     //increment factIndex and update lastIdentifier
-    if (factIndex == 2){
+    if (factIndex == 4){
         factIndex = 0;
     }
     else if (planetIdentifier != lastIdentifier)
@@ -353,7 +413,6 @@ function showNextFact(planetIdentifier){
         factIndex++;
     }
 
-    console.log("Updating " + planetIdentifier + " with factIndex: " + factIndex);
     //change behavior depending on identifier passed
     let factToDisplay;
     switch (planetIdentifier)
@@ -370,6 +429,12 @@ function showNextFact(planetIdentifier){
             document.getElementById("fact-text").innerHTML = "";
             document.getElementById("fact-text").appendChild(factToDisplay);
             document.getElementById("card-img").setAttribute("src", marsImages[factIndex]);
+            break;
+        case "Psyche":
+            factToDisplay = document.createTextNode(psycheFacts[factIndex]);
+            document.getElementById("fact-text").innerHTML = "";
+            document.getElementById("fact-text").appendChild(factToDisplay);
+            document.getElementById("card-img").setAttribute("src", psycheImages[factIndex]);
             break;
         default:
             console.log("Error in showNextFact switch");
@@ -402,7 +467,7 @@ const moonOrbit = new THREE.Group();
 moonOrbit.add(moon);
 scene.add(moonOrbit);
 
-psycheOrbit.add(psycheLabel);
+//psycheOrbit.add(psycheLabel);
 
 function animate(){
     renderer.setAnimationLoop(render)
@@ -420,7 +485,7 @@ function render() {
     moon.rotation.y += 0.003;
     earthLabel.lookAt(new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z));
     marsLabel.lookAt(new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z));
-    // psyche.rotation.y += 0.003;
+    psycheLabel.lookAt(new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z));
     controls.update();
     handleController( controller );
 
