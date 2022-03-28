@@ -243,7 +243,7 @@ const marsFacts = ["The Psyche spacecraft will fly by Mars on its way to Psyche.
                    "The fly by is expected to happen sometime in 2023."];
 const marsImages = ["Resources/Images/marsFact1.jpeg",
                     "Resources/Images/marsFact2.jpeg",
-                    "Resources/Images/marsFact3.jpeg",
+                    "Resources/Images/marsFact3.jpg",
                     "Resources/Images/marsFact4.jpg",
                     "Resources/Images/marsFact5.JPG"];
 
