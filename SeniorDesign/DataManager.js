@@ -9,6 +9,7 @@ import Stats from "three/examples/jsm/libs/stats.module";
 import {ARButton} from "three/examples/jsm/webxr/ARButton";
 import {createMaterial, createPlanet, createSTL} from "./helper-functions.js";
 
+import Planet from "./Planet.js";
 
 const scene = new THREE.Scene();
 const scene2 = new THREE.Scene();
@@ -50,27 +51,30 @@ renderer.render(scene, camera);
 
 const au = 20;
 
+//planet list
+let planets = [];
+
 const earthTexture = new THREE.TextureLoader().load('../Resources/Textures/earthTexture.jpg');
 const normalTexture = new THREE.TextureLoader().load('../Resources/Maps/earthNormalMap.tif');
 
 const earthMaterial = createMaterial('texture', earthTexture);
-const earth = createPlanet(3, 32, 32, au, 0, 10, earthMaterial);
-scene.add(earth);
+planets[planets.length] = new Planet(3, 32, 32, au, 0, 10, earthMaterial);
+scene.add(planets[planets.length-1].getMesh());
 
 const sunTexture = new THREE.TextureLoader().load('../Resources/Textures/sun.jpg');
 const sunMaterial = createMaterial('texture-basic', sunTexture);
-const sun = createPlanet(10, 32, 32, 0, 0, 0, sunMaterial);
-scene.add(sun);
+planets[planets.length] = new Planet(10, 32, 32, 0, 0, 0, sunMaterial);
+scene.add(planets[planets.length-1].getMesh());
 
 const marsTexture = new THREE.TextureLoader().load('../Resources/Textures/marsTexture.jpg');
 const marsMaterial = createMaterial('texture', marsTexture);
-const mars = createPlanet(3/2, 32, 32, -(au*1.5), 0, 0, marsMaterial);
-scene.add(mars);
+planets[planets.length] = new Planet(3/2, 32, 32, -(au*1.5), 0, 0, marsMaterial);
+scene.add(planets[planets.length-1].getMesh());
 
 const moonTexture = new THREE.TextureLoader().load('../Resources/Textures/moonTexture.jpg');
 const moonMaterial = createMaterial('texture', moonTexture);
-const moon = createPlanet(3*.25, 32, 32, au+8, 0, 0, moonMaterial);
-scene.add(moon);
+planets[planets.length] = new Planet(3*.25, 32, 32, au+8, 0, 0, moonMaterial);
+scene.add(planets[planets.length-1].getMesh());
 
 const psycheOrbit = new THREE.Group();
 
@@ -100,6 +104,7 @@ loader.load(
     }
 )
 
+//todo what exactly is this "mesh" variable doing?
 loader.load(
     '../Resources/Models/SpaceCraft.stl',
     function (geometry) {
@@ -160,6 +165,8 @@ interactionManager.add(mars);
 interactionManager.add(sun);
 
 //--------------------------------------------LABELS-------------------------------------------------------
+
+//todo add function to take care of creation of labels
 
 //Earth
 const earthLabelGeometry = new THREE.PlaneGeometry(5, 3);
@@ -227,6 +234,10 @@ scene.background = spaceTexture;
 // });
 
 //--------------------------Planetary Event Listening-------------------------------
+
+//todo generalize isClicked variables into list/dictionary/class to pair with facts and enum of when the fact takes place?
+//todo combine facts with images, facts and the images with the planets and give it a type from the enum it belongs to...
+// done with constructor taking string for fact, url/file link for image and the enum type it has?
 
 //Earth's facts, images, and variables
 let earthIsClicked = false;
@@ -349,8 +360,12 @@ function showFactCard(planetIdentifier)
 let factIndex = 0;
 let lastIdentifier = "";
 
+//todo this entire function can be redone, specifically the switch statement to be more general.  Also, what does that else if do?
+
 //takes in a string to determine which planet's fact to display
 function showNextFact(planetIdentifier){
+
+    //todo remove hardcoded factIndex value, can be generalized with a list of sorts
 
     //increment factIndex and update lastIdentifier
     if (factIndex == 2){

@@ -1,8 +1,11 @@
 import * as THREE from "three";
 import {STLLoader} from "three/examples/jsm/loaders/STLLoader";
 
+
 //get physical specifications from user and create a planet with them
 export function createPlanet( radius, widthSegments = 32, heightSegments = 32, xPosition, yPosition, zPosition, material){
+
+    //todo assert test that radius, x, y and z position are non-null?
 
     //check that radius is greater than zero
     if(radius <= 0)
@@ -41,6 +44,9 @@ export function createMaterial(type, material){
 }
 
 export function createSTL(path, xPos, yPos, zPos, material, scene, xScale = 1, yScale = 1, zScale = 1, orbit){
+
+    //todo assert test that x, y, z pos are non-null? others user are non-null? ie path, scene, material, orbit
+
     const loader = new STLLoader();
     let stlMesh = null;
     loader.load(
