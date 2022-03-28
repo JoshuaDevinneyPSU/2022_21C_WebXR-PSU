@@ -213,18 +213,19 @@ scene.add(psycheLabel);
 const spaceTexture = new THREE.TextureLoader().load('../Resources/Textures/spaceBackground.jpg');
 scene.background = spaceTexture;
 
-//let sunIsChecked = true;
 
-// sun.addEventListener('click', (event) => {
-//     if(sunIsChecked){
-//         scene.remove(gridHelper);
-//         sunIsChecked = false;
-//     }
-//     else{
-//         scene.add(gridHelper);
-//         sunIsChecked = true;
-//     }
-// });
+//handles the clicking of the sun
+let sunIsClicked = true;
+sun.addEventListener('click', (event) => {
+     if(sunIsClicked){
+         scene.background = null;
+         sunIsClicked = false;
+     }
+    else{
+         scene.background = spaceTexture;
+         sunIsClicked = true;
+     }
+ });
 
 //--------------------------Planetary Event Listening-------------------------------
 
@@ -275,6 +276,11 @@ mars.addEventListener("click", (event) => {
 });
 
 //hides the fact card showing the facts and resets all variables
+function hideBG()
+{
+    scene.background = null;
+}
+
 function hideFactCard()
 {
     factIndex = 2;
