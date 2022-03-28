@@ -320,7 +320,7 @@ function checkPlanetClick(event){
 
 }
 
-//hides the fact card showing the facts and resets all variables
+///hides the fact card showing the facts and resets all variables
 function hideFactCard()
 {
     factIndex = 4;
