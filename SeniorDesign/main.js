@@ -13,7 +13,6 @@ import {createMaterial, createPlanet, createSTL} from "./helper-functions.js";
 // const createMaterial = require("./helper-functions");
 // const createPlanet = require("./helper-functions");
 
-
 const scene = new THREE.Scene();
 const scene2 = new THREE.Scene();
 let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -36,12 +35,6 @@ const renderer = new THREE.WebGLRenderer({ alpha:true, antialias:true, canvas: d
 
 renderer.autoClear = false;
 
-const interactionManager = new InteractionManager(
-    renderer,
-    camera,
-    renderer.domElement
-);
-
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
 camera.position.setZ(30);
@@ -52,13 +45,12 @@ document.body.appendChild( ARButton.createButton( renderer ) );
 
 window.addEventListener('resize', onWindowResize);
 
+//execute when the user resizes the window
 function onWindowResize() {
-
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
 
     renderer.setSize( window.innerWidth, window.innerHeight );
-
 }
 
 renderer.render(scene, camera);
@@ -150,47 +142,8 @@ loader.load(
      }
 )
 
-const cursor = new THREE.Vector3();
-
-renderer.xr.setReferenceSpaceType('unbounded')
-
-function onSelectStart() {
-
-    this.userData.isSelecting = true;
-    this.userData.skipFrames = 2;
-
-}
-
-function onSelectEnd() {
-
-    this.userData.isSelecting = false;
-
-}
-
-let controller = renderer.xr.getController( 0 );
-controller.addEventListener( 'selectstart', onSelectStart );
-controller.addEventListener( 'selectend', onSelectEnd );
-controller.userData.skipFrames = 0;
-scene.add( controller );
-
-function handleController( controller ) {
-
-    const userData = controller.userData;
-
-    cursor.set( 0, 0, - 0.2 ).applyMatrix4( controller.matrixWorld );
-
-}
-
-const stats = Stats();
-document.body.appendChild(stats.dom);
-
 const light = new THREE.PointLight( 0xF4E99B, 5, 150 );
 scene.add( light );
-
-//enable EventListeners for meshes
-interactionManager.add(earth);
-interactionManager.add(mars);
-interactionManager.add(sun);
 
 //--------------------------------------------LABELS-------------------------------------------------------
 
@@ -342,8 +295,6 @@ function showFactCard(planetIdentifier)
 
     //create image and set attributes
     const factCardImage = document.createElement("img");
-    //factCardImage.setAttribute("src",
-    //    "https://images.pexels.com/photos/87651/earth-blue-planet-globe-planet-87651.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500");
     factCardImage.setAttribute("class", "card-img-top");
     factCardImage.setAttribute("id", "card-img");
 
@@ -355,8 +306,6 @@ function showFactCard(planetIdentifier)
     const cardBodyDivPar = document.createElement("p");
     cardBodyDivPar.setAttribute("class", "card-text");
     cardBodyDivPar.setAttribute("id", "fact-text");
-    //const cardBodyText = document.createTextNode("The Psyche mission will begin by launching from our home planet Earth!");
-    //cardBodyDivPar.appendChild(cardBodyText);
     cardBodyDiv.appendChild(cardBodyDivPar);
 
     //create fact card button div
@@ -443,12 +392,9 @@ function showNextFact(planetIdentifier){
 
 //----------------------------------------------------------------------------
 
-// const ambientLight = new THREE.AmbientLight(0xFFFFFF);
-// camera.add(ambientLight);
-// scene.add(ambientLight);
-
-//const gridHelper = new THREE.GridHelper(400, 100);
-//scene.add(gridHelper)
+const ambientLight = new THREE.AmbientLight(0xFFFDD0, 0.5);
+camera.add(ambientLight);
+scene.add(ambientLight);
 
 const controls = new OrbitControls(camera, renderer.domElement);
 
@@ -466,8 +412,6 @@ scene.add(marsOrbit)
 const moonOrbit = new THREE.Group();
 moonOrbit.add(moon);
 scene.add(moonOrbit);
-
-//psycheOrbit.add(psycheLabel);
 
 function animate(){
     renderer.setAnimationLoop(render)
@@ -487,33 +431,9 @@ function render() {
     marsLabel.lookAt(new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z));
     psycheLabel.lookAt(new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z));
     controls.update();
-    handleController( controller );
-
-    interactionManager.update();
-
-    stats.update();
 
     renderer.render(scene, camera);
     renderer.autoClear = false;
     renderer.render(scene2, renderer.xr.getCamera())
 }
 animate();
-
-/*
-//WebXR animation implementation
-renderer.setAnimationLoop( function () {
-
-    earth.rotation.y += 0.003;
-    mars.rotation.y += 0.003;
-    earthOrbit.rotation.y += 0.0005;
-    marsOrbit.rotation.y += 0.0004;
-    moonOrbit.rotation.y += 0.0005;
-    psycheOrbit.rotation.y += 0.0002;
-    moon.rotation.y += 0.003;
-    psyche.rotation.y += 0.003;
-    controls.update();
-    interactionManager.update();
-
-    renderer.render(scene, camera);
-});
-*/
