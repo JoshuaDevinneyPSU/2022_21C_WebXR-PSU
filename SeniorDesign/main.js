@@ -40,8 +40,23 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 camera.position.setZ(30);
 
 //Enable WebXR support
-renderer.xr.enabled = true;
-document.body.appendChild( ARButton.createButton( renderer ) );
+function setupXR(){
+    renderer.xr.enabled = true;
+
+    let controller = renderer.xr.getController(0);
+
+    function onSelect(){
+        console.log("Clicked");
+    }
+
+    controller.addEventListener("select", onSelect);
+    scene.add(controller);
+
+    document.body.appendChild( ARButton.createButton( renderer ) );
+
+    renderer.setAnimationLoop(render);
+}
+setupXR();
 
 window.addEventListener('resize', onWindowResize);
 
@@ -49,7 +64,6 @@ window.addEventListener('resize', onWindowResize);
 function onWindowResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
-
     renderer.setSize( window.innerWidth, window.innerHeight );
 }
 
@@ -434,6 +448,5 @@ function render() {
 
     renderer.render(scene, camera);
     renderer.autoClear = false;
-    renderer.render(scene2, renderer.xr.getCamera())
 }
 animate();
