@@ -9,8 +9,6 @@ canvas {
   height: 250px;
   display: inline-block;
   text-align: center;
-  position: relative;
-  z-index: 1000;
 
   background-color: #592651;
   border-style: solid;
