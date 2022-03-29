@@ -39,7 +39,8 @@ renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
 camera.position.setZ(30);
 
-//Enable WebXR support
+
+//Enable WebXR support-------------------------------------
 function setupXR(){
     renderer.xr.enabled = true;
 
@@ -57,6 +58,7 @@ function setupXR(){
     renderer.setAnimationLoop(render);
 }
 setupXR();
+//--------------------------------------------------------
 
 window.addEventListener('resize', onWindowResize);
 
