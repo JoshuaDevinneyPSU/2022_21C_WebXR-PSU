@@ -94,6 +94,8 @@ planets[planets.length-1].getMesh().userData.name = 'Earth';
 const sunTexture = new THREE.TextureLoader().load('../Resources/Textures/sun.jpg');
 const sunMaterial = createMaterial('texture-basic', sunTexture);
 planets[planets.length] = new Planet(10, 32, 32, 0, 0, 0, sunMaterial);
+planets[planets.length-1].getMesh().userData.clickable = true;
+planets[planets.length-1].getMesh().userData.name = 'Sun';
 scene.add(planets[planets.length-1].getMesh());
 
 const marsTexture = new THREE.TextureLoader().load('../Resources/Textures/marsTexture.jpg');
@@ -208,6 +210,7 @@ scene.background = spaceTexture;
 // done with constructor taking string for fact, url/file link for image and the enum type it has?
 
 //Earth's facts, images, and variables
+let sunIsClicked = false;
 let earthIsClicked = false;
 const earthFacts = ["The Psyche mission will begin by launching from our home planet Earth!",
                     "This is the Psyche spacecraft. It is an unmanned orbiting spacecraft.",
@@ -302,6 +305,16 @@ function checkPlanetClick(event){
                 showNextFact("Psyche");
             }
         }
+        else if (clickedPlanet.object.userData.name == 'Sun') {
+            //TODO: find out why this only works once
+            if(sunIsClicked){
+                showBG();
+            }
+            else{
+                sunIsClicked = true;
+                hideBG();
+            }
+        }
     }
 
 }
@@ -310,6 +323,11 @@ function checkPlanetClick(event){
 function hideBG()
 {
     scene.background = null;
+}
+
+function showBG()
+{
+    scene.background = spaceTexture;
 }
 ///hides the fact card showing the facts and resets all variables
 function hideFactCard()
