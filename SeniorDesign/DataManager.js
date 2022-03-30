@@ -252,6 +252,8 @@ const psycheImages = ["Resources/Images/psycheFact1.jpg",
 //-----Handle click function using raycasts
 function checkPlanetClick(event){
 
+
+
     //get location of mouse and use it to set the raycast
     //extra math is to normalize coordinates to user's screen
     rayPointer.set((event.clientX / window.innerWidth) * 2 - 1, -(event.clientY / window.innerHeight) * 2 + 1);
@@ -309,6 +311,7 @@ function checkPlanetClick(event){
             //TODO: find out why this only works once
             if(sunIsClicked){
                 showBG();
+                sunIsClicked = false;
             }
             else{
                 sunIsClicked = true;
