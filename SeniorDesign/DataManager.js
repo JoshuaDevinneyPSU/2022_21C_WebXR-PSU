@@ -193,7 +193,7 @@ const marsLabelGeometry = new THREE.PlaneGeometry(5, 3);
 const marsLabelTexture = new THREE.TextureLoader().load('../Resources/Textures/marsLabelTexture.jpg');
 const marsLabelMaterial = new THREE.MeshBasicMaterial({map: marsLabelTexture});
 const marsLabel = new THREE.Mesh(marsLabelGeometry, marsLabelMaterial);
-marsLabel.position.set(planets[1].getMesh().position.x, planets[1].getMesh().position.y + 5, planets[1].getMesh().position.z);
+marsLabel.position.set(planets[2].getMesh().position.x, planets[2].getMesh().position.y + 5, planets[2].getMesh().position.z);
 
 //add label to scene
 scene.add(marsLabel);
@@ -463,17 +463,17 @@ const controls = new OrbitControls(camera, renderer.domElement);
 
 const earthOrbit = new THREE.Group();
 earthOrbit.add(planets[0].getMesh());
-earthOrbit.add(planets[2].getMesh());
+earthOrbit.add(planets[3].getMesh());
 earthOrbit.add(earthLabel)
 scene.add(earthOrbit);
 
 const marsOrbit = new THREE.Group();
-marsOrbit.add(planets[1].getMesh());
+marsOrbit.add(planets[2].getMesh());
 marsOrbit.add(marsLabel);
 scene.add(marsOrbit)
 
 const moonOrbit = new THREE.Group();
-moonOrbit.add(planets[2].getMesh());
+moonOrbit.add(planets[3].getMesh());
 scene.add(moonOrbit);
 
 function animate(){
@@ -484,12 +484,12 @@ function render() {
     requestAnimationFrame( animate );
 
     planets[0].getMesh().rotation.y += 0.003;
-    planets[1].getMesh().rotation.y += 0.003;
+    planets[2].getMesh().rotation.y += 0.003;
     earthOrbit.rotation.y += 0.0005;
     marsOrbit.rotation.y += 0.0004;
     moonOrbit.rotation.y += 0.0005;
     psycheOrbit.rotation.y += 0.0002;
-    planets[2].getMesh().rotation.y += 0.003;
+    planets[3].getMesh().rotation.y += 0.003;
     earthLabel.lookAt(new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z));
     marsLabel.lookAt(new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z));
     psycheLabel.lookAt(new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z));
