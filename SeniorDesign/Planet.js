@@ -48,6 +48,8 @@ export default class Planet extends THREE.Mesh{
     }
 
     initializeFactCards(filePath){
+
+        
         //todo add implementation here to add facts from a given file path?
     }
 
