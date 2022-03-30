@@ -2,10 +2,12 @@ export default class FactCard{
 
     #fact;
     #timeWindow;
+    #imagePathLocation;
 
-    constructor(fact, timeWindow) {
+    constructor(fact, timeWindow, imagePathLocation) {
         this.#fact = fact;
         this.#timeWindow = timeWindow;
+        this.#imagePathLocation = imagePathLocation;
     }
 
     getFact(){
@@ -14,6 +16,10 @@ export default class FactCard{
 
     getTimeWindow(){
         return this.#timeWindow;
+    }
+
+    getPathLocation(){
+        return this.#imagePathLocation;
     }
 
 }
