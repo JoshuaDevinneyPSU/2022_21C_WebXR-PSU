@@ -285,6 +285,8 @@ mars.addEventListener("click", (event) => {
     }
 });
 
+
+
 //hides the fact card showing the facts and resets all variables
 function hideFactCard()
 {
