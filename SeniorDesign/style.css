@@ -6,7 +6,7 @@ canvas {
 
 .card {
   width: 250px;
-  height: 250px;
+  height: 275px;
   display: inline-block;
   text-align: center;
 
@@ -37,7 +37,7 @@ canvas {
 
 .control-button {
   width: 100px;
-  height: 75px;
+  height: 50px;
   text-align: center;
 
   font-size: 15px;
