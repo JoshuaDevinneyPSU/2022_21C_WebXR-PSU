@@ -15,6 +15,7 @@ import {createMaterial, createPlanet, createSTL} from "./helper-functions.js";
 
 
 import Planet from "./Planet.js";
+import {WebXRManager} from "three/src/renderers/webxr/WebXRManager";
 
 const scene = new THREE.Scene();
 const scene2 = new THREE.Scene();
@@ -34,7 +35,9 @@ document.addEventListener('click', checkPlanetClick);
 camera.position.setZ(-10);
 camera.position.setY(25);
 
-const renderer = new THREE.WebGLRenderer({ alpha:true, antialias:true, canvas: document.querySelector('#bg')});
+const canvas = document.querySelector('#bg');
+const gl = canvas.getContext("webgl", {xrCompatible: true});
+const renderer = new THREE.WebGLRenderer({ alpha:true, antialias:true, canvas: canvas, context: gl});
 
 renderer.autoClear = false;
 
@@ -59,6 +62,8 @@ function setupXR(){
     //second parameter ensures fact card appears in AR view
     document.body.appendChild( ARButton.createButton( renderer,
         {optionalFeatures: ["dom-overlay"], domOverlay: {root: document.getElementById("fact-card")}}));
+
+    renderer.xr.cameraAutoUpdate = false;
 
     renderer.setAnimationLoop(render);
 }
@@ -480,6 +485,7 @@ function animate(){
     renderer.setAnimationLoop(render)
 }
 
+
 function render() {
     requestAnimationFrame( animate );
 
@@ -494,6 +500,7 @@ function render() {
     marsLabel.lookAt(new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z));
     psycheLabel.lookAt(new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z));
     controls.update();
+    renderer.xr.updateCamera(camera);
 
     renderer.render(scene, camera);
     renderer.autoClear = false;
