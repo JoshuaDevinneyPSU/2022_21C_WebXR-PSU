@@ -20,7 +20,6 @@ import {WebXRManager} from "three/src/renderers/webxr/WebXRManager";
 const scene = new THREE.Scene();
 const scene2 = new THREE.Scene();
 let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-
 //---------------------------- RAYCASTING SETUP--------------------------------------
 
 //Initialize raycaster and cursor
@@ -64,6 +63,7 @@ function setupXR(){
         {optionalFeatures: ["dom-overlay"], domOverlay: {root: document.getElementById("fact-card")}}));
 
     renderer.xr.cameraAutoUpdate = false;
+    camera = renderer.xr.getCamera();
     renderer.xr.setReferenceSpaceType('local');
 
     renderer.setAnimationLoop(render);
