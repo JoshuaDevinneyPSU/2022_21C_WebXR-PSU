@@ -55,7 +55,6 @@ function setupXR(){
         console.log("Clicked");
     }
 
-    const session = renderer.xr.setSession('immersive-ar');
     renderer.xr.cameraAutoUpdate = false;
     renderer.xr.setReferenceSpaceType('viewer');
 
@@ -69,6 +68,11 @@ function setupXR(){
     renderer.setAnimationLoop(render);
 }
 setupXR();
+
+if(renderer.xr.isPresenting){
+    const session = renderer.xr.getSession();
+    session.setSession('immersive-ar');
+}
 //--------------------------------------------------------
 
 window.addEventListener('resize', onWindowResize);
