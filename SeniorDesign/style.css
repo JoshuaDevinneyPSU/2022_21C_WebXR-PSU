@@ -4,6 +4,26 @@ canvas {
   left: 0;
 }
 
+#prompt {
+  position: absolute;
+  display: table;
+
+  background-color: #592651;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #f9a000;
+  bottom: 2.5%;
+  right: 2.5%;
+}
+
+#prompt-text {
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+  padding: 5px;
+  color: #f9a000;
+}
+
 .card {
   width: 250px;
   height: 275px;
@@ -21,6 +41,10 @@ canvas {
   height: 125px;
   padding: 10px;
   display: inline-block;
+}
+
+.card-body {
+  height: 80px;
 }
 
 .card-text {
@@ -49,11 +73,3 @@ canvas {
   border-width: 5px;
   border-color: #302144;
 }
-
-/*div {*/
-/*  color: black;*/
-/*  position: absolute;*/
-/*  font-size: xx-large;*/
-/*  text-align: center;*/
-/*  background: white;*/
-/*}*/
