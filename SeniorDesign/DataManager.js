@@ -64,6 +64,7 @@ function setupXR(){
         {optionalFeatures: ["dom-overlay"], domOverlay: {root: document.getElementById("fact-card")}}));
 
     renderer.xr.cameraAutoUpdate = false;
+    renderer.xr.setReferenceSpaceType('local');
 
     renderer.setAnimationLoop(render);
 }
@@ -484,7 +485,6 @@ scene.add(moonOrbit);
 function animate(){
     renderer.setAnimationLoop(render)
 }
-
 
 function render() {
     requestAnimationFrame( animate );
