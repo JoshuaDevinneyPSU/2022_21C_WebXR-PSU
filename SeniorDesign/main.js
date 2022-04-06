@@ -47,7 +47,7 @@ function setupXR(){
 
     //second parameter ensures fact card appears in AR view
     document.body.appendChild( ARButton.createButton( renderer,
-        {optionalFeatures: ["dom-overlay"], domOverlay: {root: document.body}}));
+        {optionalFeatures: ["dom-overlay"], domOverlay: {root: document.getElementById("AR-overlay")}}));
 
     renderer.setAnimationLoop(render);
 }
@@ -417,7 +417,7 @@ function showOverlays()
     prompt.appendChild(promptText);
 
     //add div to scene
-    document.body.appendChild(prompt);
+    document.getElementById("ar-overlay").appendChild(prompt);
 }
 
 const ambientLight = new THREE.AmbientLight(0xFFFDD0, 0.5);
