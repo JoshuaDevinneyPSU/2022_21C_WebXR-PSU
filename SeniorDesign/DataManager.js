@@ -56,7 +56,6 @@ function setupXR(){
 
     //renderer.xr.cameraAutoUpdate = false;
     renderer.xr.setReferenceSpaceType('viewer');
-    scene.position.y = -50
 
     controller.addEventListener("select", onSelect);
     scene.add(controller);
@@ -500,6 +499,7 @@ function render() {
     psycheLabel.lookAt(new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z));
     controls.update();
     //renderer.xr.updateCamera(camera);
+    renderer.xr.getFrame();
 
     renderer.render(scene, camera);
     renderer.autoClear = false;
