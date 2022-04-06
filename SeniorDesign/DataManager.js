@@ -63,8 +63,7 @@ function setupXR(){
         {optionalFeatures: ["dom-overlay"], domOverlay: {root: document.getElementById("fact-card")}}));
 
     renderer.xr.cameraAutoUpdate = false;
-    camera = renderer.xr.getCamera();
-    renderer.xr.setReferenceSpaceType('local');
+    renderer.xr.setReferenceSpaceType('viewer');
 
     renderer.setAnimationLoop(render);
 }
@@ -500,7 +499,7 @@ function render() {
     marsLabel.lookAt(new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z));
     psycheLabel.lookAt(new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z));
     controls.update();
-    renderer.xr.updateCamera(renderer.xr.getCamera());
+    renderer.xr.updateCamera(camera);
 
     renderer.render(scene, camera);
     renderer.autoClear = false;
