@@ -18,7 +18,6 @@ import Planet from "./Planet.js";
 import {WebXRManager} from "three/src/renderers/webxr/WebXRManager";
 
 const scene = new THREE.Scene();
-const scene2 = new THREE.Scene();
 let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 //---------------------------- RAYCASTING SETUP--------------------------------------
 
@@ -57,7 +56,7 @@ function setupXR(){
 
     //renderer.xr.cameraAutoUpdate = false;
     renderer.xr.setReferenceSpaceType('viewer');
-    renderer.xr.setSession('immersive-ar');
+    scene.position.y = -50
 
     controller.addEventListener("select", onSelect);
     scene.add(controller);
