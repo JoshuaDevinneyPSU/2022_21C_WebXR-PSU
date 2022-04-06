@@ -57,6 +57,8 @@ function setupXR(){
 
     renderer.xr.cameraAutoUpdate = false;
     renderer.xr.setReferenceSpaceType('viewer');
+    renderer.xr.getCamera().position.y = 30;
+    renderer.xr.getCamera().position.z = -15;
 
     controller.addEventListener("select", onSelect);
     scene.add(controller);
