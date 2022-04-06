@@ -55,7 +55,7 @@ function setupXR(){
         console.log("Clicked");
     }
 
-    renderer.xr.cameraAutoUpdate = false;
+    //renderer.xr.cameraAutoUpdate = false;
     renderer.xr.setReferenceSpaceType('viewer');
 
     controller.addEventListener("select", onSelect);
@@ -499,7 +499,7 @@ function render() {
     marsLabel.lookAt(new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z));
     psycheLabel.lookAt(new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z));
     controls.update();
-    renderer.xr.updateCamera(camera);
+    //renderer.xr.updateCamera(camera);
 
     renderer.render(scene, camera);
     renderer.autoClear = false;
