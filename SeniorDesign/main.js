@@ -47,7 +47,7 @@ function setupXR(){
 
     //second parameter ensures fact card appears in AR view
     document.body.appendChild( ARButton.createButton( renderer,
-        {optionalFeatures: ["dom-overlay"], domOverlay: {root: document.getElementById("AR-overlay")}}));
+        {optionalFeatures: ["dom-overlay"], domOverlay: {root: document.getElementById("ar-overlay")}}));
 
     renderer.setAnimationLoop(render);
 }
