@@ -57,8 +57,6 @@ function setupXR(){
 
     renderer.xr.cameraAutoUpdate = false;
     renderer.xr.setReferenceSpaceType('viewer');
-    renderer.xr.getCamera().position.y = 30;
-    renderer.xr.getCamera().position.z = -15;
 
     controller.addEventListener("select", onSelect);
     scene.add(controller);
@@ -70,11 +68,6 @@ function setupXR(){
     renderer.setAnimationLoop(render);
 }
 setupXR();
-
-if(renderer.xr.isPresenting){
-    const session = renderer.xr.getSession();
-    session.setSession('immersive-ar');
-}
 //--------------------------------------------------------
 
 window.addEventListener('resize', onWindowResize);
@@ -86,7 +79,7 @@ function onWindowResize() {
     renderer.setSize( window.innerWidth, window.innerHeight );
 }
 
-renderer.render(scene, camera);
+//renderer.render(scene, camera);
 
 const au = 20;
 
