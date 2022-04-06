@@ -57,6 +57,7 @@ function setupXR(){
 
     //renderer.xr.cameraAutoUpdate = false;
     renderer.xr.setReferenceSpaceType('viewer');
+    renderer.xr.setSession('immersive-ar');
 
     controller.addEventListener("select", onSelect);
     scene.add(controller);
