@@ -55,15 +55,17 @@ function setupXR(){
         console.log("Clicked");
     }
 
+    const session = renderer.xr.getSession();
+    renderer.xr.cameraAutoUpdate = false;
+    renderer.xr.setReferenceSpaceType('viewer');
+    session.setSession('immersive-ar');
+
     controller.addEventListener("select", onSelect);
     scene.add(controller);
 
     //second parameter ensures fact card appears in AR view
     document.body.appendChild( ARButton.createButton( renderer,
         {optionalFeatures: ["dom-overlay"], domOverlay: {root: document.getElementById("fact-card")}}));
-
-    renderer.xr.cameraAutoUpdate = false;
-    renderer.xr.setReferenceSpaceType('viewer');
 
     renderer.setAnimationLoop(render);
 }
