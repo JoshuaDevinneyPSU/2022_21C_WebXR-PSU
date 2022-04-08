@@ -16,6 +16,7 @@ import {createMaterial, createPlanet, createSTL} from "./helper-functions.js";
 
 import Planet from "./Planet.js";
 import {WebXRManager} from "three/src/renderers/webxr/WebXRManager";
+import {VRButton} from "three/examples/jsm/webxr/VRButton";
 
 const scene = new THREE.Scene();
 let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -61,7 +62,7 @@ function setupXR(){
     scene.add(controller);
 
     //second parameter ensures fact card appears in AR view
-    document.body.appendChild( ARButton.createButton( renderer,
+    document.body.appendChild( VRButton.createButton( renderer,
         {optionalFeatures: ["dom-overlay"], domOverlay: {root: document.getElementById("fact-card")}}));
 
     renderer.setAnimationLoop(render);
@@ -499,7 +500,6 @@ function render() {
     psycheLabel.lookAt(new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z));
     controls.update();
     //renderer.xr.updateCamera(camera);
-    renderer.xr.getFrame();
 
     renderer.render(scene, camera);
     renderer.autoClear = false;
