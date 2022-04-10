@@ -36,7 +36,6 @@ camera.position.setY(25);
 const canvas = document.querySelector('#bg');
 const gl = canvas.getContext("webgl", {xrCompatible: true});
 const renderer = new THREE.WebGLRenderer({ alpha:true, antialias:true, preserveDrawingBuffer: true, canvas: canvas, context: gl});
-
 renderer.autoClear = false;
 
 renderer.setPixelRatio(window.devicePixelRatio);
@@ -478,6 +477,8 @@ scene.add(marsOrbit)
 const moonOrbit = new THREE.Group();
 moonOrbit.add(planets[3].getMesh());
 scene.add(moonOrbit);
+
+renderer.xr.setAnimationLoop(render());
 
 function animate(){
     renderer.setAnimationLoop(render)
