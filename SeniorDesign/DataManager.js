@@ -502,7 +502,6 @@ function render() {
     controls.update();
     //renderer.xr.updateCamera(camera);
 
-    renderer.autoClear = false;
     renderer.render(scene, camera);
 }
 animate();
