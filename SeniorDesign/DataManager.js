@@ -35,7 +35,7 @@ camera.position.setY(25);
 
 const canvas = document.querySelector('#bg');
 const gl = canvas.getContext("webgl", {xrCompatible: true});
-const renderer = new THREE.WebGLRenderer({ alpha:true, antialias:true, canvas: canvas, context: gl});
+const renderer = new THREE.WebGLRenderer({ alpha:true, antialias:true, preserveDrawingBuffer: true, canvas: canvas, context: gl});
 
 renderer.autoClear = false;
 
@@ -46,7 +46,6 @@ camera.position.setZ(30);
 //Enable WebXR support-------------------------------------
 function setupXR(){
     renderer.xr.enabled = true;
-    document.body.appendChild(renderer.domElement);
 
     let controller = renderer.xr.getController(0);
 
