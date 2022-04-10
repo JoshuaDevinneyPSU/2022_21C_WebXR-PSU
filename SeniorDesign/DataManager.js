@@ -46,6 +46,7 @@ camera.position.setZ(30);
 //Enable WebXR support-------------------------------------
 function setupXR(){
     renderer.xr.enabled = true;
+    document.body.appendChild(renderer.domElement);
 
     let controller = renderer.xr.getController(0);
 
