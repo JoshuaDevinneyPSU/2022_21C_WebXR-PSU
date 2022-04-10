@@ -43,13 +43,6 @@ renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
 camera.position.setZ(30);
 
-
-const cubeGeo = new THREE.BoxGeometry(5, 5, 5);
-const cubeMat = new THREE.MeshBasicMaterial({color: 0xffffff});
-const cube = new THREE.Mesh(cubeGeo, cubeMat);
-cube.position.x = 30;
-scene.add(cube);
-
 //Enable WebXR support-------------------------------------
 function setupXR(){
     renderer.xr.enabled = true;
@@ -68,7 +61,7 @@ function setupXR(){
 
     //second parameter ensures fact card appears in AR view
     document.body.appendChild( ARButton.createButton( renderer,
-        {optionalFeatures: ["dom-overlay"], domOverlay: {root: document.getElementById("fact-card")}}));
+        {optionalFeatures: ["dom-overlay"], domOverlay: {root: document.getElementById("fact-card")}, requiredFeatures: ['hit-test']}));
 
     renderer.setAnimationLoop(render);
 }
