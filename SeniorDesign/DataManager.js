@@ -52,7 +52,7 @@ function setupXR(){
         console.log("Clicked");
     }
 
-    renderer.xr.cameraAutoUpdate = false;
+    //renderer.xr.cameraAutoUpdate = false;
     renderer.xr.setReferenceSpaceType('local');
 
     controller.addEventListener("select", onSelect);
