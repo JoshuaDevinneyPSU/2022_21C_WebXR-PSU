@@ -487,6 +487,8 @@ function animate(){
 function render() {
     requestAnimationFrame( animate );
 
+    renderer.xr.getFrame();
+
     planets[0].getMesh().rotation.y += 0.003;
     planets[2].getMesh().rotation.y += 0.003;
     earthOrbit.rotation.y += 0.0005;
