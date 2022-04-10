@@ -52,8 +52,8 @@ function setupXR(){
         console.log("Clicked");
     }
 
-    //renderer.xr.cameraAutoUpdate = false;
-    renderer.xr.setReferenceSpaceType('viewer');
+    renderer.xr.cameraAutoUpdate = false;
+    renderer.xr.setReferenceSpaceType('local');
 
     controller.addEventListener("select", onSelect);
     scene.add(controller);
@@ -487,7 +487,7 @@ function animate(){
 function render() {
     requestAnimationFrame( animate );
 
-    renderer.xr.updateCamera(renderer.xr.getFrame());
+    renderer.xr.updateCamera(camera);
 
     planets[0].getMesh().rotation.y += 0.003;
     planets[2].getMesh().rotation.y += 0.003;
@@ -502,7 +502,7 @@ function render() {
     controls.update();
     //renderer.xr.updateCamera(camera);
 
-    renderer.render(scene, camera);
     renderer.autoClear = false;
+    renderer.render(scene, camera);
 }
 animate();
