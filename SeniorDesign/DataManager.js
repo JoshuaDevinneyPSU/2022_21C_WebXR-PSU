@@ -2,16 +2,13 @@ import * as THREE from 'three';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { InteractionManager } from "three.interactive";
 import {STLLoader} from "three/examples/jsm/loaders/STLLoader";
-
 import './style.css'
 import Stats from "three/examples/jsm/libs/stats.module";
-
 import {ARButton} from "three/examples/jsm/webxr/ARButton";
 import {MeshStandardMaterial, TextGeometry} from "three";
 import {TubePainter} from "three/examples/jsm/misc/TubePainter";
 import {createMaterial, createPlanet, createSTL} from "./helper-functions.js";
-// const createMaterial = require("./helper-functions");
-// const createPlanet = require("./helper-functions");
+
 
 
 import Planet from "./Planet.js";
@@ -49,16 +46,11 @@ function setupXR(){
 
     let controller = renderer.xr.getController(0);
 
-    function onSelect(){
-        console.log("Clicked");
-    }
-
-    controller.addEventListener("select", onSelect);
     scene.add(controller);
 
     //second parameter ensures fact card appears in AR view
     document.body.appendChild( ARButton.createButton( renderer,
-        {optionalFeatures: ["dom-overlay"], domOverlay: {root: document.getElementById("fact-card")}}));
+        {optionalFeatures: ["dom-overlay"], domOverlay: {root: document.getElementById("ar-overlay")}}));
 
     renderer.setAnimationLoop(render);
 }
@@ -453,7 +445,25 @@ function showNextFact(planetIdentifier){
     }
 }
 
-//----------------------------------------------------------------------------
+//Create overlaying elements
+function showOverlays()
+{
+    //create space for text
+    const prompt = document.createElement("div");
+    prompt.setAttribute("id", "prompt");
+    prompt.setAttribute("class", "on-top");
+
+    //create text
+    const promptText = document.createElement("p");
+    promptText.setAttribute("id", "prompt-text");
+    promptText.innerText = "Click on Earth, Mars,\nor Psyche for more info!";
+
+    //add text to text space
+    prompt.appendChild(promptText);
+
+    //add div to scene
+    document.getElementById("ar-overlay").appendChild(prompt);
+}
 
 const ambientLight = new THREE.AmbientLight(0xFFFDD0, 0.5);
 camera.add(ambientLight);
@@ -498,4 +508,6 @@ function render() {
     renderer.render(scene, camera);
     renderer.autoClear = false;
 }
+
+showOverlays();
 animate();
