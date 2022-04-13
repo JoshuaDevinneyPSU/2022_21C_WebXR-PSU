@@ -32,7 +32,7 @@ scene.rotateX(20);
 
 camera.position.setZ(5);
 camera.position.setY(15);
-camera.rotateX(20);
+camera.rotateX(45);
 
 const renderer = new THREE.WebGLRenderer({ alpha:true, antialias:true, canvas: document.querySelector('#bg')});
 
