@@ -110,9 +110,9 @@ const psycheOrbit = new THREE.Group();
 
 const psycheTexture = new THREE.TextureLoader().load('../Resources/Textures/psycheTexture.jpg');
 const psycheMaterial = createMaterial('texture', psycheTexture);
-const psyche = createSTL('../Resources/Models/PsycheModel.stl', 0, 0, -2, psycheMaterial, scene);
+//const psyche = createSTL('../Resources/Models/PsycheModel.stl', 0, 0, -2, psycheMaterial, scene);
 
-const spaceCraft = createSTL('../Resources/Models/SpaceCraft.stl', 0, 0, 0, psycheMaterial, scene, 0.005, 0.005, 0.005);
+//const spaceCraft = createSTL('../Resources/Models/SpaceCraft.stl', 0, 0, 0, psycheMaterial, scene, 0.005, 0.005, 0.005);
 
 //Create Label
 const psycheLabelGeometry = new THREE.PlaneGeometry(5, 3);
