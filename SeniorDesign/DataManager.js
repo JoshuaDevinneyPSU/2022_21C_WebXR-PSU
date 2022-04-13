@@ -27,6 +27,8 @@ const rayPointer = new THREE.Vector2();
 document.addEventListener('click', checkPlanetClick);
 
 //-----------------------------------------------------------------------------------
+scene.position.set(0, -40, -10);
+scene.rotateX(-30);
 
 camera.position.setZ(-10);
 camera.position.setY(25);
