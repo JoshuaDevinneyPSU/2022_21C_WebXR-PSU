@@ -30,7 +30,7 @@ document.addEventListener('click', checkPlanetClick);
 scene.position.set(0, -10, -25);
 scene.rotateX(20);
 
-camera.position.setZ(-35);
+camera.position.setZ(5);
 camera.position.setY(15);
 camera.rotateX(20);
 
@@ -40,7 +40,7 @@ renderer.autoClear = false;
 
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
-camera.position.setZ(30);
+
 
 
 //Enable WebXR support-------------------------------------
