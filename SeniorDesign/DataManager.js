@@ -50,18 +50,12 @@ function setupXR(){
     console.log("Yo" + sceneARButton.innerText);
 
     //add function to ARButton to turn off background
-    sceneARButton.addEventListener("click", hideBackground );
+    sceneARButton.addEventListener("click", setBackgroundOff );
     document.body.appendChild( sceneARButton );
 
     renderer.setAnimationLoop(renderScene);
 }
 setupXR();
-
-function hideBackground(){
-    //if session is supported, turn off background
-    //if(navigator.xr.isSessionSupported('immersive-ar'))
-    setBackgroundOff();
-}
 
 //--------------------------------------------------------
 
