@@ -77,7 +77,7 @@ const normalTexture = new THREE.TextureLoader().load('../Resources/Maps/earthNor
 
 const earthMaterial = createMaterial('texture', earthTexture);
 
-planets[planets.length] = new Planet(3, 32, 32, au, 0, 10, earthMaterial);
+planets[planets.length] = new Planet(6, 32, 32, au, 0, 10, earthMaterial);
 scene.add(planets[planets.length-1].getMesh());
 planets[planets.length-1].getMesh().userData.clickable = true;
 planets[planets.length-1].getMesh().userData.name = 'Earth';
@@ -92,14 +92,14 @@ scene.add(planets[planets.length-1].getMesh());
 const marsTexture = new THREE.TextureLoader().load('../Resources/Textures/marsTexture.jpg');
 const marsMaterial = createMaterial('texture', marsTexture);
 
-planets[planets.length] = new Planet(3/2, 32, 32, -(au*1.5), 0, 0, marsMaterial);
+planets[planets.length] = new Planet(3, 32, 32, -(au*1.5), 0, 0, marsMaterial);
 scene.add(planets[planets.length-1].getMesh());
 planets[planets.length-1].getMesh().userData.clickable = true;
 planets[planets.length-1].getMesh().userData.name = 'Mars';
 
 const moonTexture = new THREE.TextureLoader().load('../Resources/Textures/moonTexture.jpg');
 const moonMaterial = createMaterial('texture', moonTexture);
-planets[planets.length] = new Planet(3*.25, 32, 32, au+8, 0, 0, moonMaterial);
+planets[planets.length] = new Planet(6*.25, 32, 32, au+8, 0, 0, moonMaterial);
 scene.add(planets[planets.length-1].getMesh());
 
 const psycheOrbit = new THREE.Group();
@@ -123,10 +123,12 @@ loader.load(
     '../Resources/Models/PsycheModel.stl',
     function (geometry) {
         const mesh = new THREE.Mesh(geometry, psycheMaterial);
-        mesh.position.setZ(-(au*2.5));
+        mesh.position.setZ(-(au*2));
         mesh.userData.clickable = true;
         mesh.userData.name = 'Psyche';
         scene.add(mesh);
+
+        mesh.scale.set(2, 2, 2)
 
         psycheOrbit.add(mesh);
 
@@ -150,8 +152,9 @@ loader.load(
      '../Resources/Models/SpaceCraft.stl',
      function (geometry) {
          const mesh = new THREE.Mesh(geometry, psycheMaterial);
-         mesh.position.setZ(-(au*2.5));
-         mesh.scale.set( .005, .005, .005 );
+         mesh.position.setZ(-(au*1.5));
+         mesh.position.setX(20);
+         mesh.scale.set( .01, .01, .01 );
          scene.add(mesh);
 
          psycheOrbit.add(mesh);
@@ -176,7 +179,7 @@ const earthLabelGeometry = new THREE.PlaneGeometry(5, 3);
 const earthLabelTexture = new THREE.TextureLoader().load('../Resources/Textures/earthLabelTexture.jpg');
 const earthLabelMaterial = new THREE.MeshBasicMaterial({map: earthLabelTexture, side: THREE.DoubleSide});
 const earthLabel = new THREE.Mesh(earthLabelGeometry, earthLabelMaterial);
-earthLabel.position.set(planets[0].getMesh().position.x, planets[0].getMesh().position.y + 5, planets[0].getMesh().position.z);
+earthLabel.position.set(planets[0].getMesh().position.x, planets[0].getMesh().position.y + 8, planets[0].getMesh().position.z);
 earthLabel.userData.clickable = true;
 earthLabel.userData.name = 'Earth';
 
@@ -188,7 +191,7 @@ const marsLabelGeometry = new THREE.PlaneGeometry(5, 3);
 const marsLabelTexture = new THREE.TextureLoader().load('../Resources/Textures/marsLabelTexture.jpg');
 const marsLabelMaterial = new THREE.MeshBasicMaterial({map: marsLabelTexture});
 const marsLabel = new THREE.Mesh(marsLabelGeometry, marsLabelMaterial);
-marsLabel.position.set(planets[2].getMesh().position.x, planets[2].getMesh().position.y + 5, planets[2].getMesh().position.z);
+marsLabel.position.set(planets[2].getMesh().position.x, planets[2].getMesh().position.y + 6, planets[2].getMesh().position.z);
 marsLabel.userData.clickable = true;
 marsLabel.userData.name = 'Mars';
 
