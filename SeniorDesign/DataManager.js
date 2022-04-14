@@ -1,14 +1,9 @@
 import * as THREE from 'three';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import { InteractionManager } from "three.interactive";
 import {STLLoader} from "three/examples/jsm/loaders/STLLoader";
 import './style.css'
-import Stats from "three/examples/jsm/libs/stats.module";
 import {ARButton} from "three/examples/jsm/webxr/ARButton";
-import {MeshStandardMaterial, TextGeometry} from "three";
-import {TubePainter} from "three/examples/jsm/misc/TubePainter";
 import {createMaterial, createPlanet, createSTL} from "./helper-functions.js";
-
 
 
 import Planet from "./Planet.js";
@@ -42,7 +37,6 @@ renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
 
 
-
 //Enable WebXR support-------------------------------------
 function setupXR(){
     renderer.xr.enabled = true;
@@ -52,12 +46,15 @@ function setupXR(){
     scene.add(controller);
 
     //second parameter ensures fact card appears in AR view
-    document.body.appendChild( ARButton.createButton( renderer,
-        {optionalFeatures: ["dom-overlay"], domOverlay: {root: document.getElementById("ar-overlay")}}));
+    let sceneARButton = ARButton.createButton( renderer, {optionalFeatures: ["dom-overlay"], domOverlay: {root: document.getElementById("ar-overlay")}});
+    console.log("Yo" + sceneARButton.innerText);
 
-    renderer.setAnimationLoop(render);
+    document.body.appendChild( sceneARButton );
+
+    renderer.setAnimationLoop(renderScene);
 }
 setupXR();
+
 //--------------------------------------------------------
 
 window.addEventListener('resize', onWindowResize);
@@ -119,6 +116,8 @@ const psycheLabelGeometry = new THREE.PlaneGeometry(5, 3);
 const psycheLabelTexture = new THREE.TextureLoader().load('../Resources/Textures/psycheLabelTexture.jpg');
 const psycheLabelMaterial = new THREE.MeshBasicMaterial({map: psycheLabelTexture});
 const psycheLabel = new THREE.Mesh(psycheLabelGeometry, psycheLabelMaterial);
+psycheLabel.userData.clickable = true;
+psycheLabel.userData.name = 'Psyche';
 
 const loader = new STLLoader();
 loader.load(
@@ -179,6 +178,8 @@ const earthLabelTexture = new THREE.TextureLoader().load('../Resources/Textures/
 const earthLabelMaterial = new THREE.MeshBasicMaterial({map: earthLabelTexture, side: THREE.DoubleSide});
 const earthLabel = new THREE.Mesh(earthLabelGeometry, earthLabelMaterial);
 earthLabel.position.set(planets[0].getMesh().position.x, planets[0].getMesh().position.y + 5, planets[0].getMesh().position.z);
+earthLabel.userData.clickable = true;
+earthLabel.userData.name = 'Earth';
 
 //add label to scene
 scene.add(earthLabel);
@@ -189,6 +190,8 @@ const marsLabelTexture = new THREE.TextureLoader().load('../Resources/Textures/m
 const marsLabelMaterial = new THREE.MeshBasicMaterial({map: marsLabelTexture});
 const marsLabel = new THREE.Mesh(marsLabelGeometry, marsLabelMaterial);
 marsLabel.position.set(planets[2].getMesh().position.x, planets[2].getMesh().position.y + 5, planets[2].getMesh().position.z);
+marsLabel.userData.clickable = true;
+marsLabel.userData.name = 'Mars';
 
 //add label to scene
 scene.add(marsLabel);
@@ -302,19 +305,7 @@ function checkPlanetClick(event){
                 showNextFact("Psyche");
             }
         }
-        else if (clickedPlanet.object.userData.name == 'Sun') {
-            //TODO: find out why this only works once
-            if(sunIsClicked){
-                showBG();
-                sunIsClicked = false;
-            }
-            else{
-                sunIsClicked = true;
-                hideBG();
-            }
-        }
     }
-
 }
 
 //hides the fact card showing the facts and resets all variables
@@ -327,6 +318,29 @@ function showBG()
 {
     scene.background = spaceTexture;
 }
+
+//keep track of state of background
+let backgroundOn = true;
+//change background
+function toggleBackground(){
+    if(backgroundOn) {
+        //update var and show background
+        backgroundOn = false;
+        hideBG();
+
+        //update button text
+        document.getElementById("toggle-bg-button").innerText = "Background: Off";
+    }
+    else {
+        //update var and hide background
+        backgroundOn = true;
+        showBG();
+
+        //update button text
+        document.getElementById("toggle-bg-button").innerText = "Background: On";
+    }
+}
+
 ///hides the fact card showing the facts and resets all variables
 function hideFactCard()
 {
@@ -451,10 +465,10 @@ function showNextFact(planetIdentifier){
 //Create overlaying elements
 function showOverlays()
 {
+    //----------USER PROMPT----------
     //create space for text
     const prompt = document.createElement("div");
     prompt.setAttribute("id", "prompt");
-    prompt.setAttribute("class", "on-top");
 
     //create text
     const promptText = document.createElement("p");
@@ -464,8 +478,29 @@ function showOverlays()
     //add text to text space
     prompt.appendChild(promptText);
 
-    //add div to scene
-    document.getElementById("ar-overlay").appendChild(prompt);
+    //-----TOGGLE BACKGROUND BUTTON-------
+
+    //create space for text
+    const toggleBG = document.createElement("div");
+    toggleBG.setAttribute("id", "toggle-bg");
+
+    //create text
+    const toggleBGButton = document.createElement("button");
+    toggleBGButton.setAttribute("id", "toggle-bg-button");
+    toggleBGButton.innerText = "Background: On";
+    toggleBGButton.addEventListener("click", toggleBackground);
+
+    //add background toggle to text space
+    toggleBG.appendChild(toggleBGButton);
+
+    //----------MASTER DIV FOR MISC OVERLAYS----------
+    const overlayContainer = document.createElement("div");
+    overlayContainer.setAttribute("id", "overlay-container");
+    overlayContainer.appendChild(toggleBG);
+    overlayContainer.appendChild(prompt);
+
+    //add prompt to scene
+    document.getElementById("ar-overlay").appendChild(overlayContainer);
 }
 
 const ambientLight = new THREE.AmbientLight(0xFFFDD0, 0.5);
@@ -490,12 +525,12 @@ moonOrbit.add(planets[3].getMesh());
 scene.add(moonOrbit);
 
 function animate(){
-    renderer.setAnimationLoop(render)
+    renderer.setAnimationLoop(renderScene)
 }
 
-function render() {
-    requestAnimationFrame( animate );
-
+//Updates the positions of all objects and renders
+function updatePositions()
+{
     planets[0].getMesh().rotation.y += 0.003;
     planets[2].getMesh().rotation.y += 0.003;
     earthOrbit.rotation.y += 0.0005;
@@ -506,10 +541,14 @@ function render() {
     earthLabel.lookAt(new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z));
     marsLabel.lookAt(new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z));
     psycheLabel.lookAt(new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z));
-    controls.update();
 
     renderer.render(scene, camera);
     renderer.autoClear = false;
+}
+
+function renderScene() {
+    updatePositions();
+    controls.update();
 }
 
 showOverlays();

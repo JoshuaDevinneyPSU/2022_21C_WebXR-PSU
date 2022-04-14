@@ -5,15 +5,11 @@ canvas {
 }
 
 #prompt {
-  position: absolute;
   display: table;
-
   background-color: #592651;
   border-style: solid;
   border-width: 2px;
   border-color: #f9a000;
-  bottom: 15%;
-  right: 2.5%;
 }
 
 #prompt-text {
@@ -22,6 +18,29 @@ canvas {
   text-align: center;
   padding: 5px;
   color: #f9a000;
+}
+
+#toggle-bg {
+  padding: 10px;
+}
+
+#toggle-bg-button {
+  text-align: center;
+  font-size: 15px;
+  font-weight: bold;
+  color: #302144;
+
+  background-color: #f9a000;
+  border-style: solid;
+  border-width: 5px;
+  border-color: #592651;
+}
+
+#overlay-container {
+  position: absolute;
+  bottom: 15%;
+  right: 2.5%;
+  text-align: center;
 }
 
 .card {
@@ -60,11 +79,11 @@ canvas {
 }
 
 .control-button {
-  width: 100px;
+  width: 120px;
   height: 50px;
   text-align: center;
 
-  font-size: 15px;
+  font-size: 14px;
   font-weight: bold;
   color: #302144;
 
