@@ -1,14 +1,9 @@
 import * as THREE from 'three';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import { InteractionManager } from "three.interactive";
 import {STLLoader} from "three/examples/jsm/loaders/STLLoader";
 import './style.css'
-import Stats from "three/examples/jsm/libs/stats.module";
 import {ARButton} from "three/examples/jsm/webxr/ARButton";
-import {MeshStandardMaterial, TextGeometry} from "three";
-import {TubePainter} from "three/examples/jsm/misc/TubePainter";
 import {createMaterial, createPlanet, createSTL} from "./helper-functions.js";
-
 
 
 import Planet from "./Planet.js";
@@ -53,12 +48,20 @@ function setupXR(){
     //second parameter ensures fact card appears in AR view
     let sceneARButton = ARButton.createButton( renderer, {optionalFeatures: ["dom-overlay"], domOverlay: {root: document.getElementById("ar-overlay")}});
     console.log("Yo" + sceneARButton.innerText);
-    sceneARButton.addEventListener("click", hideBG );
+
+    //add function to ARButton to turn off background
+    sceneARButton.addEventListener("click", hideBackground );
     document.body.appendChild( sceneARButton );
 
     renderer.setAnimationLoop(renderScene);
 }
 setupXR();
+
+function hideBackground(){
+    //if session is supported, turn off background
+    //if(navigator.xr.isSessionSupported('immersive-ar'))
+    setBackgroundOff();
+}
 
 //--------------------------------------------------------
 
@@ -329,6 +332,26 @@ function showBG()
 {
     scene.background = spaceTexture;
 }
+
+let backgroundOn = true;
+
+//change background
+function updateBackground(){
+    if(backgroundOn)
+        showBG();
+    else
+        hideBG();
+}
+
+//called when ARButton is clicked
+function setBackgroundOff() {
+    backgroundOn = false;
+}
+
+function setBackgroundOn() {
+    backgroundOn = true;
+}
+
 ///hides the fact card showing the facts and resets all variables
 function hideFactCard()
 {
@@ -508,7 +531,6 @@ function updatePositions()
     earthLabel.lookAt(new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z));
     marsLabel.lookAt(new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z));
     psycheLabel.lookAt(new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z));
-    controls.update();
 
     renderer.render(scene, camera);
     renderer.autoClear = false;
@@ -516,6 +538,8 @@ function updatePositions()
 
 function renderScene() {
     updatePositions();
+    updateBackground();
+    controls.update();
 }
 
 showOverlays();
