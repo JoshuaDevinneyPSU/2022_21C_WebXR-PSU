@@ -118,6 +118,8 @@ const psycheLabelGeometry = new THREE.PlaneGeometry(5, 3);
 const psycheLabelTexture = new THREE.TextureLoader().load('../Resources/Textures/psycheLabelTexture.jpg');
 const psycheLabelMaterial = new THREE.MeshBasicMaterial({map: psycheLabelTexture});
 const psycheLabel = new THREE.Mesh(psycheLabelGeometry, psycheLabelMaterial);
+psycheLabel.userData.clickable = true;
+psycheLabel.userData.name = 'Psyche';
 
 const loader = new STLLoader();
 loader.load(
@@ -178,6 +180,8 @@ const earthLabelTexture = new THREE.TextureLoader().load('../Resources/Textures/
 const earthLabelMaterial = new THREE.MeshBasicMaterial({map: earthLabelTexture, side: THREE.DoubleSide});
 const earthLabel = new THREE.Mesh(earthLabelGeometry, earthLabelMaterial);
 earthLabel.position.set(planets[0].getMesh().position.x, planets[0].getMesh().position.y + 5, planets[0].getMesh().position.z);
+earthLabel.userData.clickable = true;
+earthLabel.userData.name = 'Earth';
 
 //add label to scene
 scene.add(earthLabel);
@@ -188,6 +192,8 @@ const marsLabelTexture = new THREE.TextureLoader().load('../Resources/Textures/m
 const marsLabelMaterial = new THREE.MeshBasicMaterial({map: marsLabelTexture});
 const marsLabel = new THREE.Mesh(marsLabelGeometry, marsLabelMaterial);
 marsLabel.position.set(planets[2].getMesh().position.x, planets[2].getMesh().position.y + 5, planets[2].getMesh().position.z);
+marsLabel.userData.clickable = true;
+marsLabel.userData.name = 'Mars';
 
 //add label to scene
 scene.add(marsLabel);
