@@ -484,7 +484,7 @@ function showOverlays()
     //create text
     const promptText = document.createElement("p");
     promptText.setAttribute("id", "prompt-text");
-    promptText.innerText = "Click on Earth, Mars,\nor Psyche for more info!";
+    promptText.innerText = "Click on Earth, Mars,\nor Psychert for more info!";
 
     //add text to text space
     prompt.appendChild(promptText);
