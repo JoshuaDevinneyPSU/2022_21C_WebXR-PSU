@@ -24,6 +24,24 @@ canvas {
   color: #f9a000;
 }
 
+#toggle-bg {
+  position: absolute;
+  bottom: 27.5%;
+  right: 5.8%;
+}
+
+#toggle-bg-button {
+  text-align: center;
+  font-size: 15px;
+  font-weight: bold;
+  color: #302144;
+
+  background-color: #f9a000;
+  border-style: solid;
+  border-width: 5px;
+  border-color: #592651;
+}
+
 .card {
   width: 250px;
   height: 275px;

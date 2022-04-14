@@ -49,8 +49,6 @@ function setupXR(){
     let sceneARButton = ARButton.createButton( renderer, {optionalFeatures: ["dom-overlay"], domOverlay: {root: document.getElementById("ar-overlay")}});
     console.log("Yo" + sceneARButton.innerText);
 
-    //add function to ARButton to turn off background
-    sceneARButton.addEventListener("click", setBackgroundOff );
     document.body.appendChild( sceneARButton );
 
     renderer.setAnimationLoop(renderScene);
@@ -333,23 +331,26 @@ function showBG()
     scene.background = spaceTexture;
 }
 
+//keep track of state of background
 let backgroundOn = true;
-
 //change background
-function updateBackground(){
-    if(backgroundOn)
-        showBG();
-    else
+function toggleBackground(){
+    if(backgroundOn) {
+        //update var and show background
+        backgroundOn = false;
         hideBG();
-}
 
-//called when ARButton is clicked
-function setBackgroundOff() {
-    backgroundOn = false;
-}
+        //update button text
+        document.getElementById("toggle-bg-button").innerText = "Background: Off";
+    }
+    else {
+        //update var and hide background
+        backgroundOn = true;
+        showBG();
 
-function setBackgroundOn() {
-    backgroundOn = true;
+        //update button text
+        document.getElementById("toggle-bg-button").innerText = "Background: On";
+    }
 }
 
 ///hides the fact card showing the facts and resets all variables
@@ -476,10 +477,10 @@ function showNextFact(planetIdentifier){
 //Create overlaying elements
 function showOverlays()
 {
+    //----------USER PROMPT----------
     //create space for text
     const prompt = document.createElement("div");
     prompt.setAttribute("id", "prompt");
-    prompt.setAttribute("class", "on-top");
 
     //create text
     const promptText = document.createElement("p");
@@ -489,8 +490,26 @@ function showOverlays()
     //add text to text space
     prompt.appendChild(promptText);
 
-    //add div to scene
+    //add prompt to scene
     document.getElementById("ar-overlay").appendChild(prompt);
+
+    //-----TOGGLE BACKGROUND BUTTON-------
+
+    //create space for text
+    const toggleBG = document.createElement("div");
+    toggleBG.setAttribute("id", "toggle-bg");
+
+    //create text
+    const toggleBGButton = document.createElement("button");
+    toggleBGButton.setAttribute("id", "toggle-bg-button");
+    toggleBGButton.innerText = "Background: On";
+    toggleBGButton.addEventListener("click", toggleBackground);
+
+    //add background toggle to text space
+    toggleBG.appendChild(toggleBGButton);
+
+    //add prompt to scene
+    document.getElementById("ar-overlay").appendChild(toggleBG);
 }
 
 const ambientLight = new THREE.AmbientLight(0xFFFDD0, 0.5);
@@ -538,7 +557,6 @@ function updatePositions()
 
 function renderScene() {
     updatePositions();
-    updateBackground();
     controls.update();
 }
 
