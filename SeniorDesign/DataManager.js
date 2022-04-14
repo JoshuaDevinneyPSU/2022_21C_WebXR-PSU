@@ -305,19 +305,7 @@ function checkPlanetClick(event){
                 showNextFact("Psyche");
             }
         }
-        else if (clickedPlanet.object.userData.name == 'Sun') {
-            //TODO: find out why this only works once
-            if(sunIsClicked){
-                showBG();
-                sunIsClicked = false;
-            }
-            else{
-                sunIsClicked = true;
-                hideBG();
-            }
-        }
     }
-
 }
 
 //hides the fact card showing the facts and resets all variables
