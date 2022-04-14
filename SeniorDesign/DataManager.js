@@ -490,9 +490,6 @@ function showOverlays()
     //add text to text space
     prompt.appendChild(promptText);
 
-    //add prompt to scene
-    document.getElementById("ar-overlay").appendChild(prompt);
-
     //-----TOGGLE BACKGROUND BUTTON-------
 
     //create space for text
@@ -508,8 +505,14 @@ function showOverlays()
     //add background toggle to text space
     toggleBG.appendChild(toggleBGButton);
 
+    //----------MASTER DIV FOR MISC OVERLAYS----------
+    const overlayContainer = document.createElement("div");
+    overlayContainer.setAttribute("id", "overlay-container");
+    overlayContainer.appendChild(toggleBG);
+    overlayContainer.appendChild(prompt);
+
     //add prompt to scene
-    document.getElementById("ar-overlay").appendChild(toggleBG);
+    document.getElementById("ar-overlay").appendChild(overlayContainer);
 }
 
 const ambientLight = new THREE.AmbientLight(0xFFFDD0, 0.5);
