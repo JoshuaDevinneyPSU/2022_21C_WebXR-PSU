@@ -42,7 +42,6 @@ renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
 
 
-
 //Enable WebXR support-------------------------------------
 function setupXR(){
     renderer.xr.enabled = true;
@@ -52,12 +51,15 @@ function setupXR(){
     scene.add(controller);
 
     //second parameter ensures fact card appears in AR view
-    document.body.appendChild( ARButton.createButton( renderer,
-        {optionalFeatures: ["dom-overlay"], domOverlay: {root: document.getElementById("ar-overlay")}}));
+    let sceneARButton = ARButton.createButton( renderer, {optionalFeatures: ["dom-overlay"], domOverlay: {root: document.getElementById("ar-overlay")}});
+    console.log("Yo" + sceneARButton.innerText);
+    sceneARButton.addEventListener("click", hideBG );
+    document.body.appendChild( sceneARButton );
 
-    renderer.setAnimationLoop(ARRender);
+    renderer.setAnimationLoop(renderScene);
 }
 setupXR();
+
 //--------------------------------------------------------
 
 window.addEventListener('resize', onWindowResize);
@@ -490,7 +492,7 @@ moonOrbit.add(planets[3].getMesh());
 scene.add(moonOrbit);
 
 function animate(){
-    renderer.setAnimationLoop(standardRender)
+    renderer.setAnimationLoop(renderScene)
 }
 
 //Updates the positions of all objects and renders
@@ -512,14 +514,8 @@ function updatePositions()
     renderer.autoClear = false;
 }
 
-function standardRender() {
+function renderScene() {
     updatePositions();
-    showBG();
-}
-
-function ARRender() {
-    updatePositions();
-    hideBG();
 }
 
 showOverlays();
