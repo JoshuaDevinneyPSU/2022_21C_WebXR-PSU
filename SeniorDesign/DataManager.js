@@ -55,7 +55,7 @@ function setupXR(){
     document.body.appendChild( ARButton.createButton( renderer,
         {optionalFeatures: ["dom-overlay"], domOverlay: {root: document.getElementById("ar-overlay")}}));
 
-    renderer.setAnimationLoop(render);
+    renderer.setAnimationLoop(ARRender);
 }
 setupXR();
 //--------------------------------------------------------
@@ -490,12 +490,12 @@ moonOrbit.add(planets[3].getMesh());
 scene.add(moonOrbit);
 
 function animate(){
-    renderer.setAnimationLoop(render)
+    renderer.setAnimationLoop(standardRender)
 }
 
-function render() {
-    requestAnimationFrame( animate );
-
+//Updates the positions of all objects and renders
+function updatePositions()
+{
     planets[0].getMesh().rotation.y += 0.003;
     planets[2].getMesh().rotation.y += 0.003;
     earthOrbit.rotation.y += 0.0005;
@@ -510,6 +510,16 @@ function render() {
 
     renderer.render(scene, camera);
     renderer.autoClear = false;
+}
+
+function standardRender() {
+    updatePositions();
+    showBG();
+}
+
+function ARRender() {
+    updatePositions();
+    hideBG();
 }
 
 showOverlays();
