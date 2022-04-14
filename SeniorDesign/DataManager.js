@@ -22,12 +22,11 @@ const rayPointer = new THREE.Vector2();
 document.addEventListener('click', checkPlanetClick);
 
 //-----------------------------------------------------------------------------------
-scene.position.set(0, -10, -25);
-scene.rotateX(20);
+scene.position.set(0, -20, 40);
 
-camera.position.setZ(5);
-camera.position.setY(15);
-camera.rotateX(45);
+camera.position.setZ(-5);
+camera.position.setY(5);
+
 
 const renderer = new THREE.WebGLRenderer({ alpha:true, antialias:true, canvas: document.querySelector('#bg')});
 
