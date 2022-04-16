@@ -532,7 +532,7 @@ const moonOrbit = new THREE.Group();
 moonOrbit.add(planets[3].getMesh());
 scene.add(moonOrbit);
 
-const cameraHolder = new Group();
+const cameraHolder = new THREE.Group();
 cameraHolder.add(camera);
 cameraHolder.position.set(0, 10, 0);
 scene.add(cameraHolder);
