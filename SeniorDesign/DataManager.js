@@ -44,7 +44,7 @@ function setupXR(){
 
     scene.add(controller);
 
-    renderer.xr.setReferenceSpaceType('local')
+    renderer.xr.setReferenceSpaceType('viewer')
     //second parameter ensures fact card appears in AR view
     let sceneARButton = ARButton.createButton( renderer, {optionalFeatures: ["dom-overlay"], domOverlay: {root: document.getElementById("ar-overlay")}});
     console.log("Yo" + sceneARButton.innerText);
@@ -78,7 +78,7 @@ const normalTexture = new THREE.TextureLoader().load('../Resources/Maps/earthNor
 
 const earthMaterial = createMaterial('texture', earthTexture);
 
-planets[planets.length] = new Planet(.1, 32, 32, au, 0, 10, earthMaterial);
+planets[planets.length] = new Planet(.1, 32, 32, au, 0, .1, earthMaterial);
 scene.add(planets[planets.length-1].getMesh());
 planets[planets.length-1].getMesh().userData.clickable = true;
 planets[planets.length-1].getMesh().userData.name = 'Earth';
@@ -100,7 +100,7 @@ planets[planets.length-1].getMesh().userData.name = 'Mars';
 
 const moonTexture = new THREE.TextureLoader().load('../Resources/Textures/moonTexture.jpg');
 const moonMaterial = createMaterial('texture', moonTexture);
-planets[planets.length] = new Planet(.1*.25, 32, 32, au+8, 0, 0, moonMaterial);
+planets[planets.length] = new Planet(.1*.25, 32, 32, au+.8, 0, 0, moonMaterial);
 scene.add(planets[planets.length-1].getMesh());
 
 const psycheOrbit = new THREE.Group();
