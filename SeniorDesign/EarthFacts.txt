@@ -1,0 +1,14 @@
+"The Psyche mission will begin by launching from our home planet Earth!"
+"Resources/Images/earthFact1.jpeg"
+
+"This is the Psyche spacecraft. It is an unmanned orbiting spacecraft."
+"Resources/Images/earthFact2.jpeg"
+
+"The current launch date is set for August 01, 2022."
+"Resources/Images/earthFact3.jpeg"
+
+"The Psyche spacecraft features two massive solar panels that total 800 square feet."
+"Resources/Images/earthFact4.jpg"
+
+"The Psyche spacecraft will relay information back to Earth using cutting-edge laser technology."
+"Resources/Images/earthFact5.jpg"

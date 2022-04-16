@@ -212,6 +212,9 @@ scene.background = spaceTexture;
 //Earth's facts, images, and variables
 let sunIsClicked = false;
 let earthIsClicked = false;
+
+planets[0].initializeFactCards("/Facts/EarthFacts.txt");
+
 const earthFacts = ["The Psyche mission will begin by launching from our home planet Earth!",
                     "This is the Psyche spacecraft. It is an unmanned orbiting spacecraft.",
                     "The current launch date is set for August 01, 2022.",
