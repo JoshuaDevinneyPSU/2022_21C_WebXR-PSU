@@ -68,7 +68,7 @@ function onWindowResize() {
 
 renderer.render(scene, camera);
 
-const au = 1;
+const au = .01;
 
 //planet list
 let planets = [];
@@ -129,7 +129,7 @@ loader.load(
         mesh.userData.name = 'Psyche';
         scene.add(mesh);
 
-        mesh.scale.set(2, 2, 2)
+        mesh.scale.set(.1, .1, .1)
 
         psycheOrbit.add(mesh);
 
