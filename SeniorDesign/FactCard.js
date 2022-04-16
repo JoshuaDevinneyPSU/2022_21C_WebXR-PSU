@@ -1,19 +1,19 @@
 export default class FactCard{
 
     #fact;
-    #timeWindow;
+    #imageLocation;
 
-    constructor(fact, timeWindow) {
+    constructor(fact, imageLocation) {
         this.#fact = fact;
-        this.#timeWindow = timeWindow;
+        this.#imageLocation = imageLocation;
     }
 
     getFact(){
         return this.#fact;
     }
 
-    getTimeWindow(){
-        return this.#timeWindow;
+    getFactImage(){
+        return this.#imageLocation;
     }
 
 }
