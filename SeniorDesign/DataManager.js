@@ -22,10 +22,9 @@ const rayPointer = new THREE.Vector2();
 document.addEventListener('click', checkPlanetClick);
 
 //-----------------------------------------------------------------------------------
-scene.position.set(0, 0, 40);
 
-camera.position.setZ(-5);
-camera.position.setY(5);
+camera.position.setZ(-2);
+camera.position.setY(0);
 
 
 const renderer = new THREE.WebGLRenderer({ alpha:true, antialias:true, canvas: document.querySelector('#bg')});
@@ -68,7 +67,7 @@ function onWindowResize() {
 
 renderer.render(scene, camera);
 
-const au = .01;
+const au = .7;
 
 //planet list
 let planets = [];
@@ -100,7 +99,7 @@ planets[planets.length-1].getMesh().userData.name = 'Mars';
 
 const moonTexture = new THREE.TextureLoader().load('../Resources/Textures/moonTexture.jpg');
 const moonMaterial = createMaterial('texture', moonTexture);
-planets[planets.length] = new Planet(.1*.25, 32, 32, au+.8, 0, 0, moonMaterial);
+planets[planets.length] = new Planet(.1*.25, 32, 32, au+.15, 0, 0, moonMaterial);
 scene.add(planets[planets.length-1].getMesh());
 
 const psycheOrbit = new THREE.Group();
@@ -124,12 +123,12 @@ loader.load(
     '../Resources/Models/PsycheModel.stl',
     function (geometry) {
         const mesh = new THREE.Mesh(geometry, psycheMaterial);
-        mesh.position.setZ(-(au*2));
+        mesh.position.setZ(-(au*1.5));
         mesh.userData.clickable = true;
         mesh.userData.name = 'Psyche';
         scene.add(mesh);
 
-        mesh.scale.set(.1, .1, .1)
+        mesh.scale.set(.08, .08, .08)
 
         psycheOrbit.add(mesh);
 
@@ -158,10 +157,10 @@ const spaceCraftMaterial = new THREE.MeshStandardMaterial({
      '../Resources/Models/SpaceCraft.stl',
      function (geometry) {
          const mesh = new THREE.Mesh(geometry, spaceCraftMaterial);
-         mesh.position.setZ(-(au*1.5));
-         mesh.position.setX(20);
+         mesh.position.setZ(-(au*1));
+         mesh.position.setX(.8);
          mesh.rotateY(48)
-         mesh.scale.set( .03, .03, .03 );
+         mesh.scale.set( .0008, .0008, .0008 );
          scene.add(mesh);
 
          psycheOrbit.add(mesh);
