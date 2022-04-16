@@ -83,27 +83,13 @@ scene.add(planets.get("Earth").getMesh());
 planets.get("Earth").getMesh().userData.clickable = true;
 planets.get("Earth").getMesh().userData.name = "Earth";
 
-/*
-planets[planets.length] = new Planet(.1, 32, 32, au, 0, .1, earthMaterial);
-scene.add(planets[planets.length-1].getMesh());
-planets[planets.length-1].getMesh().userData.clickable = true;
-planets[planets.length-1].getMesh().userData.name = 'Earth';
-*/
-
 const sunTexture = new THREE.TextureLoader().load('../Resources/Textures/sun.jpg');
 const sunMaterial = createMaterial('texture-basic', sunTexture);
 
 planets.set("Sun", new Planet(.2, 32, 32, 0, 0, 0, sunMaterial));
-planets.get("Sun").getMesh().userData.clickable = true;
+planets.get("Sun").getMesh().userData.clickable = false;
 planets.get("Sun").getMesh().userData.name = "Sun";
 scene.add(planets.get("Sun").getMesh());
-
-/*
-planets[planets.length] = new Planet(.2, 32, 32, 0, 0, 0, sunMaterial);
-planets[planets.length-1].getMesh().userData.clickable = true;
-planets[planets.length-1].getMesh().userData.name = 'Sun';
-scene.add(planets[planets.length-1].getMesh());
-*/
 
 const marsTexture = new THREE.TextureLoader().load('../Resources/Textures/marsTexture.jpg');
 const marsMaterial = createMaterial('texture', marsTexture);
@@ -113,23 +99,11 @@ planets.get("Mars").getMesh().userData.clickable = true;
 planets.get("Mars").getMesh().userData.name = "Mars";
 scene.add(planets.get("Mars").getMesh());
 
-/*
-planets[planets.length] = new Planet(.05, 32, 32, -(au*1.5), 0, 0, marsMaterial);
-scene.add(planets[planets.length-1].getMesh());
-planets[planets.length-1].getMesh().userData.clickable = true;
-planets[planets.length-1].getMesh().userData.name = 'Mars';
-*/
-
 const moonTexture = new THREE.TextureLoader().load('../Resources/Textures/moonTexture.jpg');
 const moonMaterial = createMaterial('texture', moonTexture);
 
 planets.set("Moon", new Planet(.1*.25, 32, 32, au+.8, 0, 0, moonMaterial));
 scene.add(planets.get("Moon").getMesh());
-
-/*
-planets[planets.length] = new Planet(.1*.25, 32, 32, au+.8, 0, 0, moonMaterial);
-scene.add(planets[planets.length-1].getMesh());
-*/
 
 const psycheOrbit = new THREE.Group();
 
@@ -250,8 +224,6 @@ scene.background = spaceTexture;
 // done with constructor taking string for fact, url/file link for image and the enum type it has?
 
 //Earth's facts, images, and variables
-let sunIsClicked = false;
-let earthIsClicked = false;
 const earthFacts = ["The Psyche mission will begin by launching from our home planet Earth!",
                     "This is the Psyche spacecraft. It is an unmanned orbiting spacecraft.",
                     "The current launch date is set for August 01, 2022.",
@@ -266,7 +238,6 @@ const earthImages = ["Resources/Images/earthFact1.jpeg",
 planets.get("Earth").initializeFactCards(earthFacts, earthImages);
 
 //Mars' facts, images, and variables
-let marsIsClicked = false;
 const marsFacts = ["The Psyche spacecraft will fly by Mars on its way to Psyche.",
                    "The fly by will give the spacecraft the extra speed it needs for its journey.",
                    "The spacecraft will gain speed from Mars using its gravitational pull. This is called a 'gravity assist.'",
@@ -281,7 +252,6 @@ const marsImages = ["Resources/Images/marsFact1.jpeg",
 planets.get("Mars").initializeFactCards(marsFacts, marsImages);
 
 //Psyche's facts, images, and variables
-let psycheIsClicked = false;
 const psycheFacts = ["Psyche lies in the asteroid belt between Mars and Jupiter.",
                      "Psyche is a unique asteroid, rich in metal. Scientists believe that studying it will reveal secrets about the formation of planets.",
                      "The spacecraft is set to arrive at Psyche in 2026, where it will orbit for 21 months.",
@@ -299,8 +269,6 @@ planets.get("Psyche").initializeFactCards(psycheFacts, psycheImages);
 //-----Handle click function using raycasts
 function checkPlanetClick(event){
 
-
-
     //get location of mouse and use it to set the raycast
     //extra math is to normalize coordinates to user's screen
     rayPointer.set((event.clientX / window.innerWidth) * 2 - 1, -(event.clientY / window.innerHeight) * 2 + 1);
@@ -308,7 +276,6 @@ function checkPlanetClick(event){
 
     //get array of all objects that raycast intersects
     const intersectedObjects = raycaster.intersectObjects( scene.children );
-
 
     //if valid planet was clicked, execute
     if(intersectedObjects.length > 0 && intersectedObjects[0].object.userData.clickable)
@@ -329,49 +296,6 @@ function checkPlanetClick(event){
             showFactCard(clickedPlanetName);
             showNextFact(clickedPlanetName);
         }
-
-        /*
-        //Earth Case
-        if (clickedPlanet.object.userData.name == 'Earth'){
-            if(earthIsClicked){
-                //executes the hideFactCard function and sets earth clicked to false
-                hideFactCard();
-            }
-            else {
-                //executes the showFactCard function, sets earth clicked to true, shows next fact
-                earthIsClicked = true;
-                showFactCard("Earth");
-                showNextFact("Earth");
-            }
-        }
-        //Mars Case
-        else if(clickedPlanet.object.userData.name == 'Mars'){
-            if(marsIsClicked){
-                //executes the hideFactCard function and sets earth clicked to false
-                hideFactCard();
-            }
-            else {
-                //executes the showFactCard function, sets earth clicked to true, shows next fact
-                marsIsClicked = true;
-                showFactCard("Mars");
-                showNextFact("Mars");
-            }
-        }
-        //Psyche Case
-        else if (clickedPlanet.object.userData.name == 'Psyche') {
-            if(psycheIsClicked){
-                //executes the hideFactCard function and sets earth clicked to false
-                hideFactCard();
-            }
-            else {
-                //executes the showFactCard function, sets earth clicked to true, shows next fact
-                psycheIsClicked = true;
-                showFactCard("Psyche");
-                showNextFact("Psyche");
-            }
-        }
-
-         */
     }
 }
 
@@ -411,7 +335,6 @@ function toggleBackground(){
 ///hides the fact card showing the facts and resets all variables
 function hideFactCard(planetName)
 {
-    factIndex = 4;
     document.getElementById('fact-card').innerText = '';
 
     //todo do all planets need to be set to not clicked? ie use for loop?
@@ -476,21 +399,10 @@ function showFactCard(planetIdentifier)
 }
 
 //used by showNextFact() to display next fact
-let factIndex = 0;
 let lastIdentifier = "";
-
-//todo this entire function can be redone, specifically the switch statement to be more general.  Also, what does that else if do?
 
 //takes in a string to determine which planet's fact to display
 function showNextFact(planetName){
-
-    //todo remove hardcoded factIndex value, can be generalized with a list of sorts
-    /*
-    //increment factIndex and update lastIdentifier
-    if (factIndex === 4){
-        factIndex = 0;
-    }
-    else*/
 
     if (planetName !== lastIdentifier) {
         console.log("different identifier, setting factIndex to 0");
@@ -500,12 +412,6 @@ function showNextFact(planetName){
 
         lastIdentifier = planetName;
     }
-    /*
-    else
-    {
-        factIndex++;
-    }
-    */
 
     //change behavior depending on identifier passed
     let factToDisplay;
@@ -516,34 +422,6 @@ function showNextFact(planetName){
     document.getElementById("card-img").setAttribute("src", planets.get(planetName).getFactImage());
 
     planets.get(planetName).updateFact();
-    /*
-
-    switch (planetName)
-    {
-        //display appropriate fact and image
-        case "Earth":
-            factToDisplay = document.createTextNode(earthFacts[factIndex]);
-            document.getElementById("fact-text").innerHTML = "";
-            document.getElementById("fact-text").appendChild(factToDisplay);
-            document.getElementById("card-img").setAttribute("src", earthImages[factIndex]);
-            break;
-        case "Mars":
-            factToDisplay = document.createTextNode(marsFacts[factIndex]);
-            document.getElementById("fact-text").innerHTML = "";
-            document.getElementById("fact-text").appendChild(factToDisplay);
-            document.getElementById("card-img").setAttribute("src", marsImages[factIndex]);
-            break;
-        case "Psyche":
-            factToDisplay = document.createTextNode(psycheFacts[factIndex]);
-            document.getElementById("fact-text").innerHTML = "";
-            document.getElementById("fact-text").appendChild(factToDisplay);
-            document.getElementById("card-img").setAttribute("src", psycheImages[factIndex]);
-            break;
-        default:
-            console.log("Error in showNextFact switch");
-    }
-
-     */
 }
 
 //Create overlaying elements
