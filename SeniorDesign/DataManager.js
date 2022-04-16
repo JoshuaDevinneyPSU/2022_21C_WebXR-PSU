@@ -147,14 +147,20 @@ loader.load(
    }
 )
 
+const spaceCraftMaterial = new THREE.MeshStandardMaterial({
+    color: 0x203354,
+    //metalness: .5
+});
+
 //todo what exactly is this "mesh" variable doing?
  loader.load(
      '../Resources/Models/SpaceCraft.stl',
      function (geometry) {
-         const mesh = new THREE.Mesh(geometry, psycheMaterial);
+         const mesh = new THREE.Mesh(geometry, spaceCraftMaterial);
          mesh.position.setZ(-(au*1.5));
          mesh.position.setX(20);
-         mesh.scale.set( .01, .01, .01 );
+         mesh.rotateY(48)
+         mesh.scale.set( .03, .03, .03 );
          scene.add(mesh);
 
          psycheOrbit.add(mesh);
@@ -526,6 +532,11 @@ const moonOrbit = new THREE.Group();
 moonOrbit.add(planets[3].getMesh());
 scene.add(moonOrbit);
 
+const cameraHolder = new Group();
+cameraHolder.add(camera);
+cameraHolder.position.set(0, 10, 0);
+scene.add(cameraHolder);
+
 function animate(){
     renderer.setAnimationLoop(renderScene)
 }
@@ -533,13 +544,13 @@ function animate(){
 //Updates the positions of all objects and renders
 function updatePositions()
 {
-    planets[0].getMesh().rotation.y += 0.003;
-    planets[2].getMesh().rotation.y += 0.003;
+    planets[0].getMesh().rotation.y += 0.006;
+    planets[2].getMesh().rotation.y += 0.006;
     earthOrbit.rotation.y += 0.0005;
     marsOrbit.rotation.y += 0.0004;
     moonOrbit.rotation.y += 0.0005;
     psycheOrbit.rotation.y += 0.0002;
-    planets[3].getMesh().rotation.y += 0.003;
+    planets[3].getMesh().rotation.y += 0.006;
     earthLabel.lookAt(new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z));
     marsLabel.lookAt(new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z));
     psycheLabel.lookAt(new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z));
