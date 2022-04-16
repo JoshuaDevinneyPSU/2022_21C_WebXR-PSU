@@ -149,7 +149,7 @@ loader.load(
 
 const spaceCraftMaterial = new THREE.MeshStandardMaterial({
     color: 0x203354,
-    //metalness: .5
+    metalness: .5
 });
 
 //todo what exactly is this "mesh" variable doing?
@@ -534,7 +534,7 @@ scene.add(moonOrbit);
 
 const cameraHolder = new THREE.Group();
 cameraHolder.add(camera);
-cameraHolder.position.set(0, 1, 0);
+cameraHolder.position.set(0, 0, 0);
 scene.add(cameraHolder);
 
 function animate(){
