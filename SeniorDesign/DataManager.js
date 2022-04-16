@@ -84,7 +84,7 @@ planets[planets.length-1].getMesh().userData.name = 'Earth';
 
 const sunTexture = new THREE.TextureLoader().load('../Resources/Textures/sun.jpg');
 const sunMaterial = createMaterial('texture-basic', sunTexture);
-planets[planets.length] = new Planet(10, 32, 32, 0, 0, 0, sunMaterial);
+planets[planets.length] = new Planet(2, 32, 32, 0, 0, 0, sunMaterial);
 planets[planets.length-1].getMesh().userData.clickable = true;
 planets[planets.length-1].getMesh().userData.name = 'Sun';
 scene.add(planets[planets.length-1].getMesh());
