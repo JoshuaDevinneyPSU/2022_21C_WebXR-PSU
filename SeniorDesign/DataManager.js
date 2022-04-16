@@ -68,7 +68,7 @@ function onWindowResize() {
 
 renderer.render(scene, camera);
 
-const au = 20;
+const au = 1;
 
 //planet list
 let planets = [];
@@ -78,14 +78,14 @@ const normalTexture = new THREE.TextureLoader().load('../Resources/Maps/earthNor
 
 const earthMaterial = createMaterial('texture', earthTexture);
 
-planets[planets.length] = new Planet(6, 32, 32, au, 0, 10, earthMaterial);
+planets[planets.length] = new Planet(.1, 32, 32, au, 0, 10, earthMaterial);
 scene.add(planets[planets.length-1].getMesh());
 planets[planets.length-1].getMesh().userData.clickable = true;
 planets[planets.length-1].getMesh().userData.name = 'Earth';
 
 const sunTexture = new THREE.TextureLoader().load('../Resources/Textures/sun.jpg');
 const sunMaterial = createMaterial('texture-basic', sunTexture);
-planets[planets.length] = new Planet(2, 32, 32, 0, 0, 0, sunMaterial);
+planets[planets.length] = new Planet(.2, 32, 32, 0, 0, 0, sunMaterial);
 planets[planets.length-1].getMesh().userData.clickable = true;
 planets[planets.length-1].getMesh().userData.name = 'Sun';
 scene.add(planets[planets.length-1].getMesh());
@@ -93,14 +93,14 @@ scene.add(planets[planets.length-1].getMesh());
 const marsTexture = new THREE.TextureLoader().load('../Resources/Textures/marsTexture.jpg');
 const marsMaterial = createMaterial('texture', marsTexture);
 
-planets[planets.length] = new Planet(3, 32, 32, -(au*1.5), 0, 0, marsMaterial);
+planets[planets.length] = new Planet(.05, 32, 32, -(au*1.5), 0, 0, marsMaterial);
 scene.add(planets[planets.length-1].getMesh());
 planets[planets.length-1].getMesh().userData.clickable = true;
 planets[planets.length-1].getMesh().userData.name = 'Mars';
 
 const moonTexture = new THREE.TextureLoader().load('../Resources/Textures/moonTexture.jpg');
 const moonMaterial = createMaterial('texture', moonTexture);
-planets[planets.length] = new Planet(6*.25, 32, 32, au+8, 0, 0, moonMaterial);
+planets[planets.length] = new Planet(.1*.25, 32, 32, au+8, 0, 0, moonMaterial);
 scene.add(planets[planets.length-1].getMesh());
 
 const psycheOrbit = new THREE.Group();
