@@ -111,7 +111,7 @@ const psycheMaterial = createMaterial('texture', psycheTexture);
 //const spaceCraft = createSTL('../Resources/Models/SpaceCraft.stl', 0, 0, 0, psycheMaterial, scene, 0.005, 0.005, 0.005);
 
 //Create Label
-const psycheLabelGeometry = new THREE.PlaneGeometry(5, 3);
+const psycheLabelGeometry = new THREE.PlaneGeometry(.4, .2);
 const psycheLabelTexture = new THREE.TextureLoader().load('../Resources/Textures/psycheLabelTexture.jpg');
 const psycheLabelMaterial = new THREE.MeshBasicMaterial({map: psycheLabelTexture});
 const psycheLabel = new THREE.Mesh(psycheLabelGeometry, psycheLabelMaterial);
@@ -128,11 +128,11 @@ loader.load(
         mesh.userData.name = 'Psyche';
         scene.add(mesh);
 
-        mesh.scale.set(.08, .08, .08)
+        mesh.scale.set(.04, .04, .04)
 
         psycheOrbit.add(mesh);
 
-        psycheLabel.position.set(mesh.position.x, mesh.position.y + 5, mesh.position.z);
+        psycheLabel.position.set(mesh.position.x, mesh.position.y + .4, mesh.position.z);
         //add label to scene
         scene.add(psycheLabel);
         psycheOrbit.add(psycheLabel);
@@ -160,7 +160,7 @@ const spaceCraftMaterial = new THREE.MeshStandardMaterial({
          mesh.position.setZ(-(au*1));
          mesh.position.setX(.8);
          mesh.rotateY(48)
-         mesh.scale.set( .0008, .0008, .0008 );
+         mesh.scale.set( .0004, .0004, .0004 );
          scene.add(mesh);
 
          psycheOrbit.add(mesh);
@@ -181,11 +181,11 @@ scene.add( light );
 //todo add function to take care of creation of labels
 
 //Earth
-const earthLabelGeometry = new THREE.PlaneGeometry(5, 3);
+const earthLabelGeometry = new THREE.PlaneGeometry(.4, .2);
 const earthLabelTexture = new THREE.TextureLoader().load('../Resources/Textures/earthLabelTexture.jpg');
 const earthLabelMaterial = new THREE.MeshBasicMaterial({map: earthLabelTexture, side: THREE.DoubleSide});
 const earthLabel = new THREE.Mesh(earthLabelGeometry, earthLabelMaterial);
-earthLabel.position.set(planets[0].getMesh().position.x, planets[0].getMesh().position.y + 8, planets[0].getMesh().position.z);
+earthLabel.position.set(planets[0].getMesh().position.x, planets[0].getMesh().position.y + .3, planets[0].getMesh().position.z);
 earthLabel.userData.clickable = true;
 earthLabel.userData.name = 'Earth';
 
@@ -193,11 +193,11 @@ earthLabel.userData.name = 'Earth';
 scene.add(earthLabel);
 
 //Mars
-const marsLabelGeometry = new THREE.PlaneGeometry(5, 3);
+const marsLabelGeometry = new THREE.PlaneGeometry(.4, .2);
 const marsLabelTexture = new THREE.TextureLoader().load('../Resources/Textures/marsLabelTexture.jpg');
 const marsLabelMaterial = new THREE.MeshBasicMaterial({map: marsLabelTexture});
 const marsLabel = new THREE.Mesh(marsLabelGeometry, marsLabelMaterial);
-marsLabel.position.set(planets[2].getMesh().position.x, planets[2].getMesh().position.y + 6, planets[2].getMesh().position.z);
+marsLabel.position.set(planets[2].getMesh().position.x, planets[2].getMesh().position.y + .3, planets[2].getMesh().position.z);
 marsLabel.userData.clickable = true;
 marsLabel.userData.name = 'Mars';
 
