@@ -44,6 +44,7 @@ function setupXR(){
 
     scene.add(controller);
 
+    renderer.xr.setReferenceSpaceType('local')
     //second parameter ensures fact card appears in AR view
     let sceneARButton = ARButton.createButton( renderer, {optionalFeatures: ["dom-overlay"], domOverlay: {root: document.getElementById("ar-overlay")}});
     console.log("Yo" + sceneARButton.innerText);
