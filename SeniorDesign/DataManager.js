@@ -255,7 +255,7 @@ const psycheImages = ["Resources/Images/psycheFact1.jpg",
                       "Resources/Images/psycheFact4.jpg",
                       "Resources/Images/psycheFact5.jpg"];
 
-const raycastModifier = .3;
+const raycastModifier = .5;
 
 //-----Handle click function using raycasts
 function checkPlanetClick(event){
