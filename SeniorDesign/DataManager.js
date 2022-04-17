@@ -361,6 +361,12 @@ function hideFactCard()
     psycheIsClicked = false;
 }
 
+function hideInfoPage()
+{
+    factIndex = 4;
+    document.getElementById('info-page').innerText = '';
+}
+
 //pass the name of the planet in the planetIdentifier parameter
 function showFactCard(planetIdentifier)
 {
@@ -416,6 +422,46 @@ function showFactCard(planetIdentifier)
     //add EventListeners to buttons
     cardCloseButton.addEventListener("click", hideFactCard);
     cardReadMoreButton.addEventListener("click", function(){showNextFact(planetIdentifier)});
+}
+
+function showInfoPage()
+{
+    const outerPageDiv = document.createElement("div");
+    outerPageDiv.setAttribute("class", "info");
+
+    //create info page body where information will display and set attributes
+    const infoBodyDiv = document.createElement("div");
+    infoBodyDiv.setAttribute("class", "info-body");
+
+    //create info body text and add to info body div
+    const infoBodyDivPar = document.createElement("p");
+    infoBodyDivPar.setAttribute("class", "info-page-text");
+    infoBodyDivPar.setAttribute("id", "info-text");
+    infoBodyDiv.appendChild(infoBodyDivPar);
+
+    //create fact card button div
+    const infoButtonDiv = document.createElement("div");
+    infoButtonDiv.setAttribute("class", "card-button-container");
+
+    //create buttons and button text
+    const infoCloseButton = document.createElement("button");
+    const infoCloseButtonText = document.createTextNode("Close");
+    infoCloseButton.setAttribute("class", "control-button");
+
+    //add text to buttons
+    infoCloseButton.appendChild(infoCloseButtonText);
+    infoButtonDiv.appendChild(infoCloseButton);
+
+    //append everything to outer div
+    outerPageDiv.appendChild(infoBodyDiv);
+    outerPageDiv.appendChild(infoButtonDiv);
+
+    //append to element in HTML
+    const infoPage = document.getElementById('info-page');
+    infoPage.appendChild(outerPageDiv);
+
+    //add EventListeners to buttons
+    infoCloseButton.addEventListener("click", hideInfoPage);
 }
 
 //used by showNextFact() to display next fact
@@ -503,9 +549,23 @@ function showOverlays()
     //add background toggle to text space
     toggleBG.appendChild(toggleBGButton);
 
+    //-----MORE INFO BUTTON-------
+    //create space for text
+    const infoBtn = document.createElement("div");
+    infoBtn.setAttribute("id", "info");
+
+    //create text
+    const infoButton = document.createElement("button");
+    infoButton.setAttribute("id", "info-button");
+    infoButton.innerText = "More Info";
+    infoButton.addEventListener("click", showInfoPage);
+
+    //add background toggle to text space
+    infoBtn.appendChild(infoButton);
     //----------MASTER DIV FOR MISC OVERLAYS----------
     const overlayContainer = document.createElement("div");
     overlayContainer.setAttribute("id", "overlay-container");
+    overlayContainer.appendChild(infoBtn)
     overlayContainer.appendChild(toggleBG);
     overlayContainer.appendChild(prompt);
 
