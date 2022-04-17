@@ -44,7 +44,6 @@ export default class Planet extends THREE.Mesh{
         this.#planetMesh.position.set(this.#xPosition, this.#yPosition, this.#zPosition);
     }
 
-
     getMesh(){
         return this.#planetMesh;
     }
@@ -94,20 +93,4 @@ export default class Planet extends THREE.Mesh{
         }
     }
 
-
-/*
-    createPlanet(){
-        //create initial geometry and material
-        let planetGeo = new THREE.SphereGeometry(this.#radius, this.#widthSegments, this.#heightSegments);
-
-        //create mesh out of geometry and material
-        this.#planetMesh = new THREE.Mesh(planetGeo, this.#material);
-
-        //set specified position
-        this.#planetMesh.position.set(this.#xPosition, this.#yPosition, this.#zPosition);
-
-        //return created planet
-        return planet;
-    }
-*/
 }

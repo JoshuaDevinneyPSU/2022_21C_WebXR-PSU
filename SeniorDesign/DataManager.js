@@ -158,17 +158,21 @@ const spaceCraftMaterial = new THREE.MeshStandardMaterial({
     //metalness: .5
 });
 
+let spacecraftMesh;
+
 //todo what exactly is this "mesh" variable doing?
  loader.load(
      '../Resources/Models/SpaceCraft.stl',
      function (geometry) {
-         const spacecraftMesh = new THREE.Mesh(geometry, spaceCraftMaterial);
+         spacecraftMesh = new THREE.Mesh(geometry, spaceCraftMaterial);
          spacecraftMesh.position.setZ(-(au*1.5));
          spacecraftMesh.position.setX(20);
          spacecraftMesh.rotateY(48)
          spacecraftMesh.scale.set( .03, .03, .03 );
+         spacecraftMesh.userData.clickable = true;
+         spacecraftMesh.userData.name = "Spacecraft"
 
-         planets.set("Spacecraft", new Planet(material = spacecraftMesh));
+
          scene.add(spacecraftMesh);
 
          psycheOrbit.add(spacecraftMesh);
@@ -180,6 +184,8 @@ const spaceCraftMaterial = new THREE.MeshStandardMaterial({
          console.log(error);
      }
 )
+
+planets.set("Spacecraft", new Planet(0, 0, 0, 0, 0, 0, spacecraftMesh));
 
 const light = new THREE.PointLight( 0xF4E99B, 5, 150 );
 scene.add( light );
@@ -264,7 +270,13 @@ const psycheImages = ["Resources/Images/psycheFact1.jpg",
                       "Resources/Images/psycheFact5.jpg"];
 
 planets.get("Psyche").initializeFactCards(psycheFacts, psycheImages);
-//.initializeFactCards(psycheFacts, psycheImages);
+
+const spacecraftFacts = ["fact1", "fact2", "fact3", "fact4", "fact5"];
+const spacecraftImages = ["loc1", "loc2", "loc3", "loc4", "loc5"];
+
+planets.get("Spacecraft").initializeFactCards(spacecraftFacts, spacecraftImages);
+
+
 
 //-----Handle click function using raycasts
 function checkPlanetClick(event){
@@ -339,6 +351,7 @@ function hideFactCard(planetName)
 
     //todo do all planets need to be set to not clicked? ie use for loop?
     planets.get(planetName).setClicked();
+    planets.get(planetName).resetFactCard();
 }
 
 //pass the name of the planet in the planetIdentifier parameter
