@@ -70,37 +70,39 @@ renderer.render(scene, camera);
 const au = .7;
 
 //planet list
-let planets = [];
+let planets = new Map();
 
 const earthTexture = new THREE.TextureLoader().load('../Resources/Textures/earthTexture.jpg');
 const normalTexture = new THREE.TextureLoader().load('../Resources/Maps/earthNormalMap.tif');
 
 const earthMaterial = createMaterial('texture', earthTexture);
 
-planets[planets.length] = new Planet(.1, 32, 32, au, 0, .1, earthMaterial);
-scene.add(planets[planets.length-1].getMesh());
-planets[planets.length-1].getMesh().userData.clickable = true;
-planets[planets.length-1].getMesh().userData.name = 'Earth';
+planets.set("Earth", new Planet(.1, 32, 32, au, 0, .1, earthMaterial));
+scene.add(planets.get("Earth").getMesh());
+planets.get("Earth").getMesh().userData.clickable = true;
+planets.get("Earth").getMesh().userData.name = "Earth";
 
 const sunTexture = new THREE.TextureLoader().load('../Resources/Textures/sun.jpg');
 const sunMaterial = createMaterial('texture-basic', sunTexture);
-planets[planets.length] = new Planet(.2, 32, 32, 0, 0, 0, sunMaterial);
-planets[planets.length-1].getMesh().userData.clickable = true;
-planets[planets.length-1].getMesh().userData.name = 'Sun';
-scene.add(planets[planets.length-1].getMesh());
+
+planets.set("Sun", new Planet(.2, 32, 32, 0, 0, 0, sunMaterial));
+planets.get("Sun").getMesh().userData.clickable = false;
+planets.get("Sun").getMesh().userData.name = "Sun";
+scene.add(planets.get("Sun").getMesh());
 
 const marsTexture = new THREE.TextureLoader().load('../Resources/Textures/marsTexture.jpg');
 const marsMaterial = createMaterial('texture', marsTexture);
 
-planets[planets.length] = new Planet(.05, 32, 32, -(au*1.5), 0, 0, marsMaterial);
-scene.add(planets[planets.length-1].getMesh());
-planets[planets.length-1].getMesh().userData.clickable = true;
-planets[planets.length-1].getMesh().userData.name = 'Mars';
+planets.set("Mars", new Planet(.05, 32, 32, -(au*1.5), 0, 0, marsMaterial));
+planets.get("Mars").getMesh().userData.clickable = true;
+planets.get("Mars").getMesh().userData.name = "Mars";
+scene.add(planets.get("Mars").getMesh());
 
 const moonTexture = new THREE.TextureLoader().load('../Resources/Textures/moonTexture.jpg');
 const moonMaterial = createMaterial('texture', moonTexture);
-planets[planets.length] = new Planet(.1*.25, 32, 32, au+.15, 0, 0, moonMaterial);
-scene.add(planets[planets.length-1].getMesh());
+
+planets.set("Moon", new Planet(.1*.25, 32, 32, au+.15, 0, 0, moonMaterial));
+scene.add(planets.get("Moon").getMesh());
 
 const psycheOrbit = new THREE.Group();
 
@@ -117,22 +119,25 @@ const psycheLabelMaterial = new THREE.MeshBasicMaterial({map: psycheLabelTexture
 const psycheLabel = new THREE.Mesh(psycheLabelGeometry, psycheLabelMaterial);
 psycheLabel.userData.clickable = true;
 psycheLabel.userData.name = 'Psyche';
+planets.set("Psyche", new Planet(0, 0, 0, 0, 0, 0, psycheLabel));
 
 const loader = new STLLoader();
 loader.load(
     '../Resources/Models/PsycheModel.stl',
     function (geometry) {
-        const mesh = new THREE.Mesh(geometry, psycheMaterial);
-        mesh.position.setZ(-(au*1.5));
-        mesh.userData.clickable = true;
-        mesh.userData.name = 'Psyche';
-        scene.add(mesh);
+        const psycheMesh = new THREE.Mesh(geometry, psycheMaterial);
+        psycheMesh.position.setZ(-(au*1.5));
+        psycheMesh.userData.clickable = true;
+        psycheMesh.userData.name = 'Psyche';
 
-        mesh.scale.set(.04, .04, .04)
+        scene.add(psycheMesh);
 
-        psycheOrbit.add(mesh);
+        psycheMesh.scale.set(.04, .04, .04)
 
-        psycheLabel.position.set(mesh.position.x, mesh.position.y + .4, mesh.position.z);
+        psycheOrbit.add(psycheMesh);
+
+        psycheLabel.position.set(psycheMesh.position.x, psycheMesh.position.y + 5, psycheMesh.position.z);
+      
         //add label to scene
         scene.add(psycheLabel);
         psycheOrbit.add(psycheLabel);
@@ -152,18 +157,24 @@ const spaceCraftMaterial = new THREE.MeshStandardMaterial({
     metalness: .5
 });
 
+let spacecraftMesh;
+
 //todo what exactly is this "mesh" variable doing?
  loader.load(
      '../Resources/Models/SpaceCraft.stl',
      function (geometry) {
-         const mesh = new THREE.Mesh(geometry, spaceCraftMaterial);
-         mesh.position.setZ(-(au*1));
-         mesh.position.setX(.8);
-         mesh.rotateY(48)
-         mesh.scale.set( .0004, .0004, .0004 );
-         scene.add(mesh);
+         spacecraftMesh = new THREE.Mesh(geometry, spaceCraftMaterial);
+         spacecraftMesh.position.setZ(-(au*1));
+         spacecraftMesh.position.setX(.8);
+         spacecraftMesh.rotateY(48)
+         spacecraftMesh.scale.set( .0004, .0004, .0004 );
+         spacecraftMesh.userData.clickable = true;
+         spacecraftMesh.userData.name = "Spacecraft"
 
-         psycheOrbit.add(mesh);
+
+         scene.add(spacecraftMesh);
+
+         psycheOrbit.add(spacecraftMesh);
      },
      (xhr) => {
          console.log((xhr.loaded / xhr.total) * 100 + '% loaded');
@@ -172,6 +183,8 @@ const spaceCraftMaterial = new THREE.MeshStandardMaterial({
          console.log(error);
      }
 )
+
+planets.set("Spacecraft", new Planet(0, 0, 0, 0, 0, 0, spacecraftMesh));
 
 const light = new THREE.PointLight( 0xF4E99B, 5, 150 );
 scene.add( light );
@@ -185,7 +198,7 @@ const earthLabelGeometry = new THREE.PlaneGeometry(.4, .2);
 const earthLabelTexture = new THREE.TextureLoader().load('../Resources/Textures/earthLabelTexture.jpg');
 const earthLabelMaterial = new THREE.MeshBasicMaterial({map: earthLabelTexture, side: THREE.DoubleSide});
 const earthLabel = new THREE.Mesh(earthLabelGeometry, earthLabelMaterial);
-earthLabel.position.set(planets[0].getMesh().position.x, planets[0].getMesh().position.y + .3, planets[0].getMesh().position.z);
+earthLabel.position.set(planets.get("Earth").getMesh().position.x, planets.get("Earth").getMesh().position.y + .3, planets.get("Earth").getMesh().position.z);
 earthLabel.userData.clickable = true;
 earthLabel.userData.name = 'Earth';
 
@@ -197,7 +210,7 @@ const marsLabelGeometry = new THREE.PlaneGeometry(.4, .2);
 const marsLabelTexture = new THREE.TextureLoader().load('../Resources/Textures/marsLabelTexture.jpg');
 const marsLabelMaterial = new THREE.MeshBasicMaterial({map: marsLabelTexture});
 const marsLabel = new THREE.Mesh(marsLabelGeometry, marsLabelMaterial);
-marsLabel.position.set(planets[2].getMesh().position.x, planets[2].getMesh().position.y + .3, planets[2].getMesh().position.z);
+marsLabel.position.set(planets.get("Mars").getMesh().position.x, planets.get("Mars").getMesh().position.y + .3, planets.get("Mars").getMesh().position.z);
 marsLabel.userData.clickable = true;
 marsLabel.userData.name = 'Mars';
 
@@ -216,8 +229,6 @@ scene.background = spaceTexture;
 // done with constructor taking string for fact, url/file link for image and the enum type it has?
 
 //Earth's facts, images, and variables
-let sunIsClicked = false;
-let earthIsClicked = false;
 const earthFacts = ["The Psyche mission will begin by launching from our home planet Earth!",
                     "This is the Psyche spacecraft. It is an unmanned orbiting spacecraft.",
                     "The current launch date is set for August 01, 2022.",
@@ -229,8 +240,9 @@ const earthImages = ["Resources/Images/earthFact1.jpeg",
                      "Resources/Images/earthFact4.jpg",
                      "Resources/Images/earthFact5.jpg"];
 
+planets.get("Earth").initializeFactCards(earthFacts, earthImages);
+
 //Mars' facts, images, and variables
-let marsIsClicked = false;
 const marsFacts = ["The Psyche spacecraft will fly by Mars on its way to Psyche.",
                    "The fly by will give the spacecraft the extra speed it needs for its journey.",
                    "The spacecraft will gain speed from Mars using its gravitational pull. This is called a 'gravity assist.'",
@@ -242,8 +254,9 @@ const marsImages = ["Resources/Images/marsFact1.jpeg",
                     "Resources/Images/marsFact4.jpg",
                     "Resources/Images/marsFact5.JPG"];
 
+planets.get("Mars").initializeFactCards(marsFacts, marsImages);
+
 //Psyche's facts, images, and variables
-let psycheIsClicked = false;
 const psycheFacts = ["Psyche lies in the asteroid belt between Mars and Jupiter.",
                      "Psyche is a unique asteroid, rich in metal. Scientists believe that studying it will reveal secrets about the formation of planets.",
                      "The spacecraft is set to arrive at Psyche in 2026, where it will orbit for 21 months.",
@@ -255,12 +268,17 @@ const psycheImages = ["Resources/Images/psycheFact1.jpg",
                       "Resources/Images/psycheFact4.jpg",
                       "Resources/Images/psycheFact5.jpg"];
 
+planets.get("Psyche").initializeFactCards(psycheFacts, psycheImages);
+
+const spacecraftFacts = ["fact1", "fact2", "fact3", "fact4", "fact5"];
+const spacecraftImages = ["loc1", "loc2", "loc3", "loc4", "loc5"];
+
+planets.get("Spacecraft").initializeFactCards(spacecraftFacts, spacecraftImages);
+
 const raycastModifier = .5;
 
 //-----Handle click function using raycasts
 function checkPlanetClick(event){
-
-
 
     //get location of mouse and use it to set the raycast
     //extra math is to normalize coordinates to user's screen
@@ -280,46 +298,20 @@ function checkPlanetClick(event){
     if(intersectedObjects.length > 0 && intersectedObjects[0].object.userData.clickable)
     {
         const clickedPlanet = intersectedObjects[0];
+        const clickedPlanetName = clickedPlanet.object.userData.name;
+
+        if(clickedPlanetName === ''){
+            return;
+        }
+
         console.log(clickedPlanet);
 
-        //Earth Case
-        if (clickedPlanet.object.userData.name == 'Earth'){
-            if(earthIsClicked){
-                //executes the hideFactCard function and sets earth clicked to false
-                hideFactCard();
-            }
-            else {
-                //executes the showFactCard function, sets earth clicked to true, shows next fact
-                earthIsClicked = true;
-                showFactCard("Earth");
-                showNextFact("Earth");
-            }
+        if(planets.get(clickedPlanetName).getClicked()){
+            hideFactCard(clickedPlanetName);
         }
-        //Mars Case
-        else if(clickedPlanet.object.userData.name == 'Mars'){
-            if(marsIsClicked){
-                //executes the hideFactCard function and sets earth clicked to false
-                hideFactCard();
-            }
-            else {
-                //executes the showFactCard function, sets earth clicked to true, shows next fact
-                marsIsClicked = true;
-                showFactCard("Mars");
-                showNextFact("Mars");
-            }
-        }
-        //Psyche Case
-        else if (clickedPlanet.object.userData.name == 'Psyche') {
-            if(psycheIsClicked){
-                //executes the hideFactCard function and sets earth clicked to false
-                hideFactCard();
-            }
-            else {
-                //executes the showFactCard function, sets earth clicked to true, shows next fact
-                psycheIsClicked = true;
-                showFactCard("Psyche");
-                showNextFact("Psyche");
-            }
+        else{
+            showFactCard(clickedPlanetName);
+            showNextFact(clickedPlanetName);
         }
     }
 }
@@ -358,13 +350,13 @@ function toggleBackground(){
 }
 
 ///hides the fact card showing the facts and resets all variables
-function hideFactCard()
+function hideFactCard(planetName)
 {
-    factIndex = 4;
     document.getElementById('fact-card').innerText = '';
-    earthIsClicked = false;
-    marsIsClicked = false;
-    psycheIsClicked = false;
+
+    //todo do all planets need to be set to not clicked? ie use for loop?
+    planets.get(planetName).setClicked();
+    planets.get(planetName).resetFactCard();
 }
 
 //pass the name of the planet in the planetIdentifier parameter
@@ -425,57 +417,29 @@ function showFactCard(planetIdentifier)
 }
 
 //used by showNextFact() to display next fact
-let factIndex = 0;
 let lastIdentifier = "";
 
-//todo this entire function can be redone, specifically the switch statement to be more general.  Also, what does that else if do?
-
 //takes in a string to determine which planet's fact to display
-function showNextFact(planetIdentifier){
+function showNextFact(planetName){
 
-    //todo remove hardcoded factIndex value, can be generalized with a list of sorts
-
-    //increment factIndex and update lastIdentifier
-    if (factIndex == 4){
-        factIndex = 0;
-    }
-    else if (planetIdentifier != lastIdentifier)
-    {
+    if (planetName !== lastIdentifier) {
         console.log("different identifier, setting factIndex to 0");
-        factIndex = 0;
-        lastIdentifier = planetIdentifier;
-    }
-    else
-    {
-        factIndex++;
+        if(lastIdentifier !== ''){
+            planets.get(lastIdentifier).resetFactCard();
+        }
+
+        lastIdentifier = planetName;
     }
 
     //change behavior depending on identifier passed
     let factToDisplay;
-    switch (planetIdentifier)
-    {
-        //display appropriate fact and image
-        case "Earth":
-            factToDisplay = document.createTextNode(earthFacts[factIndex]);
-            document.getElementById("fact-text").innerHTML = "";
-            document.getElementById("fact-text").appendChild(factToDisplay);
-            document.getElementById("card-img").setAttribute("src", earthImages[factIndex]);
-            break;
-        case "Mars":
-            factToDisplay = document.createTextNode(marsFacts[factIndex]);
-            document.getElementById("fact-text").innerHTML = "";
-            document.getElementById("fact-text").appendChild(factToDisplay);
-            document.getElementById("card-img").setAttribute("src", marsImages[factIndex]);
-            break;
-        case "Psyche":
-            factToDisplay = document.createTextNode(psycheFacts[factIndex]);
-            document.getElementById("fact-text").innerHTML = "";
-            document.getElementById("fact-text").appendChild(factToDisplay);
-            document.getElementById("card-img").setAttribute("src", psycheImages[factIndex]);
-            break;
-        default:
-            console.log("Error in showNextFact switch");
-    }
+
+    factToDisplay = document.createTextNode(planets.get(planetName).getFact());
+    document.getElementById("fact-text").innerHTML = "";
+    document.getElementById("fact-text").appendChild(factToDisplay);
+    document.getElementById("card-img").setAttribute("src", planets.get(planetName).getFactImage());
+
+    planets.get(planetName).updateFact();
 }
 
 //Create overlaying elements
@@ -526,18 +490,18 @@ scene.add(ambientLight);
 const controls = new OrbitControls(camera, renderer.domElement);
 
 const earthOrbit = new THREE.Group();
-earthOrbit.add(planets[0].getMesh());
-earthOrbit.add(planets[3].getMesh());
+earthOrbit.add(planets.get("Earth").getMesh());
+earthOrbit.add(planets.get("Earth").getMesh());
 earthOrbit.add(earthLabel)
 scene.add(earthOrbit);
 
 const marsOrbit = new THREE.Group();
-marsOrbit.add(planets[2].getMesh());
+marsOrbit.add(planets.get("Mars").getMesh());
 marsOrbit.add(marsLabel);
 scene.add(marsOrbit)
 
 const moonOrbit = new THREE.Group();
-moonOrbit.add(planets[3].getMesh());
+moonOrbit.add(planets.get("Moon").getMesh());
 scene.add(moonOrbit);
 
 const cameraHolder = new THREE.Group();
@@ -552,13 +516,13 @@ function animate(){
 //Updates the positions of all objects and renders
 function updatePositions()
 {
-    planets[0].getMesh().rotation.y += 0.006;
-    planets[2].getMesh().rotation.y += 0.006;
+    planets.get("Earth").getMesh().rotation.y += 0.006;
+    planets.get("Mars").getMesh().rotation.y += 0.006;
     earthOrbit.rotation.y += 0.0005;
     marsOrbit.rotation.y += 0.0004;
     moonOrbit.rotation.y += 0.0005;
     psycheOrbit.rotation.y += 0.0002;
-    planets[3].getMesh().rotation.y += 0.006;
+    planets.get("Mars").getMesh().rotation.y += 0.006;
     earthLabel.lookAt(new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z));
     marsLabel.lookAt(new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z));
     psycheLabel.lookAt(new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z));
