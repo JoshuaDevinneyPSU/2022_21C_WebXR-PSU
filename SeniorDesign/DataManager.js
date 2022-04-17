@@ -22,10 +22,9 @@ const rayPointer = new THREE.Vector2();
 document.addEventListener('click', checkPlanetClick);
 
 //-----------------------------------------------------------------------------------
-scene.position.set(0, 0, 40);
 
-camera.position.setZ(-5);
-camera.position.setY(5);
+camera.position.setZ(-2);
+camera.position.setY(0);
 
 
 const renderer = new THREE.WebGLRenderer({ alpha:true, antialias:true, canvas: document.querySelector('#bg')});
@@ -68,7 +67,7 @@ function onWindowResize() {
 
 renderer.render(scene, camera);
 
-const au = .01;
+const au = .7;
 
 //planet list
 let planets = new Map();
@@ -102,7 +101,7 @@ scene.add(planets.get("Mars").getMesh());
 const moonTexture = new THREE.TextureLoader().load('../Resources/Textures/moonTexture.jpg');
 const moonMaterial = createMaterial('texture', moonTexture);
 
-planets.set("Moon", new Planet(.1*.25, 32, 32, au+.8, 0, 0, moonMaterial));
+planets.set("Moon", new Planet(.1*.25, 32, 32, au+.15, 0, 0, moonMaterial));
 scene.add(planets.get("Moon").getMesh());
 
 const psycheOrbit = new THREE.Group();
@@ -114,7 +113,7 @@ const psycheMaterial = createMaterial('texture', psycheTexture);
 //const spaceCraft = createSTL('../Resources/Models/SpaceCraft.stl', 0, 0, 0, psycheMaterial, scene, 0.005, 0.005, 0.005);
 
 //Create Label
-const psycheLabelGeometry = new THREE.PlaneGeometry(5, 3);
+const psycheLabelGeometry = new THREE.PlaneGeometry(.4, .2);
 const psycheLabelTexture = new THREE.TextureLoader().load('../Resources/Textures/psycheLabelTexture.jpg');
 const psycheLabelMaterial = new THREE.MeshBasicMaterial({map: psycheLabelTexture});
 const psycheLabel = new THREE.Mesh(psycheLabelGeometry, psycheLabelMaterial);
@@ -127,18 +126,18 @@ loader.load(
     '../Resources/Models/PsycheModel.stl',
     function (geometry) {
         const psycheMesh = new THREE.Mesh(geometry, psycheMaterial);
-        psycheMesh.position.setZ(-(au*2));
+        psycheMesh.position.setZ(-(au*1.5));
         psycheMesh.userData.clickable = true;
         psycheMesh.userData.name = 'Psyche';
 
-        //planets.set("Psyche", new Planet(0, 0, 0, 0, 0, 0, psycheMesh));
         scene.add(psycheMesh);
 
-        psycheMesh.scale.set(.1, .1, .1)
+        psycheMesh.scale.set(.04, .04, .04)
 
         psycheOrbit.add(psycheMesh);
 
         psycheLabel.position.set(psycheMesh.position.x, psycheMesh.position.y + 5, psycheMesh.position.z);
+      
         //add label to scene
         scene.add(psycheLabel);
         psycheOrbit.add(psycheLabel);
@@ -155,7 +154,7 @@ loader.load(
 
 const spaceCraftMaterial = new THREE.MeshStandardMaterial({
     color: 0x203354,
-    //metalness: .5
+    metalness: .5
 });
 
 let spacecraftMesh;
@@ -165,10 +164,10 @@ let spacecraftMesh;
      '../Resources/Models/SpaceCraft.stl',
      function (geometry) {
          spacecraftMesh = new THREE.Mesh(geometry, spaceCraftMaterial);
-         spacecraftMesh.position.setZ(-(au*1.5));
-         spacecraftMesh.position.setX(20);
+         spacecraftMesh.position.setZ(-(au*1));
+         spacecraftMesh.position.setX(.8);
          spacecraftMesh.rotateY(48)
-         spacecraftMesh.scale.set( .03, .03, .03 );
+         spacecraftMesh.scale.set( .0004, .0004, .0004 );
          spacecraftMesh.userData.clickable = true;
          spacecraftMesh.userData.name = "Spacecraft"
 
@@ -195,11 +194,11 @@ scene.add( light );
 //todo add function to take care of creation of labels
 
 //Earth
-const earthLabelGeometry = new THREE.PlaneGeometry(5, 3);
+const earthLabelGeometry = new THREE.PlaneGeometry(.4, .2);
 const earthLabelTexture = new THREE.TextureLoader().load('../Resources/Textures/earthLabelTexture.jpg');
 const earthLabelMaterial = new THREE.MeshBasicMaterial({map: earthLabelTexture, side: THREE.DoubleSide});
 const earthLabel = new THREE.Mesh(earthLabelGeometry, earthLabelMaterial);
-earthLabel.position.set(planets.get("Earth").getMesh().position.x, planets.get("Earth").getMesh().position.y + 8, planets.get("Earth").getMesh().position.z);
+earthLabel.position.set(planets.get("Earth").getMesh().position.x, planets.get("Earth").getMesh().position.y + .3, planets.get("Earth").getMesh().position.z);
 earthLabel.userData.clickable = true;
 earthLabel.userData.name = 'Earth';
 
@@ -207,11 +206,11 @@ earthLabel.userData.name = 'Earth';
 scene.add(earthLabel);
 
 //Mars
-const marsLabelGeometry = new THREE.PlaneGeometry(5, 3);
+const marsLabelGeometry = new THREE.PlaneGeometry(.4, .2);
 const marsLabelTexture = new THREE.TextureLoader().load('../Resources/Textures/marsLabelTexture.jpg');
 const marsLabelMaterial = new THREE.MeshBasicMaterial({map: marsLabelTexture});
 const marsLabel = new THREE.Mesh(marsLabelGeometry, marsLabelMaterial);
-marsLabel.position.set(planets.get("Mars").getMesh().position.x, planets.get("Mars").getMesh().position.y + 6, planets.get("Mars").getMesh().position.z);
+marsLabel.position.set(planets.get("Mars").getMesh().position.x, planets.get("Mars").getMesh().position.y + .3, planets.get("Mars").getMesh().position.z);
 marsLabel.userData.clickable = true;
 marsLabel.userData.name = 'Mars';
 
@@ -276,14 +275,20 @@ const spacecraftImages = ["loc1", "loc2", "loc3", "loc4", "loc5"];
 
 planets.get("Spacecraft").initializeFactCards(spacecraftFacts, spacecraftImages);
 
-
+const raycastModifier = .5;
 
 //-----Handle click function using raycasts
 function checkPlanetClick(event){
 
     //get location of mouse and use it to set the raycast
     //extra math is to normalize coordinates to user's screen
-    rayPointer.set((event.clientX / window.innerWidth) * 2 - 1, -(event.clientY / window.innerHeight) * 2 + 1);
+    if(renderer.xr.isPresenting){
+        rayPointer.set((event.clientX / window.innerWidth) * 2 - 1, -((event.clientY) / window.innerHeight) * 2 + 1 - raycastModifier/2);
+    }
+    else{
+        rayPointer.set((event.clientX / window.innerWidth) * 2 - 1, -((event.clientY) / window.innerHeight) * 2 + 1);
+    }
+
     raycaster.setFromCamera(rayPointer, camera);
 
     //get array of all objects that raycast intersects
@@ -501,7 +506,7 @@ scene.add(moonOrbit);
 
 const cameraHolder = new THREE.Group();
 cameraHolder.add(camera);
-cameraHolder.position.set(0, 1, 0);
+cameraHolder.position.set(0, raycastModifier, 0);
 scene.add(cameraHolder);
 
 function animate(){
