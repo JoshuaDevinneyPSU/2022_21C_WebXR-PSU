@@ -136,7 +136,7 @@ loader.load(
 
         psycheOrbit.add(psycheMesh);
 
-        psycheLabel.position.set(psycheMesh.position.x, psycheMesh.position.y + 5, psycheMesh.position.z);
+        psycheLabel.position.set(psycheMesh.position.x, psycheMesh.position.y + .4, psycheMesh.position.z);
       
         //add label to scene
         scene.add(psycheLabel);
