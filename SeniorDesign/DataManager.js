@@ -16,7 +16,7 @@ let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHei
 
 //Initialize raycaster and cursor
 const raycaster = new THREE.Raycaster();
-const rayPointer = new THREE.Vector3();
+const rayPointer = new THREE.Vector2();
 
 //Add listener to check for mouse click, checkPlanetClick is the function that is executed, found in Planetary Event Listening ection
 document.addEventListener('click', checkPlanetClick);
@@ -265,7 +265,7 @@ function checkPlanetClick(event){
     //get location of mouse and use it to set the raycast
     //extra math is to normalize coordinates to user's screen
     if(renderer.xr.isPresenting){
-        rayPointer.set((event.clientX / window.innerWidth) * 2 - 1, -((event.clientY) / window.innerHeight) * 2 + 1 - raycastModifier);
+        rayPointer.set((event.clientX / window.innerWidth) * 2 - 1, -((event.clientY) / window.innerHeight) * 2 + 1 - raycastModifier/2);
     }
     else{
         rayPointer.set((event.clientX / window.innerWidth) * 2 - 1, -((event.clientY) / window.innerHeight) * 2 + 1);
