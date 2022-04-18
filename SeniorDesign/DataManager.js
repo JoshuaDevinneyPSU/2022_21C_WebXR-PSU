@@ -355,8 +355,10 @@ function hideFactCard(planetName)
     document.getElementById('fact-card').innerText = '';
 
     //todo do all planets need to be set to not clicked? ie use for loop?
-    planets.get(planetName).setClicked();
-    planets.get(planetName).resetFactCard();
+    if(planetName != null) {
+        planets.get(planetName).setClicked();
+        planets.get(planetName).resetFactCard();
+    }
 }
 
 function hideInfoPage()
