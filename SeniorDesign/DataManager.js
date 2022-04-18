@@ -498,9 +498,10 @@ function showInfoPage()
     sponsorText.innerText = "Sponsored by: Arizona State University and NASA";
     infoBodyDiv.appendChild(sponsorText);
 
-    const linkText = document.createElement("p");
+    const linkText = document.createElement("a");
     linkText.setAttribute("id", "info-page-text");
     linkText.innerText = "https://psyche.asu.edu";
+    linkText.href = "https://psyche.asu.edu";
     infoBodyDiv.appendChild(linkText);
 
     //create fact card button div
