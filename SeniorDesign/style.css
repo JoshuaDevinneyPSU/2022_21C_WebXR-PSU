@@ -3,7 +3,6 @@ canvas {
   top: 0;
   left: 0;
 }
-
 #prompt {
   display: table;
   background-color: #592651;
@@ -12,12 +11,31 @@ canvas {
   border-color: #f9a000;
 }
 
+#NASA-prompt {
+}
+
 #prompt-text {
   display: table-cell;
   vertical-align: middle;
   text-align: center;
   padding: 5px;
   color: #f9a000;
+
+}
+
+#info-page-text
+{
+  color: #f9a000;
+}
+
+#disclaimer-page-text
+{
+  color: white;
+  font-size: 9px;
+}
+
+#NASA-prompt-text {
+  color: #ffffff;
 }
 
 #toggle-bg {
@@ -59,6 +77,13 @@ canvas {
   text-align: center;
 }
 
+#copyright-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  text-align: center;
+}
+
 .card {
   width: 250px;
   height: 275px;
@@ -72,8 +97,8 @@ canvas {
 }
 
 .info {
-  width: 500px;
-  height: 525px;
+  width: 250px;
+  height: 275px;
   display: inline-block;
   text-align: center;
 
@@ -95,7 +120,7 @@ canvas {
 }
 
 .info-body {
-  height: 160px;
+  height: 215px;
 }
 
 .card-text {

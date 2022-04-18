@@ -363,7 +363,6 @@ function hideFactCard()
 
 function hideInfoPage()
 {
-    factIndex = 4;
     document.getElementById('info-page').innerText = '';
 }
 
@@ -424,44 +423,114 @@ function showFactCard(planetIdentifier)
     cardReadMoreButton.addEventListener("click", function(){showNextFact(planetIdentifier)});
 }
 
-function showInfoPage()
+function showDisclaimerPage()
 {
+    //clear fact card first if in use by another planet
+    document.getElementById('info-page').innerText = '';
+
     const outerPageDiv = document.createElement("div");
-    outerPageDiv.setAttribute("class", "info");
+    outerPageDiv.setAttribute("class", "card");
 
-    //create info page body where information will display and set attributes
-    const infoBodyDiv = document.createElement("div");
-    infoBodyDiv.setAttribute("class", "info-body");
+    //create card body where fact will display and set attributes
+    const disclaimerBodyDiv = document.createElement("div");
+    disclaimerBodyDiv.setAttribute("class", "info-body");
 
-    //create info body text and add to info body div
-    const infoBodyDivPar = document.createElement("p");
-    infoBodyDivPar.setAttribute("class", "info-page-text");
-    infoBodyDivPar.setAttribute("id", "info-text");
-    infoBodyDiv.appendChild(infoBodyDivPar);
+
+    const disclaimerText = document.createElement("p");
+    disclaimerText.setAttribute("id", "disclaimer-page-text");
+    disclaimerText.innerText = "This work was created in partial fulfillment of Pennsylvania State University, The Behrend College Capstone Course “SWENG 481/CMPSC 485″. The work is a result of the Psyche Student Collaborations component of NASA’s Psyche Mission (https://psyche.asu.edu). “Psyche: A Journey to a Metal World” [Contract number NNM16AA09C] is part of the NASA Discovery Program mission to solar system targets. Trade names and trademarks of ASU and NASA are used in this work for identification only. Their usage does not constitute an official endorsement, either expressed or implied, by Arizona State University or National Aeronautics and Space Administration. The content is solely the responsibility of the authors and does not necessarily represent the official views of ASU or NASA.";
+    disclaimerBodyDiv.appendChild(disclaimerText);
 
     //create fact card button div
-    const infoButtonDiv = document.createElement("div");
-    infoButtonDiv.setAttribute("class", "card-button-container");
+    const cardButtonDiv = document.createElement("div");
+    cardButtonDiv.setAttribute("class", "card-button-container");
+
 
     //create buttons and button text
-    const infoCloseButton = document.createElement("button");
-    const infoCloseButtonText = document.createTextNode("Close");
-    infoCloseButton.setAttribute("class", "control-button");
+    const cardCloseButton = document.createElement("button");
+    const cardCloseButtonText = document.createTextNode("Close");
+    cardCloseButton.setAttribute("class", "control-button");
+    const moreInfoButton = document.createElement("button");
+    const moreInfoButtonText = document.createTextNode("Info");
+    moreInfoButton.setAttribute("class", "control-button");
 
     //add text to buttons
-    infoCloseButton.appendChild(infoCloseButtonText);
-    infoButtonDiv.appendChild(infoCloseButton);
+    moreInfoButton.appendChild(moreInfoButtonText);
+    cardCloseButton.appendChild(cardCloseButtonText);
+    cardButtonDiv.appendChild(moreInfoButton);
+    cardButtonDiv.appendChild(cardCloseButton);
 
     //append everything to outer div
-    outerPageDiv.appendChild(infoBodyDiv);
-    outerPageDiv.appendChild(infoButtonDiv);
+    outerPageDiv.appendChild(disclaimerBodyDiv);
+    outerPageDiv.appendChild(cardButtonDiv);
 
     //append to element in HTML
     const infoPage = document.getElementById('info-page');
     infoPage.appendChild(outerPageDiv);
 
     //add EventListeners to buttons
-    infoCloseButton.addEventListener("click", hideInfoPage);
+    cardCloseButton.addEventListener("click", hideInfoPage);
+    moreInfoButton.addEventListener("click", showInfoPage);
+}
+
+function showInfoPage()
+{
+    //clear fact card first if in use by another planet
+    document.getElementById('info-page').innerText = '';
+
+    const outerPageDiv = document.createElement("div");
+    outerPageDiv.setAttribute("class", "card");
+
+    //create card body where fact will display and set attributes
+    const infoBodyDiv = document.createElement("div");
+    infoBodyDiv.setAttribute("class", "info-body");
+
+    const nameText = document.createElement("p");
+    nameText.setAttribute("id", "info-page-text");
+    nameText.innerText = "Designers: Joshua Devinney, Donovan Myers, Alexander Reams, David Yakupkovic";
+    infoBodyDiv.appendChild(nameText);
+
+    const sponsorText = document.createElement("p");
+    sponsorText.setAttribute("id", "info-page-text");
+    sponsorText.innerText = "Sponsored by: Arizona State University and NASA";
+    infoBodyDiv.appendChild(sponsorText);
+
+    const linkText = document.createElement("p");
+    linkText.setAttribute("id", "info-page-text");
+    linkText.innerText = "https://psyche.asu.edu";
+    infoBodyDiv.appendChild(linkText);
+
+    //create fact card button div
+    const cardButtonDiv = document.createElement("div");
+    cardButtonDiv.setAttribute("class", "card-button-container");
+
+
+    //create buttons and button text
+    const cardCloseButton = document.createElement("button");
+    const cardCloseButtonText = document.createTextNode("Close");
+    cardCloseButton.setAttribute("class", "control-button");
+    const disclaimerButton = document.createElement("button");
+    const disclaimerButtonText = document.createTextNode("Disclaimer");
+    disclaimerButton.setAttribute("class", "control-button");
+
+    //add text to buttons
+    disclaimerButton.appendChild(disclaimerButtonText);
+    cardCloseButton.appendChild(cardCloseButtonText);
+    cardButtonDiv.appendChild(disclaimerButton);
+    cardButtonDiv.appendChild(cardCloseButton);
+
+    //append everything to outer div
+    outerPageDiv.appendChild(infoBodyDiv);
+    outerPageDiv.appendChild(cardButtonDiv);
+
+    //append to element in HTML
+    const infoPage = document.getElementById('info-page');
+    infoPage.appendChild(outerPageDiv);
+
+    //add EventListeners to buttons
+    cardCloseButton.addEventListener("click", hideInfoPage);
+    disclaimerButton.addEventListener("click", showDisclaimerPage);
+
 }
 
 //used by showNextFact() to display next fact
@@ -534,6 +603,19 @@ function showOverlays()
     //add text to text space
     prompt.appendChild(promptText);
 
+    //----------NASA.GOV TEXT----------
+    //create space for text
+    const NASAprompt = document.createElement("div");
+    NASAprompt.setAttribute("id", "NASA-prompt");
+
+    //create text
+    const NASApromptText = document.createElement("p");
+    NASApromptText.setAttribute("id", "NASA-prompt-text");
+    NASApromptText.innerText = "www.nasa.gov";
+
+    //add text to text space
+    NASAprompt.appendChild(NASApromptText);
+
     //-----TOGGLE BACKGROUND BUTTON-------
 
     //create space for text
@@ -565,12 +647,17 @@ function showOverlays()
     //----------MASTER DIV FOR MISC OVERLAYS----------
     const overlayContainer = document.createElement("div");
     overlayContainer.setAttribute("id", "overlay-container");
-    overlayContainer.appendChild(infoBtn)
+    overlayContainer.appendChild(infoBtn);
     overlayContainer.appendChild(toggleBG);
     overlayContainer.appendChild(prompt);
 
+
+    const copyrightContainer = document.createElement("div");
+    copyrightContainer.setAttribute("id", "copyright-overlay");
+    copyrightContainer.appendChild(NASAprompt);
     //add prompt to scene
     document.getElementById("ar-overlay").appendChild(overlayContainer);
+    document.getElementById("ar-overlay").appendChild(copyrightContainer);
 }
 
 const ambientLight = new THREE.AmbientLight(0xFFFDD0, 0.5);
