@@ -369,6 +369,7 @@ function hideInfoPage()
 //pass the name of the planet in the planetIdentifier parameter
 function showFactCard(planetIdentifier)
 {
+    hideInfoPage();
     //clear fact card first if in use by another planet
     document.getElementById('fact-card').innerText = '';
     //create elements to add to upper-left div
@@ -425,6 +426,7 @@ function showFactCard(planetIdentifier)
 
 function showDisclaimerPage()
 {
+    hideFactCard();
     //clear fact card first if in use by another planet
     document.getElementById('info-page').innerText = '';
 
@@ -475,6 +477,7 @@ function showDisclaimerPage()
 
 function showInfoPage()
 {
+    hideFactCard();
     //clear fact card first if in use by another planet
     document.getElementById('info-page').innerText = '';
 
