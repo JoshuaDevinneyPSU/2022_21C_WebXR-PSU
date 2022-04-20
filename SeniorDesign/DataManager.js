@@ -19,7 +19,7 @@ const raycaster = new THREE.Raycaster();
 const rayPointer = new THREE.Vector2();
 
 //Add listener to check for mouse click, checkPlanetClick is the function that is executed, found in Planetary Event Listening action
-window.addEventListener('click', checkPlanetClick);
+document.body.addEventListener('click', checkPlanetClick);
 
 //stop raycasts from activating planets behind HTML overlays
 function disallowRaycast(event){
