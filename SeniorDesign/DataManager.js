@@ -18,8 +18,8 @@ let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHei
 const raycaster = new THREE.Raycaster();
 const rayPointer = new THREE.Vector2();
 
-//Add listener to check for mouse click, checkPlanetClick is the function that is executed, found in Planetary Event Listening ection
-document.addEventListener('click', checkPlanetClick);
+//Add listener to check for mouse click, checkPlanetClick is the function that is executed, found in Planetary Event Listening action
+document.getElementById("bg").addEventListener('click', checkPlanetClick);
 
 //-----------------------------------------------------------------------------------
 
