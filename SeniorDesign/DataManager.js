@@ -26,8 +26,8 @@ function disallowRaycast(event){
     event.stopPropagation();
 }
 
-document.getElementById("fact-card").addEventListener("click", disallowRaycast);
-document.getElementById("info-page").addEventListener("click", disallowRaycast);
+//document.getElementById("fact-card").addEventListener("click", disallowRaycast);
+//document.getElementById("info-page").addEventListener("click", disallowRaycast);
 //-----------------------------------------------------------------------------------
 
 camera.position.setZ(-2);
@@ -385,6 +385,7 @@ function showFactCard(planetIdentifier)
     //create outer div and set attributes
     const outerCardDiv = document.createElement("div");
     outerCardDiv.setAttribute("class", "card");
+    outerCardDiv.addEventListener("click", disallowRaycast);
 
     //create image and set attributes
     const factCardImage = document.createElement("img");
@@ -441,6 +442,7 @@ function showDisclaimerPage()
 
     const outerPageDiv = document.createElement("div");
     outerPageDiv.setAttribute("class", "card");
+    outerPageDiv.addEventListener("click", disallowRaycast);
 
     //create card body where fact will display and set attributes
     const disclaimerBodyDiv = document.createElement("div");
@@ -517,6 +519,7 @@ function showInfoPage()
 
     const outerPageDiv = document.createElement("div");
     outerPageDiv.setAttribute("class", "card");
+    outerPageDiv.addEventListener("click", disallowRaycast);
 
     //create card body where fact will display and set attributes
     const infoBodyDiv = document.createElement("div");
