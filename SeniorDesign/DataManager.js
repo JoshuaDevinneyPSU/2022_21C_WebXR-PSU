@@ -19,8 +19,15 @@ const raycaster = new THREE.Raycaster();
 const rayPointer = new THREE.Vector2();
 
 //Add listener to check for mouse click, checkPlanetClick is the function that is executed, found in Planetary Event Listening action
-document.getElementById("bg").addEventListener('click', checkPlanetClick);
+window.addEventListener('click', checkPlanetClick);
 
+//stop raycasts from activating planets behind HTML overlays
+function disallowRaycast(event){
+    event.stopPropagation();
+}
+
+document.getElementById("fact-card").addEventListener("click", disallowRaycast);
+document.getElementById("info-page").addEventListener("click", disallowRaycast);
 //-----------------------------------------------------------------------------------
 
 camera.position.setZ(-2);
@@ -439,7 +446,6 @@ function showDisclaimerPage()
     const disclaimerBodyDiv = document.createElement("div");
     disclaimerBodyDiv.setAttribute("class", "info-body");
 
-
     const disclaimerText = document.createElement("p");
     disclaimerText.setAttribute("id", "disclaimer-page-text");
     disclaimerText.innerText = "This work was created in partial fulfillment of Pennsylvania State University, The Behrend College Capstone Course “SWENG 481/CMPSC 485″. The work is a result of the Psyche Student Collaborations component of NASA’s Psyche Mission (https://psyche.asu.edu). “Psyche: A Journey to a Metal World” [Contract number NNM16AA09C] is part of the NASA Discovery Program mission to solar system targets. Trade names and trademarks of ASU and NASA are used in this work for identification only. Their usage does not constitute an official endorsement, either expressed or implied, by Arizona State University or National Aeronautics and Space Administration. The content is solely the responsibility of the authors and does not necessarily represent the official views of ASU or NASA.";
@@ -448,7 +454,6 @@ function showDisclaimerPage()
     //create fact card button div
     const cardButtonDiv = document.createElement("div");
     cardButtonDiv.setAttribute("class", "card-button-container");
-
 
     //create buttons and button text
     const cardCloseButton = document.createElement("button");
@@ -627,11 +632,15 @@ function showOverlays()
 
     //add background toggle to text space
     infoBtn.appendChild(infoButton);
+
     //----------MASTER DIV FOR MISC OVERLAYS----------
     const overlayContainer = document.createElement("div");
     overlayContainer.setAttribute("id", "overlay-container");
     overlayContainer.appendChild(infoBtn);
     overlayContainer.appendChild(prompt);
+
+    //Stop raycasts form poking through
+    overlayContainer.addEventListener("click", disallowRaycast);
 
     const copyrightContainer = document.createElement("div");
     copyrightContainer.setAttribute("id", "copyright-overlay");

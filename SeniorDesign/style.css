@@ -4,10 +4,6 @@ canvas {
   left: 0;
 }
 
-#fact-card *{
-
-}
-
 #prompt {
   display: table;
   background-color: #592651;
