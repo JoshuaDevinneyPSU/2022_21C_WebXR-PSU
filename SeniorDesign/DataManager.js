@@ -25,9 +25,6 @@ document.body.addEventListener('click', checkPlanetClick);
 function disallowRaycast(event){
     event.stopPropagation();
 }
-
-//document.getElementById("fact-card").addEventListener("click", disallowRaycast);
-//document.getElementById("info-page").addEventListener("click", disallowRaycast);
 //-----------------------------------------------------------------------------------
 
 camera.position.setZ(-2);
