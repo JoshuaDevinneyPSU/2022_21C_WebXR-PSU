@@ -46,7 +46,9 @@ function setupXR(){
     renderer.xr.setReferenceSpaceType('viewer')
     //second parameter ensures fact card appears in AR view
     let sceneARButton = ARButton.createButton( renderer, {optionalFeatures: ["dom-overlay"], domOverlay: {root: document.getElementById("ar-overlay")}});
-    console.log("Yo" + sceneARButton.innerText);
+
+    //Activate background toggle button when AR mode is entered
+    sceneARButton.addEventListener("click", showBackgroundToggle);
 
     document.body.appendChild( sceneARButton );
 
@@ -337,7 +339,7 @@ function toggleBackground(){
         hideBG();
 
         //update button text
-        document.getElementById("toggle-bg-button").innerText = "Background: Off";
+        document.getElementById("toggle-bg-button").innerText = "Set Background: Off";
     }
     else {
         //update var and hide background
@@ -345,7 +347,7 @@ function toggleBackground(){
         showBG();
 
         //update button text
-        document.getElementById("toggle-bg-button").innerText = "Background: On";
+        document.getElementById("toggle-bg-button").innerText = "Set Background: On";
     }
 }
 
@@ -475,6 +477,33 @@ function showDisclaimerPage()
     moreInfoButton.addEventListener("click", showInfoPage);
 }
 
+//used by showNextFact() to display next fact
+let lastIdentifier = "";
+
+//takes in a string to determine which planet's fact to display
+function showNextFact(planetName){
+
+    if (planetName !== lastIdentifier) {
+        console.log("different identifier, setting factIndex to 0");
+        if(lastIdentifier !== ''){
+            planets.get(lastIdentifier).resetFactCard();
+        }
+
+        lastIdentifier = planetName;
+    }
+
+    //change behavior depending on identifier passed
+    let factToDisplay;
+
+    factToDisplay = document.createTextNode(planets.get(planetName).getFact());
+    document.getElementById("fact-text").innerHTML = "";
+    document.getElementById("fact-text").appendChild(factToDisplay);
+    document.getElementById("card-img").setAttribute("src", planets.get(planetName).getFactImage());
+
+    planets.get(planetName).updateFact();
+}
+
+
 function showInfoPage()
 {
     hideFactCard();
@@ -534,33 +563,26 @@ function showInfoPage()
     //add EventListeners to buttons
     cardCloseButton.addEventListener("click", hideInfoPage);
     disclaimerButton.addEventListener("click", showDisclaimerPage);
-
 }
 
-//used by showNextFact() to display next fact
-let lastIdentifier = "";
+//Show the toggle background button in AR mode
+function showBackgroundToggle(){
 
-//takes in a string to determine which planet's fact to display
-function showNextFact(planetName){
+    //create space for text
+    const toggleBG = document.createElement("div");
+    toggleBG.setAttribute("id", "toggle-bg");
 
-    if (planetName !== lastIdentifier) {
-        console.log("different identifier, setting factIndex to 0");
-        if(lastIdentifier !== ''){
-            planets.get(lastIdentifier).resetFactCard();
-        }
+    //create text
+    const toggleBGButton = document.createElement("button");
+    toggleBGButton.setAttribute("id", "toggle-bg-button");
+    toggleBGButton.innerText = "Set Background: On";
+    toggleBGButton.addEventListener("click", toggleBackground);
 
-        lastIdentifier = planetName;
-    }
+    //add background toggle to text space
+    toggleBG.appendChild(toggleBGButton);
 
-    //change behavior depending on identifier passed
-    let factToDisplay;
-
-    factToDisplay = document.createTextNode(planets.get(planetName).getFact());
-    document.getElementById("fact-text").innerHTML = "";
-    document.getElementById("fact-text").appendChild(factToDisplay);
-    document.getElementById("card-img").setAttribute("src", planets.get(planetName).getFactImage());
-
-    planets.get(planetName).updateFact();
+    const overlayContainer = document.getElementById("overlay-container");
+    overlayContainer.insertBefore(toggleBG, overlayContainer.firstChild);
 }
 
 //Create overlaying elements
@@ -592,21 +614,6 @@ function showOverlays()
     //add text to text space
     NASAprompt.appendChild(NASApromptText);
 
-    //-----TOGGLE BACKGROUND BUTTON-------
-
-    //create space for text
-    const toggleBG = document.createElement("div");
-    toggleBG.setAttribute("id", "toggle-bg");
-
-    //create text
-    const toggleBGButton = document.createElement("button");
-    toggleBGButton.setAttribute("id", "toggle-bg-button");
-    toggleBGButton.innerText = "Background: On";
-    toggleBGButton.addEventListener("click", toggleBackground);
-
-    //add background toggle to text space
-    toggleBG.appendChild(toggleBGButton);
-
     //-----MORE INFO BUTTON-------
     //create space for text
     const infoBtn = document.createElement("div");
@@ -624,9 +631,7 @@ function showOverlays()
     const overlayContainer = document.createElement("div");
     overlayContainer.setAttribute("id", "overlay-container");
     overlayContainer.appendChild(infoBtn);
-    overlayContainer.appendChild(toggleBG);
     overlayContainer.appendChild(prompt);
-
 
     const copyrightContainer = document.createElement("div");
     copyrightContainer.setAttribute("id", "copyright-overlay");
