@@ -118,7 +118,7 @@ const psycheMaterial = createMaterial('texture', psycheTexture);
 
 //const spaceCraft = createSTL('../Resources/Models/SpaceCraft.stl', 0, 0, 0, psycheMaterial, scene, 0.005, 0.005, 0.005);
 
-//Create Label
+//Create Label for Psyche
 const psycheLabelGeometry = new THREE.PlaneGeometry(.4, .2);
 const psycheLabelTexture = new THREE.TextureLoader().load('../Resources/Textures/psycheLabelTexture.jpg');
 const psycheLabelMaterial = new THREE.MeshBasicMaterial({map: psycheLabelTexture});
@@ -163,9 +163,17 @@ const spaceCraftMaterial = new THREE.MeshStandardMaterial({
     metalness: .5
 });
 
+//Create Label
+const spacecraftLabelGeometry = new THREE.PlaneGeometry(.4, .2);
+const spacecraftLabelTexture = new THREE.TextureLoader().load('../Resources/Textures/spacecraftLabelTexture.jpg');
+const spacecraftLabelMaterial = new THREE.MeshBasicMaterial({map: spacecraftLabelTexture});
+const spacecraftLabel = new THREE.Mesh(spacecraftLabelGeometry, spacecraftLabelMaterial);
+spacecraftLabel.userData.clickable = true;
+spacecraftLabel.userData.name = 'Spacecraft';
+planets.set("Spacecraft", new Planet(0, 0, 0, 0, 0, 0, spacecraftLabel));
+
 let spacecraftMesh;
 
-//todo what exactly is this "mesh" variable doing?
  loader.load(
      '../Resources/Models/SpaceCraft.stl',
      function (geometry) {
@@ -177,8 +185,14 @@ let spacecraftMesh;
          spacecraftMesh.userData.clickable = true;
          spacecraftMesh.userData.name = "Spacecraft"
 
-
          scene.add(spacecraftMesh);
+
+         spacecraftLabel.position.set(spacecraftMesh.position.x, spacecraftMesh.position.y + .4, spacecraftMesh.position.z);
+
+         //add label to scene
+         scene.add(spacecraftLabel);
+
+         psycheOrbit.add(spacecraftLabel);
 
          psycheOrbit.add(spacecraftMesh);
      },
@@ -196,8 +210,6 @@ const light = new THREE.PointLight( 0xF4E99B, 5, 150 );
 scene.add( light );
 
 //--------------------------------------------LABELS-------------------------------------------------------
-
-//todo add function to take care of creation of labels
 
 //Earth
 const earthLabelGeometry = new THREE.PlaneGeometry(.4, .2);
@@ -229,10 +241,6 @@ const spaceTexture = new THREE.TextureLoader().load('../Resources/Textures/space
 scene.background = spaceTexture;
 
 //--------------------------Planetary Event Listening-------------------------------
-
-//todo generalize isClicked variables into list/dictionary/class to pair with facts and enum of when the fact takes place?
-//todo combine facts with images, facts and the images with the planets and give it a type from the enum it belongs to...
-// done with constructor taking string for fact, url/file link for image and the enum type it has?
 
 //Earth's facts, images, and variables
 const earthFacts = ["The Psyche mission will begin by launching from our home planet Earth!",
@@ -276,10 +284,19 @@ const psycheImages = ["Resources/Images/psycheFact1.jpg",
 
 planets.get("Psyche").initializeFactCards(psycheFacts, psycheImages);
 
-const spacecraftFacts = ["fact1", "fact2", "fact3", "fact4", "fact5"];
-const spacecraftImages = ["loc1", "loc2", "loc3", "loc4", "loc5"];
+const spacecraftFacts = ["The spacecraft will launch from the Kennedy Space Center, Florida, in 2022.",
+                         "The body of the spacecraft is slightly bigger than a Smart Car.",
+                         "The spacecraft will use solar electric propulsion to travel.",
+                         "The spacecraft will test a sophisticated new form of laser communication.",
+                         "Among the spacecraft's tools is a gamma ray and neutron spectrometer. This tool will enable the spacecraft to measure Psyche's elemental composition."];
+const spacecraftImages = ["Resources/Images/spacecraftFact1.JPG",
+                          "Resources/Images/spacecraftFact2.JPG",
+                          "Resources/Images/spacecraftFact3.JPG",
+                          "Resources/Images/spacecraftFact4.JPG",
+                          "Resources/Images/spacecraftFact5.JPG"];
 
 planets.get("Spacecraft").initializeFactCards(spacecraftFacts, spacecraftImages);
+
 
 const raycastModifier = .5;
 
@@ -335,6 +352,7 @@ function showBG()
 
 //keep track of state of background
 let backgroundOn = true;
+
 //change background
 function toggleBackground(){
     if(backgroundOn) {
@@ -360,7 +378,6 @@ function hideFactCard(planetName)
 {
     document.getElementById('fact-card').innerText = '';
 
-    //todo do all planets need to be set to not clicked? ie use for loop?
     if(planetName != null) {
         planets.get(planetName).setClicked();
         planets.get(planetName).resetFactCard();
@@ -693,6 +710,7 @@ function updatePositions()
     earthLabel.lookAt(new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z));
     marsLabel.lookAt(new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z));
     psycheLabel.lookAt(new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z));
+    spacecraftLabel.lookAt(new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z));
 
     renderer.render(scene, camera);
     renderer.autoClear = false;
