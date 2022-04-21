@@ -18,9 +18,13 @@ let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHei
 const raycaster = new THREE.Raycaster();
 const rayPointer = new THREE.Vector2();
 
-//Add listener to check for mouse click, checkPlanetClick is the function that is executed, found in Planetary Event Listening ection
-document.addEventListener('click', checkPlanetClick);
+//Add listener to check for mouse click, checkPlanetClick is the function that is executed, found in Planetary Event Listening action
+document.body.addEventListener('click', checkPlanetClick);
 
+//stop raycasts from activating planets behind HTML overlays
+function disallowRaycast(event){
+    event.stopPropagation();
+}
 //-----------------------------------------------------------------------------------
 
 camera.position.setZ(-2);
@@ -46,7 +50,9 @@ function setupXR(){
     renderer.xr.setReferenceSpaceType('viewer')
     //second parameter ensures fact card appears in AR view
     let sceneARButton = ARButton.createButton( renderer, {optionalFeatures: ["dom-overlay"], domOverlay: {root: document.getElementById("ar-overlay")}});
-    console.log("Yo" + sceneARButton.innerText);
+
+    //Activate background toggle button when AR mode is entered
+    sceneARButton.addEventListener("click", showBackgroundToggle);
 
     document.body.appendChild( sceneARButton );
 
@@ -112,7 +118,7 @@ const psycheMaterial = createMaterial('texture', psycheTexture);
 
 //const spaceCraft = createSTL('../Resources/Models/SpaceCraft.stl', 0, 0, 0, psycheMaterial, scene, 0.005, 0.005, 0.005);
 
-//Create Label
+//Create Label for Psyche
 const psycheLabelGeometry = new THREE.PlaneGeometry(.4, .2);
 const psycheLabelTexture = new THREE.TextureLoader().load('../Resources/Textures/psycheLabelTexture.jpg');
 const psycheLabelMaterial = new THREE.MeshBasicMaterial({map: psycheLabelTexture});
@@ -157,9 +163,17 @@ const spaceCraftMaterial = new THREE.MeshStandardMaterial({
     metalness: .5
 });
 
+//Create Label
+const spacecraftLabelGeometry = new THREE.PlaneGeometry(.4, .2);
+const spacecraftLabelTexture = new THREE.TextureLoader().load('../Resources/Textures/spacecraftLabelTexture.jpg');
+const spacecraftLabelMaterial = new THREE.MeshBasicMaterial({map: spacecraftLabelTexture});
+const spacecraftLabel = new THREE.Mesh(spacecraftLabelGeometry, spacecraftLabelMaterial);
+spacecraftLabel.userData.clickable = true;
+spacecraftLabel.userData.name = 'Spacecraft';
+planets.set("Spacecraft", new Planet(0, 0, 0, 0, 0, 0, spacecraftLabel));
+
 let spacecraftMesh;
 
-//todo what exactly is this "mesh" variable doing?
  loader.load(
      '../Resources/Models/SpaceCraft.stl',
      function (geometry) {
@@ -171,8 +185,14 @@ let spacecraftMesh;
          spacecraftMesh.userData.clickable = true;
          spacecraftMesh.userData.name = "Spacecraft"
 
-
          scene.add(spacecraftMesh);
+
+         spacecraftLabel.position.set(spacecraftMesh.position.x, spacecraftMesh.position.y + .4, spacecraftMesh.position.z);
+
+         //add label to scene
+         scene.add(spacecraftLabel);
+
+         psycheOrbit.add(spacecraftLabel);
 
          psycheOrbit.add(spacecraftMesh);
      },
@@ -190,8 +210,6 @@ const light = new THREE.PointLight( 0xF4E99B, 5, 150 );
 scene.add( light );
 
 //--------------------------------------------LABELS-------------------------------------------------------
-
-//todo add function to take care of creation of labels
 
 //Earth
 const earthLabelGeometry = new THREE.PlaneGeometry(.4, .2);
@@ -223,10 +241,6 @@ const spaceTexture = new THREE.TextureLoader().load('../Resources/Textures/space
 scene.background = spaceTexture;
 
 //--------------------------Planetary Event Listening-------------------------------
-
-//todo generalize isClicked variables into list/dictionary/class to pair with facts and enum of when the fact takes place?
-//todo combine facts with images, facts and the images with the planets and give it a type from the enum it belongs to...
-// done with constructor taking string for fact, url/file link for image and the enum type it has?
 
 //Earth's facts, images, and variables
 const earthFacts = ["The Psyche mission will begin by launching from our home planet Earth!",
@@ -270,10 +284,19 @@ const psycheImages = ["Resources/Images/psycheFact1.jpg",
 
 planets.get("Psyche").initializeFactCards(psycheFacts, psycheImages);
 
-const spacecraftFacts = ["fact1", "fact2", "fact3", "fact4", "fact5"];
-const spacecraftImages = ["loc1", "loc2", "loc3", "loc4", "loc5"];
+const spacecraftFacts = ["The spacecraft will launch from the Kennedy Space Center, Florida, in 2022.",
+                         "The body of the spacecraft is slightly bigger than a Smart Car.",
+                         "The spacecraft will use solar electric propulsion to travel.",
+                         "The spacecraft will test a sophisticated new form of laser communication.",
+                         "Among the spacecraft's tools is a gamma ray and neutron spectrometer. This tool will enable the spacecraft to measure Psyche's elemental composition."];
+const spacecraftImages = ["Resources/Images/spacecraftFact1.JPG",
+                          "Resources/Images/spacecraftFact2.JPG",
+                          "Resources/Images/spacecraftFact3.JPG",
+                          "Resources/Images/spacecraftFact4.JPG",
+                          "Resources/Images/spacecraftFact5.JPG"];
 
 planets.get("Spacecraft").initializeFactCards(spacecraftFacts, spacecraftImages);
+
 
 const raycastModifier = .5;
 
@@ -329,6 +352,7 @@ function showBG()
 
 //keep track of state of background
 let backgroundOn = true;
+
 //change background
 function toggleBackground(){
     if(backgroundOn) {
@@ -337,7 +361,7 @@ function toggleBackground(){
         hideBG();
 
         //update button text
-        document.getElementById("toggle-bg-button").innerText = "Background: Off";
+        document.getElementById("toggle-bg-button").innerText = "Set Background: Off";
     }
     else {
         //update var and hide background
@@ -345,7 +369,7 @@ function toggleBackground(){
         showBG();
 
         //update button text
-        document.getElementById("toggle-bg-button").innerText = "Background: On";
+        document.getElementById("toggle-bg-button").innerText = "Set Background: On";
     }
 }
 
@@ -354,7 +378,6 @@ function hideFactCard(planetName)
 {
     document.getElementById('fact-card').innerText = '';
 
-    //todo do all planets need to be set to not clicked? ie use for loop?
     if(planetName != null) {
         planets.get(planetName).setClicked();
         planets.get(planetName).resetFactCard();
@@ -376,6 +399,7 @@ function showFactCard(planetIdentifier)
     //create outer div and set attributes
     const outerCardDiv = document.createElement("div");
     outerCardDiv.setAttribute("class", "card");
+    outerCardDiv.addEventListener("click", disallowRaycast);
 
     //create image and set attributes
     const factCardImage = document.createElement("img");
@@ -432,11 +456,11 @@ function showDisclaimerPage()
 
     const outerPageDiv = document.createElement("div");
     outerPageDiv.setAttribute("class", "card");
+    outerPageDiv.addEventListener("click", disallowRaycast);
 
     //create card body where fact will display and set attributes
     const disclaimerBodyDiv = document.createElement("div");
     disclaimerBodyDiv.setAttribute("class", "info-body");
-
 
     const disclaimerText = document.createElement("p");
     disclaimerText.setAttribute("id", "disclaimer-page-text");
@@ -446,7 +470,6 @@ function showDisclaimerPage()
     //create fact card button div
     const cardButtonDiv = document.createElement("div");
     cardButtonDiv.setAttribute("class", "card-button-container");
-
 
     //create buttons and button text
     const cardCloseButton = document.createElement("button");
@@ -475,6 +498,33 @@ function showDisclaimerPage()
     moreInfoButton.addEventListener("click", showInfoPage);
 }
 
+//used by showNextFact() to display next fact
+let lastIdentifier = "";
+
+//takes in a string to determine which planet's fact to display
+function showNextFact(planetName){
+
+    if (planetName !== lastIdentifier) {
+        console.log("different identifier, setting factIndex to 0");
+        if(lastIdentifier !== ''){
+            planets.get(lastIdentifier).resetFactCard();
+        }
+
+        lastIdentifier = planetName;
+    }
+
+    //change behavior depending on identifier passed
+    let factToDisplay;
+
+    factToDisplay = document.createTextNode(planets.get(planetName).getFact());
+    document.getElementById("fact-text").innerHTML = "";
+    document.getElementById("fact-text").appendChild(factToDisplay);
+    document.getElementById("card-img").setAttribute("src", planets.get(planetName).getFactImage());
+
+    planets.get(planetName).updateFact();
+}
+
+
 function showInfoPage()
 {
     hideFactCard();
@@ -483,6 +533,7 @@ function showInfoPage()
 
     const outerPageDiv = document.createElement("div");
     outerPageDiv.setAttribute("class", "card");
+    outerPageDiv.addEventListener("click", disallowRaycast);
 
     //create card body where fact will display and set attributes
     const infoBodyDiv = document.createElement("div");
@@ -534,33 +585,26 @@ function showInfoPage()
     //add EventListeners to buttons
     cardCloseButton.addEventListener("click", hideInfoPage);
     disclaimerButton.addEventListener("click", showDisclaimerPage);
-
 }
 
-//used by showNextFact() to display next fact
-let lastIdentifier = "";
+//Show the toggle background button in AR mode
+function showBackgroundToggle(){
 
-//takes in a string to determine which planet's fact to display
-function showNextFact(planetName){
+    //create space for text
+    const toggleBG = document.createElement("div");
+    toggleBG.setAttribute("id", "toggle-bg");
 
-    if (planetName !== lastIdentifier) {
-        console.log("different identifier, setting factIndex to 0");
-        if(lastIdentifier !== ''){
-            planets.get(lastIdentifier).resetFactCard();
-        }
+    //create text
+    const toggleBGButton = document.createElement("button");
+    toggleBGButton.setAttribute("id", "toggle-bg-button");
+    toggleBGButton.innerText = "Set Background: On";
+    toggleBGButton.addEventListener("click", toggleBackground);
 
-        lastIdentifier = planetName;
-    }
+    //add background toggle to text space
+    toggleBG.appendChild(toggleBGButton);
 
-    //change behavior depending on identifier passed
-    let factToDisplay;
-
-    factToDisplay = document.createTextNode(planets.get(planetName).getFact());
-    document.getElementById("fact-text").innerHTML = "";
-    document.getElementById("fact-text").appendChild(factToDisplay);
-    document.getElementById("card-img").setAttribute("src", planets.get(planetName).getFactImage());
-
-    planets.get(planetName).updateFact();
+    const overlayContainer = document.getElementById("overlay-container");
+    overlayContainer.insertBefore(toggleBG, overlayContainer.firstChild);
 }
 
 //Create overlaying elements
@@ -592,21 +636,6 @@ function showOverlays()
     //add text to text space
     NASAprompt.appendChild(NASApromptText);
 
-    //-----TOGGLE BACKGROUND BUTTON-------
-
-    //create space for text
-    const toggleBG = document.createElement("div");
-    toggleBG.setAttribute("id", "toggle-bg");
-
-    //create text
-    const toggleBGButton = document.createElement("button");
-    toggleBGButton.setAttribute("id", "toggle-bg-button");
-    toggleBGButton.innerText = "Background: On";
-    toggleBGButton.addEventListener("click", toggleBackground);
-
-    //add background toggle to text space
-    toggleBG.appendChild(toggleBGButton);
-
     //-----MORE INFO BUTTON-------
     //create space for text
     const infoBtn = document.createElement("div");
@@ -620,13 +649,15 @@ function showOverlays()
 
     //add background toggle to text space
     infoBtn.appendChild(infoButton);
+
     //----------MASTER DIV FOR MISC OVERLAYS----------
     const overlayContainer = document.createElement("div");
     overlayContainer.setAttribute("id", "overlay-container");
     overlayContainer.appendChild(infoBtn);
-    overlayContainer.appendChild(toggleBG);
     overlayContainer.appendChild(prompt);
 
+    //Stop raycasts form poking through
+    overlayContainer.addEventListener("click", disallowRaycast);
 
     const copyrightContainer = document.createElement("div");
     copyrightContainer.setAttribute("id", "copyright-overlay");
@@ -679,6 +710,7 @@ function updatePositions()
     earthLabel.lookAt(new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z));
     marsLabel.lookAt(new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z));
     psycheLabel.lookAt(new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z));
+    spacecraftLabel.lookAt(new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z));
 
     renderer.render(scene, camera);
     renderer.autoClear = false;
