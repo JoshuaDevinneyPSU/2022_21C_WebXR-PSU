@@ -30,6 +30,11 @@ function disallowRaycast(event){
 camera.position.setZ(-2);
 camera.position.setY(0);
 
+if(renderer.xr.isPresenting){
+    scene.position.setY(-2);
+    scene.position.setZ(2);
+}
+
 
 const renderer = new THREE.WebGLRenderer({ alpha:true, antialias:true, canvas: document.querySelector('#bg')});
 
