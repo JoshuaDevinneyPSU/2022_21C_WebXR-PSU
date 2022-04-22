@@ -30,14 +30,12 @@ function disallowRaycast(event){
 camera.position.setZ(-2);
 camera.position.setY(0);
 
-
 const renderer = new THREE.WebGLRenderer({ alpha:true, antialias:true, canvas: document.querySelector('#bg')});
 
 renderer.autoClear = false;
 
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
-
 
 //Enable WebXR support-------------------------------------
 function setupXR(){
@@ -114,9 +112,6 @@ const psycheOrbit = new THREE.Group();
 
 const psycheTexture = new THREE.TextureLoader().load('../Resources/Textures/psycheTexture.jpg');
 const psycheMaterial = createMaterial('texture', psycheTexture);
-//const psyche = createSTL('../Resources/Models/PsycheModel.stl', 0, 0, -2, psycheMaterial, scene);
-
-//const spaceCraft = createSTL('../Resources/Models/SpaceCraft.stl', 0, 0, 0, psycheMaterial, scene, 0.005, 0.005, 0.005);
 
 //Create Label for Psyche
 const psycheLabelGeometry = new THREE.PlaneGeometry(.4, .2);
@@ -297,7 +292,7 @@ const spacecraftImages = ["Resources/Images/spacecraftFact1.JPG",
 
 planets.get("Spacecraft").initializeFactCards(spacecraftFacts, spacecraftImages);
 
-const raycastModifier = .5;
+const raycastModifier = 0;
 
 //-----Handle click function using raycasts
 function checkPlanetClick(event){
@@ -523,7 +518,6 @@ function showNextFact(planetName){
     planets.get(planetName).updateFact();
 }
 
-
 function showInfoPage()
 {
     hideFactCard();
@@ -689,7 +683,7 @@ scene.add(moonOrbit);
 
 const cameraHolder = new THREE.Group();
 cameraHolder.add(camera);
-cameraHolder.position.set(0, raycastModifier, 0);
+cameraHolder.position.set(0, 0, 0);
 scene.add(cameraHolder);
 
 function animate(){
