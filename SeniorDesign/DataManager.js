@@ -292,15 +292,13 @@ const spacecraftImages = ["Resources/Images/spacecraftFact1.JPG",
 
 planets.get("Spacecraft").initializeFactCards(spacecraftFacts, spacecraftImages);
 
-const raycastModifier = 0.5;
-
 //-----Handle click function using raycasts
 function checkPlanetClick(event){
 
     //get location of mouse and use it to set the raycast
     //extra math is to normalize coordinates to user's screen
     if(renderer.xr.isPresenting){
-        rayPointer.set((event.clientX / window.innerWidth) * 2 - 1, -((event.clientY - 500) / window.innerHeight) * 2 + 1);
+        rayPointer.set((event.clientX / window.innerWidth) * 2 - 1, -((event.clientY) / window.innerHeight) * 2 + 1);
         raycaster.setFromCamera(rayPointer, cameraHolder);
     }
     else{
@@ -684,7 +682,7 @@ scene.add(moonOrbit);
 
 const cameraHolder = new THREE.Group();
 cameraHolder.add(camera);
-cameraHolder.position.set(0, raycastModifier, 0);
+cameraHolder.position.set(0, 0, 0);
 scene.add(cameraHolder);
 
 function animate(){
