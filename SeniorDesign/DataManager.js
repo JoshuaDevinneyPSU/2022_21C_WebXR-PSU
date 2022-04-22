@@ -297,8 +297,7 @@ const spacecraftImages = ["Resources/Images/spacecraftFact1.JPG",
 
 planets.get("Spacecraft").initializeFactCards(spacecraftFacts, spacecraftImages);
 
-
-const raycastModifier = .5;
+const raycastModifier = .0;
 
 //-----Handle click function using raycasts
 function checkPlanetClick(event){
