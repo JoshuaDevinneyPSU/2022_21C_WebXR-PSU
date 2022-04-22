@@ -683,7 +683,7 @@ scene.add(moonOrbit);
 
 const cameraHolder = new THREE.Group();
 cameraHolder.add(camera);
-cameraHolder.position.set(0, 0.5, 0);
+cameraHolder.position.set(0, 1, 0);
 scene.add(cameraHolder);
 
 function animate(){
