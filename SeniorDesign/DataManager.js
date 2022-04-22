@@ -708,11 +708,6 @@ function updatePositions()
     psycheLabel.lookAt(new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z));
     spacecraftLabel.lookAt(new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z));
 
-    if(renderer.xr.isPresenting){
-        scene.position.setY(-2);
-        scene.position.setZ(2);
-    }
-
     renderer.render(scene, camera);
     renderer.autoClear = false;
 }
