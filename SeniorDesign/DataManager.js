@@ -300,7 +300,7 @@ function checkPlanetClick(event){
     //get location of mouse and use it to set the raycast
     //extra math is to normalize coordinates to user's screen
     if(renderer.xr.isPresenting){
-        rayPointer.set((event.clientX / window.innerWidth) * 2 - 1, -((event.clientY - 300) / window.innerHeight) * 2 + 1);
+        rayPointer.set((event.clientX / window.innerWidth) * 2 - 1, -((event.clientY - 500) / window.innerHeight) * 2 + 1);
         raycaster.setFromCamera(rayPointer, cameraHolder);
     }
     else{
