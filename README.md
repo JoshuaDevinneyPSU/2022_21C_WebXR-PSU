@@ -1,3 +1,22 @@
+# Project Description
+With the launch of NASA’s Psyche mission coming up in August of 2022, the organization is looking for
+ways to increase public awareness of this mission to the asteroid of the same name. They are looking
+for an interactive AR (Augmented Reality) or VR (Virtual Reality) experience to display in museums
+across the United States. The AR or VR functionality will be handled using the WebXR API.
+
+Our objective for this project was to create an interactive museum experience with the purpose of
+informing the public of the upcoming mission to Psyche. We decided to create a web-based, interactive
+3D model of the solar system that displays facts about the mission to museum visitors when planets are
+clicked.
+
+# Team Members and University
+Joshua Devinney
+Donovan Myers
+Alexander Reams
+David Yakupkovic
+
+Penn State Erie, The Behrend College
+
 # Platform Requirements 
 
 The platform that the system is deployed from needs to have an IDE with Node.js Node Package Manager (npm) installed or a terminal that can use npm commands. The platform also needs to have the ability to push to GitHub if the current deployment needs updated to a new version. The building process of the “Senior Design” package requires Vite.js and three.js to be installed via npm. The platform also needs to have the “Senior Design” package downloaded. Deployment is done via Netlify and GitHub which is handled remotely and does not affect the platform requirements. 
