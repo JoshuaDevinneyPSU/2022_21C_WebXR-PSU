@@ -21,6 +21,7 @@ Penn State Erie, The Behrend College
 
 ![Main Page](Images/Screen1.JPG)
 ![Fact Card](Images/Screen2.JPG)
+![AR_View](Images/Screen3.jpg)
 
 # Platform Requirements 
 
