@@ -14,62 +14,62 @@ Three.js and Vite.js need to be installed via Node Package Manager (npm) to buil
 
 Hosting via Netlify and GitHub 
 
-Load the “Senior Design” package into an IDE with a terminal or Node.js compatible terminal. 
+1. Load the “Senior Design” package into an IDE with a terminal or Node.js compatible terminal. 
 
-In the terminal type “npm run build” and hit “enter” to begin the rollup process to prepare the project for distribution. 
+2. In the terminal type “npm run build” and hit “enter” to begin the rollup process to prepare the project for distribution. 
 
-Wait for the rollup to complete and generate the “/dist” directory. 
+3. Wait for the rollup to complete and generate the “/dist” directory. 
 
-Copy the “/Resources” folder into the “/dist” directory. 
+4. Copy the “/Resources” folder into the “/dist” directory. 
 
-Commit these files using the green checkmark on the top right of WebStorm. 
+5. Commit these files using the green checkmark on the top right of WebStorm. 
 
-On the commit panel make sure all files are checked and click “Commit and Push” then “Commit and Push anyway”. 
+6. On the commit panel make sure all files are checked and click “Commit and Push” then “Commit and Push anyway”. 
 
-On the pop-up window click “Push”. 
+7. On the pop-up window click “Push”. 
 
-Now that the distribution folder is built and pushed to GitHub it does not need to be redone unless changes are made to the source code and from here navigate to https://app.netlify.com. 
+8. Now that the distribution folder is built and pushed to GitHub it does not need to be redone unless changes are made to the source code and from here navigate to https://app.netlify.com. 
 
-Log in to the site and click on “Sites” on the top bar. 
+9. Log in to the site and click on “Sites” on the top bar. 
 
-Click on the “webxrpsu” site. 
+10. Click on the “webxrpsu” site. 
 
-Click on “Site settings”. 
+11. Click on “Site settings”. 
 
-Click the “Build & deploy” dropdown. 
+12. Click the “Build & deploy” dropdown. 
 
-Scroll down to the “Build Settings” section. 
+13. Scroll down to the “Build Settings” section. 
 
-Click “Edit settings” and set the Base directory section to “/SeniorDesign/dist” to point towards the Distribution folder. 
+14. Click “Edit settings” and set the Base directory section to “/SeniorDesign/dist” to point towards the Distribution folder. 
 
-Click “Save”. 
+15. Click “Save”. 
 
-Scroll further to the “Branches” section. 
+16. Scroll further to the “Branches” section. 
 
-Click “Edit settings” and set the production branch to “main”. 
+17. Click “Edit settings” and set the production branch to “main”. 
 
-Click “Save”. 
+18. Click “Save”. 
 
-Scroll back to the top of the page and click “Deploys” on the top bar. 
+19. Scroll back to the top of the page and click “Deploys” on the top bar. 
 
-Click the “Trigger deploy” drop down and select “Deploy site”. 
+20. Click the “Trigger deploy” drop down and select “Deploy site”. 
 
-Wait for the Deploy log to display “Finished processing build request”. 
+21. Wait for the Deploy log to display “Finished processing build request”. 
 
-Check to ensure that the site is live on https://webxrpsu.netlify.app 
+22. Check to ensure that the site is live on https://webxrpsu.netlify.app 
 
 Hosting via Netlify without GitHub 
 
-Load the “Senior Design” package into an IDE with a terminal or Node.js compatible terminal. 
+1. Load the “Senior Design” package into an IDE with a terminal or Node.js compatible terminal. 
 
-In the terminal type “npm run build” and hit “enter” to begin the rollup process to prepare the project for distribution. 
+2. In the terminal type “npm run build” and hit “enter” to begin the rollup process to prepare the project for distribution. 
 
-Wait for the rollup to complete and generate the “/dist” directory. 
+3. Wait for the rollup to complete and generate the “/dist” directory. 
 
-Copy the “/Resources” folder into the “/dist” directory. 
+4. Copy the “/Resources” folder into the “/dist” directory. 
 
-Navigate to https://app.netlify.com/drop 
+5. Navigate to https://app.netlify.com/drop 
 
-Drag and drop the /dist directory to the center of the page 
+6. Drag and drop the /dist directory to the center of the page 
 
-Netlify will automatically deploy and generate a link to the site using the built files 
+7. Netlify will automatically deploy and generate a link to the site using the built files 
