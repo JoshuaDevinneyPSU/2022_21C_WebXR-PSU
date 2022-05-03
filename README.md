@@ -74,7 +74,7 @@ Three.js and Vite.js need to be installed via Node Package Manager (npm) to buil
 
 7. Netlify will automatically deploy and generate a link to the site using the built files
 
-#Tools Used
+# Tools Used
 - Languages
   - HTML
   - CSS
