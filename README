@@ -1,1 +1,75 @@
+Platform Requirements 
 
+The platform that the system is deployed from needs to have an IDE with Node.js Node Package Manager (npm) installed or a terminal that can use npm commands. The platform also needs to have the ability to push to GitHub if the current deployment needs updated to a new version. The building process of the “Senior Design” package requires Vite.js and three.js to be installed via npm. The platform also needs to have the “Senior Design” package downloaded. Deployment is done via Netlify and GitHub which is handled remotely and does not affect the platform requirements. 
+
+ 
+
+Installation 
+
+This system will be deployed by Arizona State University using their own methods after the software is handed over. The following are instructions for deploying the site during the development and presentation of the software prior to the handoff. 
+
+Libraries 
+
+Three.js and Vite.js need to be installed via Node Package Manager (npm) to build project 
+
+Hosting via Netlify and GitHub 
+
+Load the “Senior Design” package into an IDE with a terminal or Node.js compatible terminal. 
+
+In the terminal type “npm run build” and hit “enter” to begin the rollup process to prepare the project for distribution. 
+
+Wait for the rollup to complete and generate the “/dist” directory. 
+
+Copy the “/Resources” folder into the “/dist” directory. 
+
+Commit these files using the green checkmark on the top right of WebStorm. 
+
+On the commit panel make sure all files are checked and click “Commit and Push” then “Commit and Push anyway”. 
+
+On the pop-up window click “Push”. 
+
+Now that the distribution folder is built and pushed to GitHub it does not need to be redone unless changes are made to the source code and from here navigate to https://app.netlify.com. 
+
+Log in to the site and click on “Sites” on the top bar. 
+
+Click on the “webxrpsu” site. 
+
+Click on “Site settings”. 
+
+Click the “Build & deploy” dropdown. 
+
+Scroll down to the “Build Settings” section. 
+
+Click “Edit settings” and set the Base directory section to “/SeniorDesign/dist” to point towards the Distribution folder. 
+
+Click “Save”. 
+
+Scroll further to the “Branches” section. 
+
+Click “Edit settings” and set the production branch to “main”. 
+
+Click “Save”. 
+
+Scroll back to the top of the page and click “Deploys” on the top bar. 
+
+Click the “Trigger deploy” drop down and select “Deploy site”. 
+
+Wait for the Deploy log to display “Finished processing build request”. 
+
+Check to ensure that the site is live on https://webxrpsu.netlify.app 
+
+Hosting via Netlify without GitHub 
+
+Load the “Senior Design” package into an IDE with a terminal or Node.js compatible terminal. 
+
+In the terminal type “npm run build” and hit “enter” to begin the rollup process to prepare the project for distribution. 
+
+Wait for the rollup to complete and generate the “/dist” directory. 
+
+Copy the “/Resources” folder into the “/dist” directory. 
+
+Navigate to https://app.netlify.com/drop 
+
+Drag and drop the /dist directory to the center of the page 
+
+Netlify will automatically deploy and generate a link to the site using the built files 
