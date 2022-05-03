@@ -17,11 +17,14 @@ David Yakupkovic
 
 Penn State Erie, The Behrend College
 
+# Project Images
+
+![Main Page] /Images/Screen1.png
+![Fact Card] /Images/Screen2.png
+
 # Platform Requirements 
 
 The platform that the system is deployed from needs to have an IDE with Node.js Node Package Manager (npm) installed or a terminal that can use npm commands. The platform also needs to have the ability to push to GitHub if the current deployment needs updated to a new version. The building process of the “Senior Design” package requires Vite.js and three.js to be installed via npm. The platform also needs to have the “Senior Design” package downloaded. Deployment is done via Netlify and GitHub which is handled remotely and does not affect the platform requirements. 
-
- 
 
 # Installation 
 
