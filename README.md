@@ -19,8 +19,8 @@ Penn State Erie, The Behrend College
 
 # Project Images
 
-![Main Page] (Images/Screen1.JPG)
-![Fact Card] (Images/Screen2.JPG)
+![Main Page](Images/Screen1.JPG)
+![Fact Card](Images/Screen2.JPG)
 
 # Platform Requirements 
 
