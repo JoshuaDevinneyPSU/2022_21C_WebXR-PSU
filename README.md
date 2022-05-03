@@ -72,4 +72,17 @@ Three.js and Vite.js need to be installed via Node Package Manager (npm) to buil
 
 6. Drag and drop the /dist directory to the center of the page 
 
-7. Netlify will automatically deploy and generate a link to the site using the built files 
+7. Netlify will automatically deploy and generate a link to the site using the built files
+
+#Tools Used
+- Languages
+ - HTML
+ - CSS
+ - Javascript
+- Frameworks
+ - Three.js
+ - WebXR API
+- IDEs and External Tools
+ - Webstorm IDE
+ - Netlify
+ - Vite.js
