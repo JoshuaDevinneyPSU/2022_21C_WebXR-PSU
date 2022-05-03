@@ -76,13 +76,13 @@ Three.js and Vite.js need to be installed via Node Package Manager (npm) to buil
 
 #Tools Used
 - Languages
-- - HTML
-- - CSS
-- - Javascript
+  - HTML
+  - CSS
+  - Javascript
 - Frameworks
-- - Three.js
-- - WebXR API
+  - Three.js
+  - WebXR API
 - IDEs and External Tools
-- - Webstorm IDE
-- - Netlify
-- - Vite.js
+  - Webstorm IDE
+  - Netlify
+  - Vite.js
